@@ -4,12 +4,6 @@ using namespace std;
 int main()
 {
     cout << "Hello, World!" << endl;
-    cout << "하이" << endl;
-
-    for (int i = 0; i < 5; i++)
-    {
-        cout << "반복문: " << i << endl;
-    }
-    
+    cout <<"이현서 바보" << endl;
     return 0;
 }
