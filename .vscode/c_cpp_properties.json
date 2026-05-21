@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/libs/imgui",
+        "${workspaceFolder}/libs/imgui/backends",
+        "/opt/homebrew/include",
+        "/opt/homebrew/include/SDL2",
+        "/usr/local/include",
+        "/usr/local/include/SDL2"
+      ],
+      "defines": ["__APPLE__", "GL_SILENCE_DEPRECATION"],
+      "compilerPath": "/usr/bin/clang++",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "macos-clang-arm64"
+    }
+  ],
+  "version": 4
+}

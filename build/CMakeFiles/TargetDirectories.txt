@@ -1,0 +1,3 @@
+/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles/imgui_app.dir
+/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles/edit_cache.dir
+/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles/rebuild_cache.dir
