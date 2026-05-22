@@ -2,9 +2,9 @@
 
 #include "../model/Machine.h"
 
-class GrillMachine : public Machine {
+class SauceMachine : public Machine {
 public:
-    GrillMachine();
+    SauceMachine();
 
     void update(float dt) override;
 };

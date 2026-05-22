@@ -6,8 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui)
 
+include_directories(include)
+
 set(SOURCES 
     src/main.cpp
+    src/model/GrillMachine.cpp
+    src/model/PackingMachine.cpp
+    src/model/PrepMachine.cpp
+    src/model/SauceMachine.cpp
 
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_draw.cpp
@@ -21,6 +27,7 @@ add_executable(imgui_app ${SOURCES})
 
 target_include_directories(imgui_app PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
 )

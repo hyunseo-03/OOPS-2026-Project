@@ -9,7 +9,9 @@
         "/opt/homebrew/include",
         "/opt/homebrew/include/SDL2",
         "/usr/local/include",
-        "/usr/local/include/SDL2"
+        "/usr/local/include/SDL2",
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/include"
       ],
       "defines": ["__APPLE__", "GL_SILENCE_DEPRECATION"],
       "compilerPath": "/usr/bin/clang++",
