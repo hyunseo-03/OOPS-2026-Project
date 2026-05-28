@@ -8,13 +8,26 @@ set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui)
 
 include_directories(include)
 
-set(SOURCES 
+set(SOURCES
     src/main.cpp
+
+    # Model
+    src/model/Machine.cpp
+    src/model/BurgerFactoryModel.cpp
     src/model/GrillMachine.cpp
     src/model/PackingMachine.cpp
     src/model/PrepMachine.cpp
     src/model/SauceMachine.cpp
+    src/model/Inventory.cpp
+    src/model/Burger.cpp
 
+    # Controller
+    src/controller/FactoryController.cpp
+
+    # View
+    src/view/FactoryView.cpp
+
+    # ImGui
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_draw.cpp
     ${IMGUI_DIR}/imgui_tables.cpp
@@ -25,7 +38,7 @@ set(SOURCES
 
 add_executable(imgui_app ${SOURCES})
 
-target_include_directories(imgui_app PRIVATE 
+target_include_directories(imgui_app PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${IMGUI_DIR}
@@ -35,7 +48,7 @@ target_include_directories(imgui_app PRIVATE
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(imgui_app PRIVATE 
+target_link_libraries(imgui_app PRIVATE
     SDL2::SDL2
     OpenGL::GL
 )
