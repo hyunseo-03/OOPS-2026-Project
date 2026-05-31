@@ -1,9 +1,9 @@
-#include "../include/model/PrepMachine.h"
+#include "AssemblyMachine.h"
 
-PrepMachine::PrepMachine()
-    : Machine("Prep Machine", 2.0f) {}
+AssemblyMachine::AssemblyMachine() 
+  : Machine("Assembly Machine", 4.0f) {}
 
-void PrepMachine::update(float dt) {
+void AssemblyMachine::update(float dt) {
     if (running) {
         progress += dt / cycleTime;
         if (progress >= 1.0f) {
@@ -12,3 +12,4 @@ void PrepMachine::update(float dt) {
         }
     }
 }
+

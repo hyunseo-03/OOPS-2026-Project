@@ -2,9 +2,9 @@
 
 #include "Machine.h"
 
-class PrepMachine : public Machine {
+class AssemblyMachine: public Machine {
 public:
-    PrepMachine();
+    AssemblyMachine();
 
     void update(float dt) override;
 };

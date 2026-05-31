@@ -2,9 +2,9 @@
 
 #include "Machine.h"
 
-class PrepMachine : public Machine {
+class QualityChecker : public Machine {
 public:
-    PrepMachine();
+    QualityChecker();
 
     void update(float dt) override;
 };

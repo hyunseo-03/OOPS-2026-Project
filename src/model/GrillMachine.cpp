@@ -7,5 +7,11 @@ GrillMachine::GrillMachine()
 
 void GrillMachine::update(float dt)
 {
-    Machine::update(dt);
+    if (running) {
+        progress += dt / cycleTime;
+        if (progress >= 1.0f) {
+            progress = 1.0f; 
+            stop(); 
+        }
+    }
 }

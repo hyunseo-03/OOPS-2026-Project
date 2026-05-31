@@ -20,6 +20,8 @@ set(SOURCES
     src/model/SauceMachine.cpp
     src/model/Inventory.cpp
     src/model/Burger.cpp
+    src/model/OrderManager.cpp
+    src/model/MoneyManager.cpp
 
     # Controller
     src/controller/FactoryController.cpp
