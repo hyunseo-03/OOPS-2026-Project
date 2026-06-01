@@ -10,8 +10,7 @@ BurgerFactoryModel::BurgerFactoryModel()
 // ─────────────────────────────────────────────────────
 void BurgerFactoryModel::update(float dt)
 {
-    if (currentStep == ProcessStep::Idle ||
-        currentStep == ProcessStep::Done)
+    if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done)
         return;
 
     productionLine.update(dt);

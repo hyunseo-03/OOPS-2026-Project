@@ -24,6 +24,7 @@ inline BurgerRecipe getRecipe(BurgerType type)
                 {
                     { IngredientType::BUN,     2 },
                     { IngredientType::PATTY,   1 },
+                    { IngredientType::CHEESE,  1 },
                     { IngredientType::LETTUCE, 1 },
                     { IngredientType::TOMATO,  1 },
                     { IngredientType::SAUCE,   1 },
