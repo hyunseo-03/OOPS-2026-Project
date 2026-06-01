@@ -1,36 +1,26 @@
 #pragma once
-
 #include "model/BurgerFactoryModel.h"
 
-// ============================================================
-// FactoryController - View와 Model을 연결하는 Controller
-// MVC에서 Controller 역할:
-//   - View에서 버튼 클릭 이벤트를 받아 Model을 변경
-//   - 매 프레임 model.update(dt)를 호출
-// ============================================================
-class FactoryController
-{
+// ─────────────────────────────────────────────────────
+// FactoryController - View ↔ Model 연결 클래스
+//
+// View는 버튼 클릭 시 Controller 메서드를 호출한다.
+// Controller는 Model의 상태를 변경한다.
+// View는 Model을 직접 수정하지 않는다.
+// ─────────────────────────────────────────────────────
+class FactoryController {
 private:
     BurgerFactoryModel& model;
 
 public:
-    FactoryController(BurgerFactoryModel& model);
+    explicit FactoryController(BurgerFactoryModel& model);
 
-    // 버튼 이벤트 처리
-    void startFactory();
-    void stopFactory();
-    void newOrder();      // 재료 보충 후 생산 시작
-    void sellBurger();    // 완성된 버거 판매
-
-    // 기계별 업그레이드
-    bool upgradePrepSpeed();
-    bool upgradeGrillSpeed();
-    bool upgradeSauceSpeed();
-    bool upgradePackSpeed();
-
-    // 기계 일시정지 / 재개
-    void togglePauseMachine(int machineIndex); // 0=prep, 1=grill, 2=sauce, 3=pack
-
-    // 매 프레임 호출 (게임 루프에서 호출)
+    // 매 프레임 게임 루프에서 호출
     void update(float dt);
+
+    // View 버튼 이벤트 핸들러
+    void onStartMachine(ProcessStep step);   // 기계 시작 버튼
+    void onNewOrder(BurgerType type);        // 새 주문 버튼
+    void onPackBurger();                     // 포장/완료 버튼
+    void onRefillInventory();                // 재료 보충 버튼
 };

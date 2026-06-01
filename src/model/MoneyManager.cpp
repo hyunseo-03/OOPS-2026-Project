@@ -1,18 +1,20 @@
-#include "MoneyManager.h"
+#include "model/MoneyManager.h"
 
-MoneyManager::MoneyManager() : money(0) {}
+MoneyManager::MoneyManager() : money(500) {}  // 시작 자금 500
 
-void MoneyManager::add(int amount) {
+void MoneyManager::add(int amount)
+{
     money += amount;
-  }
+}
 
-bool MoneyManager::spend(int amount) {
-  if (money >= amount) {
+bool MoneyManager::spend(int amount)
+{
+    if (money < amount) return false;
     money -= amount;
     return true;
-  }
-  return false; 
 }
-int MoneyManager::getMoney() const {
-  return money;
+
+int MoneyManager::getMoney() const
+{
+    return money;
 }

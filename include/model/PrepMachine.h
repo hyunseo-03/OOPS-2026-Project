@@ -1,10 +1,8 @@
 #pragma once
-
-#include "Machine.h"
+#include "model/Machine.h"
 
 class PrepMachine : public Machine {
 public:
     PrepMachine();
-
     void update(float dt) override;
 };

@@ -1,16 +1,16 @@
 #pragma once
 
-class MoneyManager
-{
+// ─────────────────────────────────────────────
+// MoneyManager - 돈 관리 클래스
+// ─────────────────────────────────────────────
+class MoneyManager {
 private:
-  int money; 
+    int money;
 
 public:
-  MoneyManager();
+    MoneyManager();
 
-  void add(int amount);
-
-  bool spend(int amount);
-  int getMoney() const;
-
+    void add(int amount);
+    bool spend(int amount);
+    int  getMoney() const;
 };

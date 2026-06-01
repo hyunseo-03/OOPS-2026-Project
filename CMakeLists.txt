@@ -6,22 +6,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui)
 
-include_directories(include)
-
 set(SOURCES
     src/main.cpp
 
     # Model
     src/model/Machine.cpp
-    src/model/BurgerFactoryModel.cpp
-    src/model/GrillMachine.cpp
-    src/model/PackingMachine.cpp
     src/model/PrepMachine.cpp
+    src/model/GrillMachine.cpp
     src/model/SauceMachine.cpp
-    src/model/Inventory.cpp
-    src/model/Burger.cpp
-    src/model/OrderManager.cpp
+    src/model/AssemblyMachine.cpp
+    src/model/QualityChecker.cpp
+    src/model/PackingMachine.cpp
+    src/model/ProductionLine.cpp
+    src/model/InventoryManager.cpp
     src/model/MoneyManager.cpp
+    src/model/OrderManager.cpp
+    src/model/BurgerFactoryModel.cpp
 
     # Controller
     src/controller/FactoryController.cpp
@@ -43,6 +43,7 @@ add_executable(imgui_app ${SOURCES})
 target_include_directories(imgui_app PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/enum      # ProcessStep, BurgerType, IngredientType
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
 )

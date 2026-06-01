@@ -1,15 +1,16 @@
-#include "AssemblyMachine.h"
+#include "model/AssemblyMachine.h"
 
-AssemblyMachine::AssemblyMachine() 
-  : Machine("Assembly Machine", 4.0f) {}
+AssemblyMachine::AssemblyMachine()
+    : Machine("Assembly Machine", 4.0f) {}
 
-void AssemblyMachine::update(float dt) {
-    if (running) {
-        progress += dt / cycleTime;
-        if (progress >= 1.0f) {
-            progress = 1.0f; 
-            stop(); 
-        }
+void AssemblyMachine::update(float dt)
+{
+    if (!running) return;
+
+    progress += dt / cycleTime;
+    if (progress >= 1.0f)
+    {
+        progress = 1.0f;
+        stop();
     }
 }
-

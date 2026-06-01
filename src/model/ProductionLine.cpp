@@ -1,33 +1,67 @@
-#include "ProductionLine.h"
+#include "model/ProductionLine.h"
+#include "model/PrepMachine.h"
+#include "model/GrillMachine.h"
+#include "model/SauceMachine.h"
+#include "model/AssemblyMachine.h"
+#include "model/QualityChecker.h"
+#include "model/PackingMachine.h"
 
-void ProductionLine::update(float dt) {
-  for (auto& machine : machines) {
-    machine->update(dt);
-  }
+
+// index 0 = PreparingIngredients
+// index 1 = GrillPatty
+// index 2 = AddSauce
+// index 3 = AssembleBurger
+// index 4 = QualityCheck
+// index 5 = PackBurger
+ProductionLine::ProductionLine()
+{
+    machines.push_back(std::make_unique<PrepMachine>());
+    machines.push_back(std::make_unique<GrillMachine>());
+    machines.push_back(std::make_unique<SauceMachine>());
+    machines.push_back(std::make_unique<AssemblyMachine>());
+    machines.push_back(std::make_unique<QualityChecker>());
+    machines.push_back(std::make_unique<PackingMachine>());
 }
 
-void ProductionLine::startMachine(ProcessStep step) {
-  if (step == ProcessStep::Idle || step == ProcessStep::Done) return;
-  int index = static_cast<int>(step) - 1; 
-  if (index >= 0 && index < machines.size()) {
-    machines[index]->start();
-  }
+int ProductionLine::stepToIndex(ProcessStep step) const
+{
+    switch (step)
+    {
+        case ProcessStep::PreparingIngredients: return 0;
+        case ProcessStep::GrillPatty: return 1;
+        case ProcessStep::AddSauce: return 2;
+        case ProcessStep::AssembleBurger: return 3;
+        case ProcessStep::QualityCheck: return 4;
+        case ProcessStep::PackBurger: return 5;
+        default: return -1;
+    }
 }
 
-bool ProductionLine::isMachineDone(ProcessStep step) const {
-  if (step == ProcessStep::Idle || step == ProcessStep::Done) return false;
-  int index = static_cast<int>(step) - 1; 
-  if (index >= 0 && index < machines.size()) {
-    return machines[index]->isDone();
-  }
-  return false;
+void ProductionLine::update(float dt)
+{
+    for (auto& machine : machines)
+        machine->update(dt);
 }
 
-Machine* ProductionLine::getMachine(ProcessStep step) {
-  if (step == ProcessStep::Idle || step == ProcessStep::Done) return nullptr;
-  int index = static_cast<int>(step) - 1; 
-  if (index >= 0 && index < machines.size()) {
-    return machines[index].get();
-  }
-  return nullptr;
-}                                                          
+void ProductionLine::startMachine(ProcessStep step)
+{
+    int idx = stepToIndex(step);
+    if (idx >= 0 && idx < static_cast<int>(machines.size()))
+        machines[idx]->start();
+}
+
+bool ProductionLine::isMachineDone(ProcessStep step) const
+{
+    int idx = stepToIndex(step);
+    if (idx >= 0 && idx < static_cast<int>(machines.size()))
+        return machines[idx]->isDone();
+    return false;
+}
+
+Machine* ProductionLine::getMachine(ProcessStep step)
+{
+    int idx = stepToIndex(step);
+    if (idx >= 0 && idx < static_cast<int>(machines.size()))
+        return machines[idx].get();
+    return nullptr;
+}

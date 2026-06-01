@@ -1,17 +1,16 @@
-#include "../include/model/SauceMachine.h"
+#include "model/SauceMachine.h"
 
 SauceMachine::SauceMachine()
-    : Machine("Sauce Machine", 1.0f)
-{
-}
+    : Machine("Sauce Machine", 1.0f) {}
 
 void SauceMachine::update(float dt)
 {
-    if (running) {
-        progress += dt / cycleTime;
-        if (progress >= 1.0f) {
-            progress = 1.0f; 
-            stop(); 
-        }
+    if (!running) return;
+
+    progress += dt / cycleTime;
+    if (progress >= 1.0f)
+    {
+        progress = 1.0f;
+        stop();
     }
 }
