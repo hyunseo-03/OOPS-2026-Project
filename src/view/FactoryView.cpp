@@ -140,24 +140,12 @@ void FactoryView::render()
     // ─────────────────────────────────────────────
     ImGui::Text("[CONTROLS]");
 
-    // 생산 완료 → 판매 버튼 강조 표시
-    if (cur == ProcessStep::Done)
-    {
-        ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.1f, 0.7f, 0.1f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.9f, 0.2f, 1.0f));
-        if (ImGui::Button(">>> SELL BURGER <<<"))
-            controller.onPackBurger();
-        ImGui::PopStyleColor(2);
-    }
-    else
-    {
-        // 생산 시작 버튼
-        bool canStart = model.canProceed(cur);
-        if (!canStart) ImGui::BeginDisabled();
-        if (ImGui::Button("Start Production"))
-            controller.onStartMachine(cur);
-        if (!canStart) ImGui::EndDisabled();
-    }
+    // 생산 시작 버튼
+    bool canStart = model.canProceed(cur);
+    if (!canStart) ImGui::BeginDisabled();
+    if (ImGui::Button("Start Production"))
+        controller.onStartMachine(cur);
+    if (!canStart) ImGui::EndDisabled();
 
     ImGui::SameLine();
 
@@ -228,7 +216,24 @@ void FactoryView::renderOrderHistory()
         const Order& cur = model.getCurrentOrder();
         const char* cn = (cur.type == BurgerType::CLASSIC) ? "Classic" :
                          (cur.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
-        ImGui::TextColored(ImVec4(1,1,0,1), "  NOW > %s Burger", cn);
+        int price = (cur.type == BurgerType::CLASSIC) ? 100 :
+                    (cur.type == BurgerType::CHEESE)  ? 130 : 160;
+
+        bool readyToSell = (model.getCurrentStep() == ProcessStep::Done);
+        if (readyToSell)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.1f, 0.7f, 0.1f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.9f, 0.2f, 1.0f));
+            char sellLabel[64];
+            snprintf(sellLabel, sizeof(sellLabel), "SELL %s Burger  +$%d", cn, price);
+            if (ImGui::Button(sellLabel))
+                controller.onPackBurger();
+            ImGui::PopStyleColor(2);
+        }
+        else
+        {
+            ImGui::TextColored(ImVec4(1,1,0,1), "  NOW > %s Burger  ($%d)", cn, price);
+        }
     }
     else
     {
