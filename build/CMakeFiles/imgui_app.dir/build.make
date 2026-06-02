@@ -100,19 +100,19 @@ CMakeFiles/imgui_app.dir/src/model/Machine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/Machine.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Machine.cpp -o CMakeFiles/imgui_app.dir/src/model/Machine.cpp.s
 
-CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: CMakeFiles/imgui_app.dir/flags.make
-CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp
-CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp
+CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp
+CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp
 
-CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp > CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i
+CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp > CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i
 
-CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp -o CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s
+CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s
 
 CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/GrillMachine.cpp
@@ -128,38 +128,10 @@ CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/GrillMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.s
 
-CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
-CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp
-CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp
-
-CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp > CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i
-
-CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s
-
-CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
-CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp
-CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp
-
-CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp > CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.i
-
-CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PrepMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s
-
 CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/SauceMachine.cpp
 CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/SauceMachine.cpp
 
 CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.i: cmake_force
@@ -170,38 +142,122 @@ CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/SauceMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.s
 
-CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o: CMakeFiles/imgui_app.dir/flags.make
-CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Inventory.cpp
-CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Inventory.cpp
+CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/AssemblyMachine.cpp
+CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/AssemblyMachine.cpp
 
-CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Inventory.cpp > CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.i
+CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/AssemblyMachine.cpp > CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.i
 
-CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Inventory.cpp -o CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.s
+CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/AssemblyMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.s
 
-CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o: CMakeFiles/imgui_app.dir/flags.make
-CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Burger.cpp
-CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Burger.cpp
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/QualityChecker.cpp
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/QualityChecker.cpp
 
-CMakeFiles/imgui_app.dir/src/model/Burger.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/Burger.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Burger.cpp > CMakeFiles/imgui_app.dir/src/model/Burger.cpp.i
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/QualityChecker.cpp > CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.i
 
-CMakeFiles/imgui_app.dir/src/model/Burger.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/Burger.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/Burger.cpp -o CMakeFiles/imgui_app.dir/src/model/Burger.cpp.s
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/QualityChecker.cpp -o CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp
+CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp
+
+CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp > CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp -o CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/ProductionLine.cpp
+CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/ProductionLine.cpp
+
+CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/ProductionLine.cpp > CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/ProductionLine.cpp -o CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/InventoryManager.cpp
+CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/InventoryManager.cpp
+
+CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/InventoryManager.cpp > CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/InventoryManager.cpp -o CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/MoneyManager.cpp
+CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/MoneyManager.cpp
+
+CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/MoneyManager.cpp > CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/MoneyManager.cpp -o CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/OrderManager.cpp
+CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/OrderManager.cpp
+
+CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/OrderManager.cpp > CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/OrderManager.cpp -o CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.s
+
+CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: CMakeFiles/imgui_app.dir/flags.make
+CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp
+CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o -MF CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o.d -o CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp
+
+CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp > CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.i
+
+CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/BurgerFactoryModel.cpp -o CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.s
 
 CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/controller/FactoryController.cpp
 CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o -MF CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o.d -o CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/controller/FactoryController.cpp
 
 CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.i: cmake_force
@@ -215,7 +271,7 @@ CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/view/FactoryView.cpp
 CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o -MF CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o.d -o CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/view/FactoryView.cpp
 
 CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.i: cmake_force
@@ -229,7 +285,7 @@ CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.i: cmake_force
@@ -243,7 +299,7 @@ CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_draw.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_draw.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.i: cmake_force
@@ -257,7 +313,7 @@ CMakeFiles/imgui_app.dir/libs/imgui/imgui_draw.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_tables.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_tables.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.i: cmake_force
@@ -271,7 +327,7 @@ CMakeFiles/imgui_app.dir/libs/imgui/imgui_tables.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_widgets.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/imgui_widgets.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.i: cmake_force
@@ -285,7 +341,7 @@ CMakeFiles/imgui_app.dir/libs/imgui/imgui_widgets.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/backends/imgui_impl_sdl2.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/backends/imgui_impl_sdl2.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.i: cmake_force
@@ -299,7 +355,7 @@ CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_sdl2.cpp.s: cmake_force
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/imgui_app.dir/flags.make
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/backends/imgui_impl_opengl3.cpp
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/imgui_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -c /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/libs/imgui/backends/imgui_impl_opengl3.cpp
 
 CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i: cmake_force
@@ -314,13 +370,17 @@ CMakeFiles/imgui_app.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s: cmake_for
 imgui_app_OBJECTS = \
 "CMakeFiles/imgui_app.dir/src/main.cpp.o" \
 "CMakeFiles/imgui_app.dir/src/model/Machine.cpp.o" \
-"CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o" \
-"CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o" \
-"CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o" \
 "CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o" \
 "CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o" \
-"CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o" \
-"CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o" \
+"CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o" \
 "CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o" \
 "CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o" \
 "CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o" \
@@ -335,13 +395,17 @@ imgui_app_EXTERNAL_OBJECTS =
 
 imgui_app: CMakeFiles/imgui_app.dir/src/main.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/src/model/Machine.cpp.o
-imgui_app: CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o
-imgui_app: CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o
-imgui_app: CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o
-imgui_app: CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o
-imgui_app: CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o
+imgui_app: CMakeFiles/imgui_app.dir/src/model/BurgerFactoryModel.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/src/controller/FactoryController.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o
 imgui_app: CMakeFiles/imgui_app.dir/libs/imgui/imgui.cpp.o
@@ -354,7 +418,7 @@ imgui_app: CMakeFiles/imgui_app.dir/build.make
 imgui_app: /opt/homebrew/Cellar/sdl2/2.32.10/lib/libSDL2.dylib
 imgui_app: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 imgui_app: CMakeFiles/imgui_app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable imgui_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable imgui_app"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/imgui_app.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

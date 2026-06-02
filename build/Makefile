@@ -321,29 +321,29 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/model/Burger.o: src/model/Burger.cpp.o
-.PHONY : src/model/Burger.o
+src/model/AssemblyMachine.o: src/model/AssemblyMachine.cpp.o
+.PHONY : src/model/AssemblyMachine.o
 
 # target to build an object file
-src/model/Burger.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Burger.cpp.o
-.PHONY : src/model/Burger.cpp.o
+src/model/AssemblyMachine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.o
+.PHONY : src/model/AssemblyMachine.cpp.o
 
-src/model/Burger.i: src/model/Burger.cpp.i
-.PHONY : src/model/Burger.i
+src/model/AssemblyMachine.i: src/model/AssemblyMachine.cpp.i
+.PHONY : src/model/AssemblyMachine.i
 
 # target to preprocess a source file
-src/model/Burger.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Burger.cpp.i
-.PHONY : src/model/Burger.cpp.i
+src/model/AssemblyMachine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.i
+.PHONY : src/model/AssemblyMachine.cpp.i
 
-src/model/Burger.s: src/model/Burger.cpp.s
-.PHONY : src/model/Burger.s
+src/model/AssemblyMachine.s: src/model/AssemblyMachine.cpp.s
+.PHONY : src/model/AssemblyMachine.s
 
 # target to generate assembly for a file
-src/model/Burger.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Burger.cpp.s
-.PHONY : src/model/Burger.cpp.s
+src/model/AssemblyMachine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/AssemblyMachine.cpp.s
+.PHONY : src/model/AssemblyMachine.cpp.s
 
 src/model/BurgerFactoryModel.o: src/model/BurgerFactoryModel.cpp.o
 .PHONY : src/model/BurgerFactoryModel.o
@@ -393,29 +393,29 @@ src/model/GrillMachine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/GrillMachine.cpp.s
 .PHONY : src/model/GrillMachine.cpp.s
 
-src/model/Inventory.o: src/model/Inventory.cpp.o
-.PHONY : src/model/Inventory.o
+src/model/InventoryManager.o: src/model/InventoryManager.cpp.o
+.PHONY : src/model/InventoryManager.o
 
 # target to build an object file
-src/model/Inventory.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.o
-.PHONY : src/model/Inventory.cpp.o
+src/model/InventoryManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.o
+.PHONY : src/model/InventoryManager.cpp.o
 
-src/model/Inventory.i: src/model/Inventory.cpp.i
-.PHONY : src/model/Inventory.i
+src/model/InventoryManager.i: src/model/InventoryManager.cpp.i
+.PHONY : src/model/InventoryManager.i
 
 # target to preprocess a source file
-src/model/Inventory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.i
-.PHONY : src/model/Inventory.cpp.i
+src/model/InventoryManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.i
+.PHONY : src/model/InventoryManager.cpp.i
 
-src/model/Inventory.s: src/model/Inventory.cpp.s
-.PHONY : src/model/Inventory.s
+src/model/InventoryManager.s: src/model/InventoryManager.cpp.s
+.PHONY : src/model/InventoryManager.s
 
 # target to generate assembly for a file
-src/model/Inventory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Inventory.cpp.s
-.PHONY : src/model/Inventory.cpp.s
+src/model/InventoryManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/InventoryManager.cpp.s
+.PHONY : src/model/InventoryManager.cpp.s
 
 src/model/Machine.o: src/model/Machine.cpp.o
 .PHONY : src/model/Machine.o
@@ -440,6 +440,54 @@ src/model/Machine.s: src/model/Machine.cpp.s
 src/model/Machine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/Machine.cpp.s
 .PHONY : src/model/Machine.cpp.s
+
+src/model/MoneyManager.o: src/model/MoneyManager.cpp.o
+.PHONY : src/model/MoneyManager.o
+
+# target to build an object file
+src/model/MoneyManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.o
+.PHONY : src/model/MoneyManager.cpp.o
+
+src/model/MoneyManager.i: src/model/MoneyManager.cpp.i
+.PHONY : src/model/MoneyManager.i
+
+# target to preprocess a source file
+src/model/MoneyManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.i
+.PHONY : src/model/MoneyManager.cpp.i
+
+src/model/MoneyManager.s: src/model/MoneyManager.cpp.s
+.PHONY : src/model/MoneyManager.s
+
+# target to generate assembly for a file
+src/model/MoneyManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/MoneyManager.cpp.s
+.PHONY : src/model/MoneyManager.cpp.s
+
+src/model/OrderManager.o: src/model/OrderManager.cpp.o
+.PHONY : src/model/OrderManager.o
+
+# target to build an object file
+src/model/OrderManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.o
+.PHONY : src/model/OrderManager.cpp.o
+
+src/model/OrderManager.i: src/model/OrderManager.cpp.i
+.PHONY : src/model/OrderManager.i
+
+# target to preprocess a source file
+src/model/OrderManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.i
+.PHONY : src/model/OrderManager.cpp.i
+
+src/model/OrderManager.s: src/model/OrderManager.cpp.s
+.PHONY : src/model/OrderManager.s
+
+# target to generate assembly for a file
+src/model/OrderManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/OrderManager.cpp.s
+.PHONY : src/model/OrderManager.cpp.s
 
 src/model/PackingMachine.o: src/model/PackingMachine.cpp.o
 .PHONY : src/model/PackingMachine.o
@@ -488,6 +536,54 @@ src/model/PrepMachine.s: src/model/PrepMachine.cpp.s
 src/model/PrepMachine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/PrepMachine.cpp.s
 .PHONY : src/model/PrepMachine.cpp.s
+
+src/model/ProductionLine.o: src/model/ProductionLine.cpp.o
+.PHONY : src/model/ProductionLine.o
+
+# target to build an object file
+src/model/ProductionLine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.o
+.PHONY : src/model/ProductionLine.cpp.o
+
+src/model/ProductionLine.i: src/model/ProductionLine.cpp.i
+.PHONY : src/model/ProductionLine.i
+
+# target to preprocess a source file
+src/model/ProductionLine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.i
+.PHONY : src/model/ProductionLine.cpp.i
+
+src/model/ProductionLine.s: src/model/ProductionLine.cpp.s
+.PHONY : src/model/ProductionLine.s
+
+# target to generate assembly for a file
+src/model/ProductionLine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/ProductionLine.cpp.s
+.PHONY : src/model/ProductionLine.cpp.s
+
+src/model/QualityChecker.o: src/model/QualityChecker.cpp.o
+.PHONY : src/model/QualityChecker.o
+
+# target to build an object file
+src/model/QualityChecker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o
+.PHONY : src/model/QualityChecker.cpp.o
+
+src/model/QualityChecker.i: src/model/QualityChecker.cpp.i
+.PHONY : src/model/QualityChecker.i
+
+# target to preprocess a source file
+src/model/QualityChecker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.i
+.PHONY : src/model/QualityChecker.cpp.i
+
+src/model/QualityChecker.s: src/model/QualityChecker.cpp.s
+.PHONY : src/model/QualityChecker.s
+
+# target to generate assembly for a file
+src/model/QualityChecker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_app.dir/build.make CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.s
+.PHONY : src/model/QualityChecker.cpp.s
 
 src/model/SauceMachine.o: src/model/SauceMachine.cpp.o
 .PHONY : src/model/SauceMachine.o
@@ -570,27 +666,39 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/model/Burger.o"
-	@echo "... src/model/Burger.i"
-	@echo "... src/model/Burger.s"
+	@echo "... src/model/AssemblyMachine.o"
+	@echo "... src/model/AssemblyMachine.i"
+	@echo "... src/model/AssemblyMachine.s"
 	@echo "... src/model/BurgerFactoryModel.o"
 	@echo "... src/model/BurgerFactoryModel.i"
 	@echo "... src/model/BurgerFactoryModel.s"
 	@echo "... src/model/GrillMachine.o"
 	@echo "... src/model/GrillMachine.i"
 	@echo "... src/model/GrillMachine.s"
-	@echo "... src/model/Inventory.o"
-	@echo "... src/model/Inventory.i"
-	@echo "... src/model/Inventory.s"
+	@echo "... src/model/InventoryManager.o"
+	@echo "... src/model/InventoryManager.i"
+	@echo "... src/model/InventoryManager.s"
 	@echo "... src/model/Machine.o"
 	@echo "... src/model/Machine.i"
 	@echo "... src/model/Machine.s"
+	@echo "... src/model/MoneyManager.o"
+	@echo "... src/model/MoneyManager.i"
+	@echo "... src/model/MoneyManager.s"
+	@echo "... src/model/OrderManager.o"
+	@echo "... src/model/OrderManager.i"
+	@echo "... src/model/OrderManager.s"
 	@echo "... src/model/PackingMachine.o"
 	@echo "... src/model/PackingMachine.i"
 	@echo "... src/model/PackingMachine.s"
 	@echo "... src/model/PrepMachine.o"
 	@echo "... src/model/PrepMachine.i"
 	@echo "... src/model/PrepMachine.s"
+	@echo "... src/model/ProductionLine.o"
+	@echo "... src/model/ProductionLine.i"
+	@echo "... src/model/ProductionLine.s"
+	@echo "... src/model/QualityChecker.o"
+	@echo "... src/model/QualityChecker.i"
+	@echo "... src/model/QualityChecker.s"
 	@echo "... src/model/SauceMachine.o"
 	@echo "... src/model/SauceMachine.i"
 	@echo "... src/model/SauceMachine.s"

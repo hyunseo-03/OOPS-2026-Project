@@ -27,7 +27,7 @@ protected:
     void checkMalfunction(float dt);
 
 public:
-    Machine(const std::string& name, float cycleTime, float malfunctionRate = 0.05f);
+    Machine(const std::string& name, float cycleTime, float malfunctionRate = 0.005f);
     virtual ~Machine() = default;
 
     // 설정값 주입 - 서브클래스가 필요한 필드만 override

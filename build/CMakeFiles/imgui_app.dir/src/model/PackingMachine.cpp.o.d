@@ -1,7 +1,6 @@
 CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/PackingMachine.cpp \
-  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/../include/model/PackingMachine.h \
-  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/../include/model/../model/Machine.h \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/PackingMachine.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/max.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/comp.h \
@@ -643,4 +642,7 @@ CMakeFiles/imgui_app.dir/src/model/PackingMachine.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/for_each_n.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pstl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sample.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/bit
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/bit \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/Machine.h \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/MachineConfig.h \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/enum/BurgerType.h

@@ -17,9 +17,8 @@ void BurgerFactoryModel::update(float dt)
 
 void BurgerFactoryModel::handleMalfunction()
 {
-    if (!productionLine.isMachineFailed(currentStep)) return;
-    preparedIngredients.clear();
-    currentStep = ProcessStep::Idle;
+    // 고장 감지: 단계는 그대로 유지 (수리 후 재시작 가능하도록)
+    // update()에서 isMachineDone이 true가 되지 않으므로 자동으로 멈춘다
 }
 
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
@@ -27,6 +26,9 @@ bool BurgerFactoryModel::repairMachine(ProcessStep step)
     if (!productionLine.isMachineFailed(step)) return false;
     if (!moneyManager.spend(REPAIR_COST))      return false;
     productionLine.repairMachine(step);
+    // 수리 완료 후 해당 단계 기계 자동 재시작
+    if (step == currentStep)
+        productionLine.startMachine(step);
     return true;
 }
 

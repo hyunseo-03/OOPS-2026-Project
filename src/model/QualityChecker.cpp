@@ -1,5 +1,7 @@
 #include "model/QualityChecker.h"
 
+QualityChecker::QualityChecker() : Machine("QualityChecker", 2.0f) {}
+
 void QualityChecker::update(float dt)
 {
     checkMalfunction(dt);

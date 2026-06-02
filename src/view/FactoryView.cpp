@@ -140,21 +140,24 @@ void FactoryView::render()
     // ─────────────────────────────────────────────
     ImGui::Text("[CONTROLS]");
 
-    // 생산 시작 버튼 (PreparingIngredients 단계에서만 활성)
-    bool canStart = model.canProceed(cur);
-    if (!canStart) ImGui::BeginDisabled();
-    if (ImGui::Button("Start Production"))
-        controller.onStartMachine(cur);
-    if (!canStart) ImGui::EndDisabled();
-
-    ImGui::SameLine();
-
-    // 포장 완료 버튼 (Done 단계에서만 활성)
-    bool canPack = (cur == ProcessStep::Done);
-    if (!canPack) ImGui::BeginDisabled();
-    if (ImGui::Button("Pack Burger"))
-        controller.onPackBurger();
-    if (!canPack) ImGui::EndDisabled();
+    // 생산 완료 → 판매 버튼 강조 표시
+    if (cur == ProcessStep::Done)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.1f, 0.7f, 0.1f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.9f, 0.2f, 1.0f));
+        if (ImGui::Button(">>> SELL BURGER <<<"))
+            controller.onPackBurger();
+        ImGui::PopStyleColor(2);
+    }
+    else
+    {
+        // 생산 시작 버튼
+        bool canStart = model.canProceed(cur);
+        if (!canStart) ImGui::BeginDisabled();
+        if (ImGui::Button("Start Production"))
+            controller.onStartMachine(cur);
+        if (!canStart) ImGui::EndDisabled();
+    }
 
     ImGui::SameLine();
 

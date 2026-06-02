@@ -1,5 +1,7 @@
 #include "model/PrepMachine.h"
 
+PrepMachine::PrepMachine() : Machine("PrepMachine", 3.0f) {}
+
 void PrepMachine::update(float dt)
 {
     checkMalfunction(dt);

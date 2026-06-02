@@ -1,6 +1,6 @@
-CMakeFiles/imgui_app.dir/src/model/SauceMachine.cpp.o: \
-  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/SauceMachine.cpp \
-  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/SauceMachine.h \
+CMakeFiles/imgui_app.dir/src/model/QualityChecker.cpp.o: \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/src/model/QualityChecker.cpp \
+  /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/QualityChecker.h \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/Machine.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/max.h \
