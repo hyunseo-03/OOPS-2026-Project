@@ -1,0 +1,305 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1900" viewBox="0 0 2600 1900">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1f2937"/>
+    </marker>
+    <marker id="inherit" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M12,7 L1,1 L1,13 z" fill="#ffffff" stroke="#1f2937" stroke-width="1.6"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 38px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #475569; }
+      .section { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2.2; rx: 8; }
+      .view { fill: #eef2ff; }
+      .controller { fill: #f0fdf4; }
+      .model { fill: #ecfeff; }
+      .machine { fill: #fff7ed; }
+      .data { fill: #fdf2f8; }
+      .note { fill: #fffbeb; stroke: #d97706; stroke-width: 1.8; rx: 8; }
+      .header { font: 700 20px Arial, sans-serif; fill: #0f172a; }
+      .abstract { font: italic 700 20px Arial, sans-serif; fill: #0f172a; }
+      .text { font: 400 16px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 400 14px Arial, sans-serif; fill: #475569; }
+      .tiny { font: 400 13px Arial, sans-serif; fill: #475569; }
+      .rel { stroke: #1f2937; stroke-width: 2.1; fill: none; marker-end: url(#arrow); }
+      .read { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 8 5; marker-end: url(#arrow); }
+      .inheritLine { stroke: #1f2937; stroke-width: 2.1; fill: none; marker-end: url(#inherit); }
+      .sep { stroke: #1f2937; stroke-width: 1.4; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="2600" height="1900"/>
+  <text class="title" x="60" y="62">Burger Factory Simulation - Full Detailed UML</text>
+  <text class="subtitle" x="60" y="94">Current C++ headers: MVC, managers, data classes, enums, production line, and machine inheritance</text>
+
+  <text class="section" x="70" y="145">MVC</text>
+
+  <rect class="box view" x="70" y="170" width="420" height="230"/>
+  <text class="header" x="95" y="205">FactoryView</text>
+  <line class="sep" x1="70" y1="223" x2="490" y2="223"/>
+  <text class="text" x="95" y="253">- BurgerFactoryModel&amp; model</text>
+  <text class="text" x="95" y="280">- FactoryController&amp; controller</text>
+  <text class="text" x="95" y="307">- stepToString(ProcessStep) : const char*</text>
+  <line class="sep" x1="70" y1="325" x2="490" y2="325"/>
+  <text class="text" x="95" y="355">+ FactoryView(model, controller)</text>
+  <text class="text" x="95" y="382">+ render() : void</text>
+  <text class="text" x="95" y="409">+ renderOrderHistory() : void</text>
+
+  <rect class="box controller" x="610" y="170" width="430" height="260"/>
+  <text class="header" x="635" y="205">FactoryController</text>
+  <line class="sep" x1="610" y1="223" x2="1040" y2="223"/>
+  <text class="text" x="635" y="253">- BurgerFactoryModel&amp; model</text>
+  <line class="sep" x1="610" y1="272" x2="1040" y2="272"/>
+  <text class="text" x="635" y="302">+ FactoryController(model)</text>
+  <text class="text" x="635" y="329">+ update(float dt) : void</text>
+  <text class="text" x="635" y="356">+ onStartMachine(ProcessStep) : void</text>
+  <text class="text" x="635" y="383">+ onNewOrder(BurgerType) : void</text>
+  <text class="text" x="635" y="410">+ onPackBurger() : void</text>
+  <text class="text" x="635" y="437">+ onRefillInventory() / onRepairMachine()</text>
+
+  <rect class="box model" x="1190" y="125" width="590" height="385"/>
+  <text class="header" x="1215" y="160">BurgerFactoryModel</text>
+  <line class="sep" x1="1190" y1="178" x2="1780" y2="178"/>
+  <text class="text" x="1215" y="208">- ProcessStep currentStep</text>
+  <text class="text" x="1215" y="235">- map&lt;IngredientType, int&gt; preparedIngredients</text>
+  <text class="text" x="1215" y="262">- bool qualityCheckPassed</text>
+  <text class="text" x="1215" y="289">- InventoryManager inventoryManager</text>
+  <text class="text" x="1215" y="316">- MoneyManager moneyManager</text>
+  <text class="text" x="1215" y="343">- OrderManager orderManager</text>
+  <text class="text" x="1215" y="370">- ProductionLine productionLine</text>
+  <line class="sep" x1="1190" y1="388" x2="1780" y2="388"/>
+  <text class="text" x="1215" y="418">- consumeIngredients() : bool</text>
+  <text class="text" x="1215" y="445">- checkQuality() : bool</text>
+  <text class="text" x="1215" y="472">- enterStep(ProcessStep, bool, MachineConfig*) : void</text>
+  <text class="text" x="1215" y="499">+ update(), startProcess(), canProceed(), nextStep()</text>
+  <text class="text" x="1215" y="526">+ addOrder(), repairMachine(), refillInventory(), getters</text>
+
+  <path class="rel" d="M490 260 C535 260, 565 260, 610 260"/>
+  <text class="tiny" x="510" y="245">button events</text>
+  <path class="rel" d="M1040 285 C1095 285, 1130 285, 1190 285"/>
+  <text class="tiny" x="1070" y="270">modifies model</text>
+  <path class="read" d="M1190 190 C930 65, 480 70, 270 170"/>
+  <text class="tiny" x="720" y="78">View reads Model through getters</text>
+
+  <text class="section" x="70" y="585">Managers and Data</text>
+
+  <rect class="box model" x="70" y="620" width="430" height="260"/>
+  <text class="header" x="95" y="655">InventoryManager</text>
+  <line class="sep" x1="70" y1="673" x2="500" y2="673"/>
+  <text class="text" x="95" y="703">- map&lt;IngredientType, int&gt; inventory</text>
+  <line class="sep" x1="70" y1="722" x2="500" y2="722"/>
+  <text class="text" x="95" y="752">+ InventoryManager()</text>
+  <text class="text" x="95" y="779">+ hasEnough(IngredientType, int) : bool</text>
+  <text class="text" x="95" y="806">+ use(IngredientType, int) : bool</text>
+  <text class="text" x="95" y="833">+ add(IngredientType, int) : void</text>
+  <text class="text" x="95" y="860">+ getAmount(IngredientType) : int</text>
+  <text class="text" x="95" y="887">+ refill() : void</text>
+
+  <rect class="box model" x="560" y="620" width="330" height="190"/>
+  <text class="header" x="585" y="655">MoneyManager</text>
+  <line class="sep" x1="560" y1="673" x2="890" y2="673"/>
+  <text class="text" x="585" y="703">- int money</text>
+  <line class="sep" x1="560" y1="722" x2="890" y2="722"/>
+  <text class="text" x="585" y="752">+ MoneyManager()</text>
+  <text class="text" x="585" y="779">+ add(int) : void</text>
+  <text class="text" x="585" y="806">+ spend(int) : bool</text>
+  <text class="text" x="585" y="833">+ getMoney() : int</text>
+
+  <rect class="box model" x="950" y="620" width="500" height="300"/>
+  <text class="header" x="975" y="655">OrderManager</text>
+  <line class="sep" x1="950" y1="673" x2="1450" y2="673"/>
+  <text class="text" x="975" y="703">- Order currentOrder</text>
+  <text class="text" x="975" y="730">- vector&lt;Order&gt; orderQueue</text>
+  <text class="text" x="975" y="757">- vector&lt;Order&gt; completedOrders</text>
+  <text class="text" x="975" y="784">- int completedCount</text>
+  <line class="sep" x1="950" y1="802" x2="1450" y2="802"/>
+  <text class="text" x="975" y="832">+ OrderManager()</text>
+  <text class="text" x="975" y="859">+ addOrder(BurgerType) : void</text>
+  <text class="text" x="975" y="886">+ getCurrentOrder() : const Order&amp;</text>
+  <text class="text" x="975" y="913">+ completeOrder() : void</text>
+  <text class="text" x="975" y="940">+ hasOrder(), hasActiveOrder() : bool</text>
+  <text class="text" x="975" y="967">+ getCompletedCount(), getQueuedOrders()</text>
+
+  <rect class="box data" x="1520" y="620" width="330" height="220"/>
+  <text class="header" x="1545" y="655">Order</text>
+  <line class="sep" x1="1520" y1="673" x2="1850" y2="673"/>
+  <text class="text" x="1545" y="703">+ BurgerType type</text>
+  <text class="text" x="1545" y="730">+ int quantity</text>
+  <text class="text" x="1545" y="757">+ bool isCompleted</text>
+  <line class="sep" x1="1520" y1="775" x2="1850" y2="775"/>
+  <text class="text" x="1545" y="805">+ Order()</text>
+  <text class="text" x="1545" y="832">+ Order(BurgerType, int q = 1)</text>
+
+  <rect class="box data" x="1910" y="620" width="560" height="220"/>
+  <text class="header" x="1935" y="655">BurgerRecipe</text>
+  <line class="sep" x1="1910" y1="673" x2="2470" y2="673"/>
+  <text class="text" x="1935" y="703">+ map&lt;IngredientType, int&gt; ingredients</text>
+  <text class="text" x="1935" y="730">+ int price</text>
+  <line class="sep" x1="1910" y1="748" x2="2470" y2="748"/>
+  <text class="text" x="1935" y="778">+ getRecipe(BurgerType) : BurgerRecipe</text>
+  <text class="small" x="1935" y="815">CLASSIC=100, CHEESE=130, DOUBLE=160</text>
+
+  <path class="rel" d="M1285 510 C1100 555, 600 575, 285 620"/>
+  <path class="rel" d="M1370 510 C1210 555, 855 585, 725 620"/>
+  <path class="rel" d="M1465 510 C1430 565, 1285 600, 1200 620"/>
+  <path class="rel" d="M1570 510 C1710 565, 1715 590, 1685 620"/>
+  <path class="rel" d="M1450 770 C1485 770, 1490 770, 1520 770"/>
+  <text class="tiny" x="1460" y="755">owns orders</text>
+
+  <text class="section" x="70" y="1020">Production Line and Machine Hierarchy</text>
+
+  <rect class="box model" x="70" y="1055" width="540" height="330"/>
+  <text class="header" x="95" y="1090">ProductionLine</text>
+  <line class="sep" x1="70" y1="1108" x2="610" y2="1108"/>
+  <text class="text" x="95" y="1138">- vector&lt;unique_ptr&lt;Machine&gt;&gt; machines</text>
+  <text class="text" x="95" y="1165">- stepToIndex(ProcessStep) : int</text>
+  <line class="sep" x1="70" y1="1183" x2="610" y2="1183"/>
+  <text class="text" x="95" y="1213">+ ProductionLine()</text>
+  <text class="text" x="95" y="1240">+ update(float dt) : void</text>
+  <text class="text" x="95" y="1267">+ configureMachine(ProcessStep, MachineConfig) : void</text>
+  <text class="text" x="95" y="1294">+ startMachine(ProcessStep) : void</text>
+  <text class="text" x="95" y="1321">+ isMachineDone/Failed/Paused(ProcessStep) : bool</text>
+  <text class="text" x="95" y="1348">+ pause/resume/repair/resetMachine(ProcessStep)</text>
+  <text class="text" x="95" y="1375">+ getMachine(ProcessStep) : Machine*</text>
+
+  <rect class="box machine" x="760" y="985" width="590" height="430"/>
+  <text class="abstract" x="785" y="1020">Machine &lt;&lt;abstract&gt;&gt;</text>
+  <line class="sep" x1="760" y1="1038" x2="1350" y2="1038"/>
+  <text class="text" x="785" y="1068"># std::string name</text>
+  <text class="text" x="785" y="1095"># bool running</text>
+  <text class="text" x="785" y="1122"># bool paused</text>
+  <text class="text" x="785" y="1149"># bool failed</text>
+  <text class="text" x="785" y="1176"># bool hasCompleted</text>
+  <text class="text" x="785" y="1203"># float progress</text>
+  <text class="text" x="785" y="1230"># float cycleTime</text>
+  <text class="text" x="785" y="1257"># float malfunctionRate</text>
+  <text class="text" x="785" y="1284"># checkMalfunction(float dt) : void</text>
+  <line class="sep" x1="760" y1="1302" x2="1350" y2="1302"/>
+  <text class="text" x="785" y="1332">+ Machine(name, cycleTime, malfunctionRate = 0.0003f)</text>
+  <text class="text" x="785" y="1359">+ configure(const MachineConfig&amp;) : void</text>
+  <text class="text" x="785" y="1386">+ update(float dt) : void = 0</text>
+  <text class="text" x="785" y="1413">+ start(), stop(), reset(), repair(), pause(), resume()</text>
+  <text class="text" x="785" y="1440">+ isDone(), isFailed(), isRunning(), isPaused()</text>
+  <text class="text" x="785" y="1467">+ getProgress(), getName()</text>
+
+  <rect class="box machine" x="60" y="1535" width="305" height="160"/>
+  <text class="header" x="85" y="1570">PrepMachine</text>
+  <line class="sep" x1="60" y1="1588" x2="365" y2="1588"/>
+  <text class="small" x="85" y="1618">no extra member variables</text>
+  <line class="sep" x1="60" y1="1636" x2="365" y2="1636"/>
+  <text class="text" x="85" y="1666">+ PrepMachine()</text>
+  <text class="text" x="85" y="1693">+ update(float dt) override</text>
+
+  <rect class="box machine" x="420" y="1500" width="440" height="250"/>
+  <text class="header" x="445" y="1535">GrillMachine</text>
+  <line class="sep" x1="420" y1="1553" x2="860" y2="1553"/>
+  <text class="text" x="445" y="1583">- int pattyCount</text>
+  <text class="text" x="445" y="1610">- int pattiesGrilled</text>
+  <text class="text" x="445" y="1637">- static constexpr float BASE_CYCLE = 3.0f</text>
+  <line class="sep" x1="420" y1="1655" x2="860" y2="1655"/>
+  <text class="text" x="445" y="1685">+ GrillMachine()</text>
+  <text class="text" x="445" y="1712">+ configure(const MachineConfig&amp;) override</text>
+  <text class="text" x="445" y="1739">+ update(float dt) override</text>
+  <text class="text" x="445" y="1766">+ getPattyCount(), getPattiesGrilled()</text>
+
+  <rect class="box machine" x="920" y="1520" width="360" height="205"/>
+  <text class="header" x="945" y="1555">SauceMachine</text>
+  <line class="sep" x1="920" y1="1573" x2="1280" y2="1573"/>
+  <text class="text" x="945" y="1603">- bool sauceApplied</text>
+  <line class="sep" x1="920" y1="1621" x2="1280" y2="1621"/>
+  <text class="text" x="945" y="1651">+ SauceMachine()</text>
+  <text class="text" x="945" y="1678">+ update(float dt) override</text>
+  <text class="text" x="945" y="1705">+ isSauceApplied() : bool</text>
+
+  <rect class="box machine" x="1340" y="1520" width="390" height="205"/>
+  <text class="header" x="1365" y="1555">AssemblyMachine</text>
+  <line class="sep" x1="1340" y1="1573" x2="1730" y2="1573"/>
+  <text class="text" x="1365" y="1603">- bool assembled</text>
+  <line class="sep" x1="1340" y1="1621" x2="1730" y2="1621"/>
+  <text class="text" x="1365" y="1651">+ AssemblyMachine()</text>
+  <text class="text" x="1365" y="1678">+ update(float dt) override</text>
+  <text class="text" x="1365" y="1705">+ isAssembled() : bool</text>
+
+  <rect class="box machine" x="1790" y="1535" width="325" height="160"/>
+  <text class="header" x="1815" y="1570">QualityChecker</text>
+  <line class="sep" x1="1790" y1="1588" x2="2115" y2="1588"/>
+  <text class="small" x="1815" y="1618">no extra member variables</text>
+  <line class="sep" x1="1790" y1="1636" x2="2115" y2="1636"/>
+  <text class="text" x="1815" y="1666">+ QualityChecker()</text>
+  <text class="text" x="1815" y="1693">+ update(float dt) override</text>
+
+  <rect class="box machine" x="2180" y="1500" width="390" height="250"/>
+  <text class="header" x="2205" y="1535">PackingMachine</text>
+  <line class="sep" x1="2180" y1="1553" x2="2570" y2="1553"/>
+  <text class="text" x="2205" y="1583">- std::string burgerLabel</text>
+  <text class="text" x="2205" y="1610">- bool sealed</text>
+  <line class="sep" x1="2180" y1="1628" x2="2570" y2="1628"/>
+  <text class="text" x="2205" y="1658">+ PackingMachine()</text>
+  <text class="text" x="2205" y="1685">+ configure(const MachineConfig&amp;) override</text>
+  <text class="text" x="2205" y="1712">+ update(float dt) override</text>
+  <text class="text" x="2205" y="1739">+ getBurgerLabel() : const string&amp;</text>
+  <text class="text" x="2205" y="1766">+ isSealed() : bool</text>
+
+  <path class="rel" d="M610 1220 C665 1220, 705 1220, 760 1220"/>
+  <text class="tiny" x="635" y="1205">owns unique_ptr&lt;Machine&gt;</text>
+  <path class="inheritLine" d="M212 1535 C360 1410, 570 1360, 760 1330"/>
+  <path class="inheritLine" d="M640 1500 C690 1440, 725 1400, 760 1365"/>
+  <path class="inheritLine" d="M1100 1520 C1085 1470, 1070 1435, 1060 1415"/>
+  <path class="inheritLine" d="M1535 1520 C1450 1445, 1375 1390, 1350 1365"/>
+  <path class="inheritLine" d="M1952 1535 C1740 1410, 1540 1365, 1350 1325"/>
+  <path class="inheritLine" d="M2375 1500 C2030 1340, 1660 1280, 1350 1255"/>
+
+  <text class="section" x="1905" y="1015">Config and Enums</text>
+
+  <rect class="box data" x="1905" y="1055" width="410" height="165"/>
+  <text class="header" x="1930" y="1090">MachineConfig</text>
+  <line class="sep" x1="1905" y1="1108" x2="2315" y2="1108"/>
+  <text class="text" x="1930" y="1138">+ int pattyCount = 1</text>
+  <text class="text" x="1930" y="1165">+ BurgerType burgerType = CLASSIC</text>
+  <text class="small" x="1930" y="1198">used by GrillMachine and PackingMachine</text>
+
+  <rect class="box data" x="1905" y="1265" width="260" height="170"/>
+  <text class="header" x="1930" y="1300">BurgerType</text>
+  <line class="sep" x1="1905" y1="1318" x2="2165" y2="1318"/>
+  <text class="text" x="1930" y="1348">CLASSIC</text>
+  <text class="text" x="1930" y="1375">CHEESE</text>
+  <text class="text" x="1930" y="1402">DOUBLE</text>
+
+  <rect class="box data" x="2205" y="1265" width="335" height="245"/>
+  <text class="header" x="2230" y="1300">IngredientType</text>
+  <line class="sep" x1="2205" y1="1318" x2="2540" y2="1318"/>
+  <text class="text" x="2230" y="1348">BUN</text>
+  <text class="text" x="2230" y="1375">PATTY</text>
+  <text class="text" x="2230" y="1402">LETTUCE</text>
+  <text class="text" x="2230" y="1429">TOMATO</text>
+  <text class="text" x="2230" y="1456">SAUCE</text>
+  <text class="text" x="2230" y="1483">CHEESE</text>
+
+  <rect class="box data" x="1910" y="1550" width="230" height="250"/>
+  <text class="header" x="1935" y="1585">ProcessStep</text>
+  <line class="sep" x1="1910" y1="1603" x2="2140" y2="1603"/>
+  <text class="text" x="1935" y="1633">Idle</text>
+  <text class="text" x="1935" y="1660">PreparingIngredients</text>
+  <text class="text" x="1935" y="1687">GrillPatty</text>
+  <text class="text" x="1935" y="1714">AddSauce</text>
+  <text class="text" x="1935" y="1741">AssembleBurger</text>
+  <text class="text" x="1935" y="1768">QualityCheck</text>
+  <text class="text" x="1935" y="1795">PackBurger</text>
+  <text class="text" x="1935" y="1822">Done</text>
+
+  <path class="read" d="M1780 310 C2070 330, 2290 440, 2365 620"/>
+  <text class="tiny" x="2075" y="385">recipes use BurgerType and IngredientType</text>
+  <path class="read" d="M1500 510 C1620 805, 1810 1010, 1905 1130"/>
+  <text class="tiny" x="1650" y="830">passes MachineConfig</text>
+
+  <rect class="note" x="1930" y="125" width="520" height="230"/>
+  <text class="header" x="1955" y="160">UML Legend</text>
+  <text class="text" x="1955" y="195">- means private member or method</text>
+  <text class="text" x="1955" y="222"># means protected member or method</text>
+  <text class="text" x="1955" y="249">+ means public member or method</text>
+  <text class="text" x="1955" y="276">Hollow triangle arrow means inheritance</text>
+  <text class="text" x="1955" y="303">Solid arrow means has-a / uses relationship</text>
+  <text class="text" x="1955" y="330">Dashed arrow means read-only dependency</text>
+</svg>
