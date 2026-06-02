@@ -124,22 +124,20 @@ void BurgerFactoryModel::nextStep()
             break;
 
         case ProcessStep::PackBurger:
-        {
-            // 포장 완료 → 자동 판매
-            BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
-            moneyManager.add(r.price);
-            orderManager.completeOrder();
-            preparedIngredients.clear();
-            qualityCheckPassed = false;
-            if (orderManager.hasActiveOrder())
+            // 자동 판매: 수동 버튼 없이 바로 돈 수령 + 주문 완료
             {
-                currentStep = ProcessStep::PreparingIngredients;
-                productionLine.resetMachine(ProcessStep::PreparingIngredients);
+                BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
+                moneyManager.add(r.price);
+                orderManager.completeOrder();
+                preparedIngredients.clear();
+                qualityCheckPassed = false;
+                // 다음 주문 있으면 바로 PrepMachine 단계로
+                if (orderManager.hasActiveOrder())
+                    currentStep = ProcessStep::PreparingIngredients;
+                else
+                    currentStep = ProcessStep::Idle;
             }
-            else
-                currentStep = ProcessStep::Idle;
             break;
-        }
 
         case ProcessStep::Done:
             currentStep = ProcessStep::Idle;
@@ -151,10 +149,7 @@ void BurgerFactoryModel::addOrder(BurgerType type)
 {
     orderManager.addOrder(type);
     if (currentStep == ProcessStep::Idle)
-    {
         currentStep = ProcessStep::PreparingIngredients;
-        productionLine.resetMachine(ProcessStep::PreparingIngredients);
-    }
 }
 
 void BurgerFactoryModel::packBurger()
@@ -164,13 +159,9 @@ void BurgerFactoryModel::packBurger()
     moneyManager.add(recipe.price);
     orderManager.completeOrder();
     preparedIngredients.clear();
+    currentStep = ProcessStep::Idle;
     if (orderManager.hasActiveOrder())
-    {
         currentStep = ProcessStep::PreparingIngredients;
-        productionLine.resetMachine(ProcessStep::PreparingIngredients);
-    }
-    else
-        currentStep = ProcessStep::Idle;
 }
 
 bool BurgerFactoryModel::consumeIngredients()

@@ -12,14 +12,11 @@ void OrderManager::addOrder(BurgerType type)
         orderQueue.push_back(newOrder);
 }
 
-const Order& OrderManager::getCurrentOrder() const
-{
-    return currentOrder;
-}
+const Order& OrderManager::getCurrentOrder() const { return currentOrder; }
 
 void OrderManager::completeOrder()
 {
-    completedOrders.push_back(currentOrder);  // 히스토리 저장
+    completedOrders.push_back(currentOrder);
     currentOrder.isCompleted = true;
     completedCount++;
 
@@ -30,17 +27,8 @@ void OrderManager::completeOrder()
     }
 }
 
-bool OrderManager::hasOrder() const
-{
-    return !currentOrder.isCompleted || !orderQueue.empty();
-}
-
-bool OrderManager::hasActiveOrder() const
-{
-    return !currentOrder.isCompleted;
-}
-
-int OrderManager::getCompletedCount() const { return completedCount; }
-
+bool OrderManager::hasOrder()       const { return !currentOrder.isCompleted || !orderQueue.empty(); }
+bool OrderManager::hasActiveOrder() const { return !currentOrder.isCompleted; }
+int  OrderManager::getCompletedCount()              const { return completedCount; }
 const std::vector<Order>& OrderManager::getCompletedOrders() const { return completedOrders; }
-const std::vector<Order>& OrderManager::getQueuedOrders() const { return orderQueue; }
+const std::vector<Order>& OrderManager::getQueuedOrders()    const { return orderQueue; }

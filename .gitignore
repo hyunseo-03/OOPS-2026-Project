@@ -3,6 +3,7 @@ build/
 cmake-build-*/
 *.o
 *.a
+*.d
 
 # macOS
 .DS_Store
@@ -11,3 +12,7 @@ cmake-build-*/
 .vscode/
 .idea/
 *.user
+
+# Libraries (직접 설치 필요)
+libs/imgui/
+libs/fonts/

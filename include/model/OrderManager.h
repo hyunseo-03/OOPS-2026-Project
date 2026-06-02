@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 #include "BurgerType.h"
 #include "model/Order.h"
@@ -7,10 +6,10 @@
 class OrderManager
 {
 private:
-    Order             currentOrder;
-    std::vector<Order> orderQueue;
-    int               completedCount;
-    std::vector<Order> completedOrders;  // 완료된 주문 히스토리
+    Order              currentOrder;
+    std::vector<Order> orderQueue;      // 대기 주문 (vector로 순회 가능)
+    std::vector<Order> completedOrders; // 완료 히스토리
+    int                completedCount;
 
 public:
     OrderManager();
@@ -23,5 +22,5 @@ public:
 
     int getCompletedCount() const;
     const std::vector<Order>& getCompletedOrders() const;
-    const std::vector<Order>& getQueuedOrders()    const;
+    const std::vector<Order>& getQueuedOrders()    const;  // 대기 주문 목록
 };
