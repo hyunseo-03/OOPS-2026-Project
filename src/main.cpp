@@ -14,9 +14,6 @@
 #include "controller/FactoryController.h"
 #include "view/FactoryView.h"
 
-// 폰트 아이콘 매크로
-#include "IconsFontAwesome6.h"
-
 #include <stdio.h>
 
 int main(int argc, char* argv[])
@@ -57,32 +54,9 @@ int main(int argc, char* argv[])
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    // ============================================================
-    // 폰트 설정
-    // 1) Roboto-Medium (이미 libs에 포함) → 기본 텍스트 폰트
-    // 2) fa-solid-900.ttf → Roboto에 merge (아이콘 글리프 추가)
-    // ============================================================
-
-    // [1] Roboto 로드 (기본 폰트)
+    // 기본 폰트 로드
     io.Fonts->AddFontFromFileTTF(
         "../libs/imgui/misc/fonts/Roboto-Medium.ttf", 15.0f);
-
-    // [2] Font Awesome를 Roboto에 merge
-    //     MergeMode=true → 앞서 로드한 폰트에 아이콘 글리프를 추가
-    ImFontConfig faConfig;
-    faConfig.MergeMode        = true;
-    faConfig.GlyphMinAdvanceX = 14.0f; // 아이콘 최소 너비 (줄 맞춤)
-    faConfig.GlyphOffset      = ImVec2(0.0f, 2.0f); // 세로 위치 미세조정
-    static const ImWchar fa_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-
-    io.Fonts->AddFontFromFileTTF(
-        "../libs/fonts/fa-solid-900.ttf", 14.0f, &faConfig, fa_ranges);
-
-    // [3] 큰 아이콘 전용 폰트 (기계 카드 중앙 아이콘용)
-    ImFontConfig faLargeConfig;
-    faLargeConfig.GlyphMinAdvanceX = 28.0f;
-    ImFont* largeIconFont = io.Fonts->AddFontFromFileTTF(
-        "../libs/fonts/fa-solid-900.ttf", 30.0f, &faLargeConfig, fa_ranges);
 
     // ============================================================
     // MVC 객체 생성
@@ -90,9 +64,6 @@ int main(int argc, char* argv[])
     BurgerFactoryModel model;
     FactoryController  controller(model);
     FactoryView        view(model, controller);
-
-    view.setLargeIconFont(largeIconFont); // 큰 아이콘 폰트 전달
-    view.setupStyle();
 
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL3_Init(glsl_version);
