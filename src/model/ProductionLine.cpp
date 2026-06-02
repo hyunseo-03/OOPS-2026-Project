@@ -102,3 +102,9 @@ const Machine* ProductionLine::getMachine(ProcessStep step) const
         return machines[idx].get();
     return nullptr;
 }
+
+void ProductionLine::resetMachine(ProcessStep step)
+{
+    Machine* m = getMachine(step);
+    if (m) m->reset();
+}

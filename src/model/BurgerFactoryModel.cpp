@@ -124,8 +124,22 @@ void BurgerFactoryModel::nextStep()
             break;
 
         case ProcessStep::PackBurger:
-            currentStep = ProcessStep::Done;
+        {
+            // 포장 완료 → 자동 판매
+            BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
+            moneyManager.add(r.price);
+            orderManager.completeOrder();
+            preparedIngredients.clear();
+            qualityCheckPassed = false;
+            if (orderManager.hasActiveOrder())
+            {
+                currentStep = ProcessStep::PreparingIngredients;
+                productionLine.resetMachine(ProcessStep::PreparingIngredients);
+            }
+            else
+                currentStep = ProcessStep::Idle;
             break;
+        }
 
         case ProcessStep::Done:
             currentStep = ProcessStep::Idle;
@@ -137,7 +151,10 @@ void BurgerFactoryModel::addOrder(BurgerType type)
 {
     orderManager.addOrder(type);
     if (currentStep == ProcessStep::Idle)
+    {
         currentStep = ProcessStep::PreparingIngredients;
+        productionLine.resetMachine(ProcessStep::PreparingIngredients);
+    }
 }
 
 void BurgerFactoryModel::packBurger()
@@ -147,9 +164,13 @@ void BurgerFactoryModel::packBurger()
     moneyManager.add(recipe.price);
     orderManager.completeOrder();
     preparedIngredients.clear();
-    currentStep = ProcessStep::Idle;
     if (orderManager.hasActiveOrder())
+    {
         currentStep = ProcessStep::PreparingIngredients;
+        productionLine.resetMachine(ProcessStep::PreparingIngredients);
+    }
+    else
+        currentStep = ProcessStep::Idle;
 }
 
 bool BurgerFactoryModel::consumeIngredients()
@@ -189,5 +210,6 @@ bool         BurgerFactoryModel::isQualityCheckPassed()    const { return qualit
 bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
 bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
 const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients() const { return preparedIngredients; }
-void         BurgerFactoryModel::refillInventory()               { inventoryManager.refill(); }
+void         BurgerFactoryModel::refillInventory()               { moneyManager.spend(100); inventoryManager.refill(); }
 const std::vector<Order>& BurgerFactoryModel::getCompletedOrders() const { return orderManager.getCompletedOrders(); }
+const std::vector<Order>& BurgerFactoryModel::getQueuedOrders() const { return orderManager.getQueuedOrders(); }

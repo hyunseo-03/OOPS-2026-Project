@@ -9,7 +9,7 @@ void OrderManager::addOrder(BurgerType type)
     if (currentOrder.isCompleted)
         currentOrder = newOrder;
     else
-        orderQueue.push(newOrder);
+        orderQueue.push_back(newOrder);
 }
 
 const Order& OrderManager::getCurrentOrder() const
@@ -26,7 +26,7 @@ void OrderManager::completeOrder()
     if (!orderQueue.empty())
     {
         currentOrder = orderQueue.front();
-        orderQueue.pop();
+        orderQueue.erase(orderQueue.begin());
     }
 }
 
@@ -43,3 +43,4 @@ bool OrderManager::hasActiveOrder() const
 int OrderManager::getCompletedCount() const { return completedCount; }
 
 const std::vector<Order>& OrderManager::getCompletedOrders() const { return completedOrders; }
+const std::vector<Order>& OrderManager::getQueuedOrders() const { return orderQueue; }

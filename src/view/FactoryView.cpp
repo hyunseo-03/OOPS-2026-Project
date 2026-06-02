@@ -8,157 +8,146 @@ const char* FactoryView::stepToString(ProcessStep step) const
     switch (step)
     {
         case ProcessStep::Idle:                  return "Idle";
-        case ProcessStep::PreparingIngredients:  return "Preparing Ingredients";
-        case ProcessStep::GrillPatty:            return "Grilling Patty";
-        case ProcessStep::AddSauce:              return "Adding Sauce";
-        case ProcessStep::AssembleBurger:        return "Assembling Burger";
+        case ProcessStep::PreparingIngredients:  return "Preparing...";
+        case ProcessStep::GrillPatty:            return "Grilling";
+        case ProcessStep::AddSauce:              return "Sauce";
+        case ProcessStep::AssembleBurger:        return "Assembly";
         case ProcessStep::QualityCheck:          return "Quality Check";
         case ProcessStep::PackBurger:            return "Packing";
-        case ProcessStep::Done:                  return "Done - Press Pack!";
+        case ProcessStep::Done:                  return "Done!";
         default:                                 return "Unknown";
     }
 }
 
+static const char* burgerName(BurgerType t)
+{
+    return t == BurgerType::CLASSIC ? "Classic" :
+           t == BurgerType::CHEESE  ? "Cheese"  : "Double";
+}
+static int burgerPrice(BurgerType t)
+{
+    return t == BurgerType::CLASSIC ? 100 :
+           t == BurgerType::CHEESE  ? 130 : 160;
+}
+
 void FactoryView::render()
 {
+    ImGuiIO& io    = ImGui::GetIO();
+    float    W     = io.DisplaySize.x;
+    float    H     = io.DisplaySize.y;
+    float    leftW = W * 0.65f;
+    float    rightW = W - leftW;
+
+    // ══════════════════════════════════════════════════
+    // 왼쪽: 공장 창
+    // ══════════════════════════════════════════════════
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(leftW, H), ImGuiCond_Always);
     ImGui::Begin("Burger Factory", nullptr,
-        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
+        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-    // ─────────────────────────────────────────────
-    // 상단: 기본 정보
-    // ─────────────────────────────────────────────
-    ImGui::Text("=== BURGER FACTORY ===");
-    ImGui::Separator();
-    ImGui::Text("Money : $%d",  model.getMoney());
-    ImGui::SameLine(200);
-    ImGui::Text("Produced : %d", model.getTotalBurgersProduced());
+    // 상태 바
+    ImGui::Text("Money: $%d", model.getMoney());
+    ImGui::SameLine(180);
+    ImGui::Text("Sold: %d", model.getTotalBurgersProduced());
     ImGui::Separator();
 
-    // ─────────────────────────────────────────────
-    // 현재 공정 단계
-    // ─────────────────────────────────────────────
-    ImGui::Text("Current Step : %s", stepToString(model.getCurrentStep()));
-
+    ProcessStep cur = model.getCurrentStep();
+    ImGui::Text("Step: %s", stepToString(cur));
     if (model.isCurrentMachineFailed())
-        ImGui::TextColored(ImVec4(1,0,0,1), "!! MACHINE FAILED !!");
+        ImGui::TextColored(ImVec4(1,0.2f,0.2f,1), "  !! MACHINE FAILED !!");
     else if (model.isCurrentMachinePaused())
-        ImGui::TextColored(ImVec4(1,1,0,1), "-- PAUSED --");
-
+        ImGui::TextColored(ImVec4(1,1,0,1), "  -- PAUSED --");
     ImGui::Separator();
 
-    // ─────────────────────────────────────────────
-    // 현재 주문 정보
-    // ─────────────────────────────────────────────
+    // 주문 버튼
     ImGui::Text("[ORDER]");
     if (model.hasOrder())
     {
-        const Order& order = model.getCurrentOrder();
-        const char* burgerName = (order.type == BurgerType::CLASSIC) ? "Classic" :
-                                 (order.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
-        ImGui::Text("  Current : %s Burger", burgerName);
+        const Order& o = model.getCurrentOrder();
+        ImGui::TextColored(ImVec4(1,1,0.3f,1), "  Making: %s Burger", burgerName(o.type));
     }
-    else
-    {
-        ImGui::TextDisabled("  No active order");
-    }
+    else ImGui::TextDisabled("  No active order");
 
-    // 주문 버튼
-    if (ImGui::Button("Order Classic ($100)")) controller.onNewOrder(BurgerType::CLASSIC);
+    if (ImGui::Button("Classic ($100)")) controller.onNewOrder(BurgerType::CLASSIC);
     ImGui::SameLine();
-    if (ImGui::Button("Order Cheese ($130)"))  controller.onNewOrder(BurgerType::CHEESE);
+    if (ImGui::Button("Cheese ($130)"))  controller.onNewOrder(BurgerType::CHEESE);
     ImGui::SameLine();
-    if (ImGui::Button("Order Double ($160)"))  controller.onNewOrder(BurgerType::DOUBLE);
+    if (ImGui::Button("Double ($160)"))  controller.onNewOrder(BurgerType::DOUBLE);
     ImGui::Separator();
 
-    // ─────────────────────────────────────────────
-    // 기계 목록 + 진행률
-    // ─────────────────────────────────────────────
+    // 기계 목록
     ImGui::Text("[MACHINES]");
-
-    struct MachineRow { const char* name; ProcessStep step; };
+    struct MachineRow { const char* label; ProcessStep step; };
     MachineRow rows[] = {
-        { "1. Prep Machine  ", ProcessStep::PreparingIngredients },
-        { "2. Grill Machine ", ProcessStep::GrillPatty           },
-        { "3. Sauce Machine ", ProcessStep::AddSauce             },
-        { "4. Assembly      ", ProcessStep::AssembleBurger       },
-        { "5. Quality Check ", ProcessStep::QualityCheck         },
-        { "6. Packing       ", ProcessStep::PackBurger           },
+        { "1. Prep    ", ProcessStep::PreparingIngredients },
+        { "2. Grill   ", ProcessStep::GrillPatty           },
+        { "3. Sauce   ", ProcessStep::AddSauce             },
+        { "4. Assembly", ProcessStep::AssembleBurger       },
+        { "5. Quality ", ProcessStep::QualityCheck         },
+        { "6. Packing ", ProcessStep::PackBurger           },
     };
-
-    ProcessStep cur = model.getCurrentStep();
 
     for (auto& row : rows)
     {
         Machine* m = model.getMachine(row.step);
         if (!m) continue;
 
-        // 현재 단계 강조
         bool isActive = (cur == row.step);
-        if (isActive) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 1.0f, 0.3f, 1.0f));
-
-        ImGui::Text("%s", row.name);
+        if (isActive) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f,1.0f,0.3f,1));
+        ImGui::Text("%s", row.label);
         if (isActive) ImGui::PopStyleColor();
 
-        ImGui::SameLine(170);
+        ImGui::SameLine(120);
 
-        // 고장 / 일시정지 / 작동 / 완료 상태
         if (m->isFailed())
         {
-            ImGui::TextColored(ImVec4(1,0,0,1), "[FAILED]");
+            ImGui::TextColored(ImVec4(1,0.2f,0.2f,1), "[FAILED]");
             ImGui::SameLine();
-            char repairLabel[32];
-            snprintf(repairLabel, sizeof(repairLabel), "Repair $%d##%d", BurgerFactoryModel::REPAIR_COST, (int)row.step);
-            if (ImGui::Button(repairLabel))
-                controller.onRepairMachine(row.step);
+            char lbl[32];
+            snprintf(lbl, sizeof(lbl), "Repair $%d##r%d", BurgerFactoryModel::REPAIR_COST, (int)row.step);
+            if (ImGui::Button(lbl)) controller.onRepairMachine(row.step);
         }
         else
         {
-            // 진행률 바
             char overlay[16];
             snprintf(overlay, sizeof(overlay), "%.0f%%", m->getProgress() * 100.0f);
-            ImGui::ProgressBar(m->getProgress(), ImVec2(180, 14), overlay);
+            ImGui::ProgressBar(m->getProgress(), ImVec2(160, 14), overlay);
 
-            // 일시정지 / 재개 버튼 (작동 중이거나 일시정지 중일 때만)
             if (isActive && (m->isRunning() || m->isPaused()))
             {
                 ImGui::SameLine();
-                char pauseLabel[32];
-                snprintf(pauseLabel, sizeof(pauseLabel),
-                    m->isPaused() ? "Resume##%d" : "Pause##%d", (int)row.step);
-                if (ImGui::Button(pauseLabel))
-                    controller.onTogglePause(row.step);
+                char lbl[32];
+                snprintf(lbl, sizeof(lbl), m->isPaused() ? "Resume##p%d" : "Pause##p%d", (int)row.step);
+                if (ImGui::Button(lbl)) controller.onTogglePause(row.step);
             }
         }
     }
     ImGui::Separator();
 
-    // ─────────────────────────────────────────────
-    // 제어 버튼
-    // ─────────────────────────────────────────────
+    // 제어
     ImGui::Text("[CONTROLS]");
-
-    // 생산 시작 버튼
-    bool canStart = model.canProceed(cur);
+    // Start 버튼은 PreparingIngredients 단계에서만 의미있음
+    bool atPrepStep = (cur == ProcessStep::PreparingIngredients);
+    bool canStart   = atPrepStep && model.canProceed(cur);
     if (!canStart) ImGui::BeginDisabled();
     if (ImGui::Button("Start Production"))
-        controller.onStartMachine(cur);
+        controller.onStartMachine(ProcessStep::PreparingIngredients);
     if (!canStart) ImGui::EndDisabled();
 
     ImGui::SameLine();
+    if (ImGui::Button("Refill ($100)")) controller.onRefillInventory();
 
-    if (ImGui::Button("Refill Inventory"))
-        controller.onRefillInventory();
-
+    // 디버그: 현재 상태 표시
+    ImGui::SameLine(0, 20);
+    if (!canStart && atPrepStep)
+        ImGui::TextColored(ImVec4(1,0.4f,0.4f,1), "(need order + ingredients)");
+    else if (!atPrepStep && cur != ProcessStep::Idle)
+        ImGui::TextColored(ImVec4(0.5f,0.5f,0.5f,1), "(auto-running)");
     ImGui::Separator();
 
-    // ─────────────────────────────────────────────
-    // 재고 현황
-    // ─────────────────────────────────────────────
+    // 재고
     ImGui::Text("[INVENTORY]");
-
     struct IngRow { const char* name; IngredientType type; };
     IngRow ings[] = {
         { "Bun",     IngredientType::BUN     },
@@ -173,101 +162,71 @@ void FactoryView::render()
     for (int i = 0; i < 7; i++)
     {
         int amt = model.getIngredientAmount(ings[i].type);
-        if (amt <= 5) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1,0.4f,0.4f,1));
-        ImGui::Text("  %-8s : %d", ings[i].name, amt);
-        if (amt <= 5) ImGui::PopStyleColor();
-        if (i < 6) ImGui::SameLine(160);
-        else ImGui::SameLine(0);
-        i++;
-        if (i < 7)
-        {
-            int amt2 = model.getIngredientAmount(ings[i].type);
-            if (amt2 <= 5) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1,0.4f,0.4f,1));
-            ImGui::Text("  %-8s : %d", ings[i].name, amt2);
-            if (amt2 <= 5) ImGui::PopStyleColor();
-        }
+        bool low = (amt <= 5);
+        if (low) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1,0.3f,0.3f,1));
+        ImGui::Text("  %-7s %2d", ings[i].name, amt);
+        if (low) ImGui::PopStyleColor();
+        // 짝수 인덱스면 SameLine으로 옆에 배치
+        if (i % 2 == 0) ImGui::SameLine(190);
     }
 
-    // QualityCheck 결과 표시
-    if (cur == ProcessStep::Done || cur == ProcessStep::Idle)
+    if (cur == ProcessStep::Idle)
     {
         ImGui::Separator();
         if (model.isQualityCheckPassed())
-            ImGui::TextColored(ImVec4(0.3f,1,0.3f,1), "Quality Check: PASSED");
+            ImGui::TextColored(ImVec4(0.3f,1,0.3f,1), "Last QC: PASSED");
         else
-            ImGui::TextColored(ImVec4(1,0.4f,0.4f,1), "Quality Check: FAILED (burger discarded)");
+            ImGui::TextColored(ImVec4(1,0.4f,0.4f,1), "Last QC: FAILED");
     }
 
     ImGui::End();
-    renderOrderHistory();
-}
 
-void FactoryView::renderOrderHistory()
-{
-    ImGui::SetNextWindowPos(ImVec2(900, 0), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowSize(ImVec2(360, 500), ImGuiCond_FirstUseEver);
-    ImGui::Begin("Order History");
+    // ══════════════════════════════════════════════════
+    // 오른쪽: 주문 내역 창
+    // ══════════════════════════════════════════════════
+    ImGui::SetNextWindowPos(ImVec2(leftW, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(rightW, H), ImGuiCond_Always);
+    ImGui::Begin("Orders", nullptr,
+        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-    // ── 현재 / 대기 주문 ──────────────────────────
-    ImGui::TextColored(ImVec4(0.3f,1.0f,0.3f,1), "[Current & Queued]");
+    // ── 현재 생산 중 ──────────────────────────────
+    ImGui::TextColored(ImVec4(1,1,0.3f,1), "[In Production]");
     ImGui::Separator();
     if (model.hasOrder())
     {
-        const Order& cur = model.getCurrentOrder();
-        const char* cn = (cur.type == BurgerType::CLASSIC) ? "Classic" :
-                         (cur.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
-        int price = (cur.type == BurgerType::CLASSIC) ? 100 :
-                    (cur.type == BurgerType::CHEESE)  ? 130 : 160;
-
-        bool readyToSell = (model.getCurrentStep() == ProcessStep::Done);
-        if (readyToSell)
-        {
-            ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.1f, 0.7f, 0.1f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.9f, 0.2f, 1.0f));
-            char sellLabel[64];
-            snprintf(sellLabel, sizeof(sellLabel), "SELL %s Burger  +$%d", cn, price);
-            if (ImGui::Button(sellLabel))
-                controller.onPackBurger();
-            ImGui::PopStyleColor(2);
-        }
-        else
-        {
-            ImGui::TextColored(ImVec4(1,1,0,1), "  NOW > %s Burger  ($%d)", cn, price);
-        }
+        const Order& o = model.getCurrentOrder();
+        ImGui::Text("  %s  $%d  (%s)",
+            burgerName(o.type), burgerPrice(o.type), stepToString(cur));
     }
-    else
-    {
-        ImGui::TextDisabled("  No active order");
-    }
+    else ImGui::TextDisabled("  None");
     ImGui::Spacing();
 
-    // ── 완료된 주문 ───────────────────────────────
-    ImGui::TextColored(ImVec4(0.6f,0.8f,1.0f,1), "[Completed Orders]");
+    // ── 대기 주문 ──────────────────────────────────
+    const auto& queued = model.getQueuedOrders();
+    ImGui::TextColored(ImVec4(0.8f,0.6f,1,1), "[Waiting (%d)]", (int)queued.size());
     ImGui::Separator();
+    if (queued.empty()) ImGui::TextDisabled("  None");
+    else
+        for (int i = 0; i < (int)queued.size(); i++)
+            ImGui::Text("  %d. %s  $%d", i+1,
+                burgerName(queued[i].type), burgerPrice(queued[i].type));
+    ImGui::Spacing();
 
-    const auto& orders = model.getCompletedOrders();
-    if (orders.empty())
-    {
-        ImGui::TextDisabled("  None yet.");
-    }
+    // ── 판매 완료 ──────────────────────────────────
+    const auto& done = model.getCompletedOrders();
+    ImGui::TextColored(ImVec4(0.5f,0.8f,1,1), "[Sold (%d)]", (int)done.size());
+    ImGui::Separator();
+    if (done.empty()) ImGui::TextDisabled("  None yet");
     else
     {
-        ImGui::BeginChild("OrderScrollArea", ImVec2(0, 280), false);
-        for (int i = (int)orders.size() - 1; i >= 0; i--)
-        {
-            const Order& o = orders[i];
-            const char* name = (o.type == BurgerType::CLASSIC) ? "Classic" :
-                               (o.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
-            int price = (o.type == BurgerType::CLASSIC) ? 100 :
-                        (o.type == BurgerType::CHEESE)  ? 130 : 160;
-            ImGui::Text("  #%d  %-8s  +$%d", i + 1, name, price);
-        }
+        ImGui::BeginChild("SoldList", ImVec2(0, 0), false);
+        for (int i = (int)done.size()-1; i >= 0; i--)
+            ImGui::Text("  #%d  %s  +$%d", i+1,
+                burgerName(done[i].type), burgerPrice(done[i].type));
         ImGui::EndChild();
     }
 
-    ImGui::Separator();
-    ImGui::Text("Total Burgers: %d   Money: $%d",
-        model.getTotalBurgersProduced(), model.getMoney());
-
     ImGui::End();
 }
+
+void FactoryView::renderOrderHistory() {}

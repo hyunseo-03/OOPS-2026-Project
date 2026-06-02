@@ -17,7 +17,7 @@ protected:
     void checkMalfunction(float dt);
 
 public:
-    Machine(const std::string& name, float cycleTime, float malfunctionRate = 0.001f);
+    Machine(const std::string& name, float cycleTime, float malfunctionRate = 0.0003f);
     virtual ~Machine() = default;
 
     virtual void configure(const MachineConfig& config) {}

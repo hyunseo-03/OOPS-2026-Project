@@ -12,7 +12,7 @@ static std::string toLabel(BurgerType type)
 }
 
 PackingMachine::PackingMachine()
-    : Machine("Packing Machine", 2.0f, 0.02f), sealed(false) {}
+    : Machine("Packing Machine", 2.0f, 0.0003f), sealed(false) {}
 
 void PackingMachine::configure(const MachineConfig& config)
 {

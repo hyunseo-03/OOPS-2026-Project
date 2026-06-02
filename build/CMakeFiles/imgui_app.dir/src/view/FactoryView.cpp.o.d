@@ -797,10 +797,6 @@ CMakeFiles/imgui_app.dir/src/view/FactoryView.cpp.o: \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/InventoryManager.h \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/MoneyManager.h \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/OrderManager.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/queue \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/deque.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/queue.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/deque \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/Order.h \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/ProductionLine.h \
   /Users/ihyeonseo/Desktop/객지프/OOPS-2026-Project/include/model/Machine.h \

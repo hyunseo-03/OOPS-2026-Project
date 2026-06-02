@@ -51,4 +51,5 @@ public:
     bool         isCurrentMachinePaused()  const;
     const std::map<IngredientType, int>& getPreparedIngredients() const;
     const std::vector<Order>& getCompletedOrders() const;
+    const std::vector<Order>& getQueuedOrders()    const;
 };

@@ -31,6 +31,7 @@ public:
     void pauseMachine(ProcessStep step);
     void resumeMachine(ProcessStep step);
     void repairMachine(ProcessStep step);
+    void resetMachine(ProcessStep step);
 
     Machine*       getMachine(ProcessStep step);
     const Machine* getMachine(ProcessStep step) const;
