@@ -190,3 +190,4 @@ bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return produc
 bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
 const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients() const { return preparedIngredients; }
 void         BurgerFactoryModel::refillInventory()               { inventoryManager.refill(); }
+const std::vector<Order>& BurgerFactoryModel::getCompletedOrders() const { return orderManager.getCompletedOrders(); }

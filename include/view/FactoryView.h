@@ -15,4 +15,5 @@ public:
     FactoryView(BurgerFactoryModel& model, FactoryController& controller);
 
     void render();
+    void renderOrderHistory();
 };

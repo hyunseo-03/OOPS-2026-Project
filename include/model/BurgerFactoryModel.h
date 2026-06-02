@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <vector>
 #include "ProcessStep.h"
 #include "IngredientType.h"
 #include "model/MachineConfig.h"
@@ -26,7 +27,7 @@ private:
 
 public:
     BurgerFactoryModel();
-    static constexpr int REPAIR_COST = 50;
+    static constexpr int REPAIR_COST = 20;
 
     void update(float dt);
     void startProcess(ProcessStep step);
@@ -49,4 +50,5 @@ public:
     bool         isCurrentMachineFailed()  const;
     bool         isCurrentMachinePaused()  const;
     const std::map<IngredientType, int>& getPreparedIngredients() const;
+    const std::vector<Order>& getCompletedOrders() const;
 };

@@ -6,7 +6,6 @@ OrderManager::OrderManager()
 void OrderManager::addOrder(BurgerType type)
 {
     Order newOrder(type);
-
     if (currentOrder.isCompleted)
         currentOrder = newOrder;
     else
@@ -20,6 +19,7 @@ const Order& OrderManager::getCurrentOrder() const
 
 void OrderManager::completeOrder()
 {
+    completedOrders.push_back(currentOrder);  // 히스토리 저장
     currentOrder.isCompleted = true;
     completedCount++;
 
@@ -40,7 +40,6 @@ bool OrderManager::hasActiveOrder() const
     return !currentOrder.isCompleted;
 }
 
-int OrderManager::getCompletedCount() const
-{
-    return completedCount;
-}
+int OrderManager::getCompletedCount() const { return completedCount; }
+
+const std::vector<Order>& OrderManager::getCompletedOrders() const { return completedOrders; }

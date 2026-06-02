@@ -211,4 +211,58 @@ void FactoryView::render()
     }
 
     ImGui::End();
+    renderOrderHistory();
+}
+
+void FactoryView::renderOrderHistory()
+{
+    ImGui::SetNextWindowPos(ImVec2(900, 0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(360, 500), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Order History");
+
+    // ── 현재 / 대기 주문 ──────────────────────────
+    ImGui::TextColored(ImVec4(0.3f,1.0f,0.3f,1), "[Current & Queued]");
+    ImGui::Separator();
+    if (model.hasOrder())
+    {
+        const Order& cur = model.getCurrentOrder();
+        const char* cn = (cur.type == BurgerType::CLASSIC) ? "Classic" :
+                         (cur.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
+        ImGui::TextColored(ImVec4(1,1,0,1), "  NOW > %s Burger", cn);
+    }
+    else
+    {
+        ImGui::TextDisabled("  No active order");
+    }
+    ImGui::Spacing();
+
+    // ── 완료된 주문 ───────────────────────────────
+    ImGui::TextColored(ImVec4(0.6f,0.8f,1.0f,1), "[Completed Orders]");
+    ImGui::Separator();
+
+    const auto& orders = model.getCompletedOrders();
+    if (orders.empty())
+    {
+        ImGui::TextDisabled("  None yet.");
+    }
+    else
+    {
+        ImGui::BeginChild("OrderScrollArea", ImVec2(0, 280), false);
+        for (int i = (int)orders.size() - 1; i >= 0; i--)
+        {
+            const Order& o = orders[i];
+            const char* name = (o.type == BurgerType::CLASSIC) ? "Classic" :
+                               (o.type == BurgerType::CHEESE)  ? "Cheese"  : "Double";
+            int price = (o.type == BurgerType::CLASSIC) ? 100 :
+                        (o.type == BurgerType::CHEESE)  ? 130 : 160;
+            ImGui::Text("  #%d  %-8s  +$%d", i + 1, name, price);
+        }
+        ImGui::EndChild();
+    }
+
+    ImGui::Separator();
+    ImGui::Text("Total Burgers: %d   Money: $%d",
+        model.getTotalBurgersProduced(), model.getMoney());
+
+    ImGui::End();
 }
