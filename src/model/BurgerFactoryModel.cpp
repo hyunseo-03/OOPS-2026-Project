@@ -2,93 +2,143 @@
 #include "model/BurgerRecipe.h"
 
 BurgerFactoryModel::BurgerFactoryModel()
-    : currentStep(ProcessStep::Idle)
-{}
+    : currentStep(ProcessStep::Idle), qualityCheckPassed(false) {}
 
-// ─────────────────────────────────────────────────────
-// update() - 기계가 완료되면 자동으로 nextStep() 호출
-// ─────────────────────────────────────────────────────
 void BurgerFactoryModel::update(float dt)
 {
-    if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done)
-        return;
+    if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done) return;
 
     productionLine.update(dt);
+    handleMalfunction();
 
     if (productionLine.isMachineDone(currentStep))
         nextStep();
 }
 
-// ─────────────────────────────────────────────────────
-// startProcess() - Controller의 onStartMachine()이 호출
-// PreparingIngredients 단계에서만 재료를 소비한다.
-// ─────────────────────────────────────────────────────
+void BurgerFactoryModel::handleMalfunction()
+{
+    if (!productionLine.isMachineFailed(currentStep)) return;
+    preparedIngredients.clear();
+    currentStep = ProcessStep::Idle;
+}
+
+bool BurgerFactoryModel::repairMachine(ProcessStep step)
+{
+    if (!productionLine.isMachineFailed(step)) return false;
+    if (!moneyManager.spend(REPAIR_COST))      return false;
+    productionLine.repairMachine(step);
+    return true;
+}
+
+void BurgerFactoryModel::togglePauseMachine(ProcessStep step)
+{
+    if (productionLine.isMachinePaused(step))
+        productionLine.resumeMachine(step);
+    else
+        productionLine.pauseMachine(step);
+}
+
 void BurgerFactoryModel::startProcess(ProcessStep step)
 {
     if (step != currentStep) return;
+    if (productionLine.isMachineFailed(step)) return;
 
     if (step == ProcessStep::PreparingIngredients)
-    {
-        if (!consumeIngredients()) return;  // 재료 부족
-    }
+        if (!consumeIngredients()) return;
 
     productionLine.startMachine(step);
 }
 
-// ─────────────────────────────────────────────────────
-// canProceed() - BurgerRecipe를 참조해 재고 확인
-// 중복 조건 없이 레시피 한 곳에서 관리한다.
-// ─────────────────────────────────────────────────────
 bool BurgerFactoryModel::canProceed(ProcessStep step) const
 {
     if (!orderManager.hasActiveOrder()) return false;
+    if (productionLine.isMachineFailed(step)) return false;
 
     if (step == ProcessStep::PreparingIngredients)
     {
         BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
         for (const auto& [ingredient, amount] : recipe.ingredients)
-        {
-            if (!inventoryManager.hasEnough(ingredient, amount))
-                return false;
-        }
+            if (!inventoryManager.hasEnough(ingredient, amount)) return false;
     }
-
     return true;
 }
 
 // ─────────────────────────────────────────────────────
-// nextStep() - 단계 전진, GrillPatty 이후는 자동 시작
+// nextStep() - 다음 단계로 이동
+// configureMachine()으로 MachineConfig를 넘긴다.
+// BurgerFactoryModel은 구체 기계 타입을 전혀 모른다.
 // ─────────────────────────────────────────────────────
 void BurgerFactoryModel::nextStep()
 {
+    BurgerType   type   = orderManager.getCurrentOrder().type;
+    BurgerRecipe recipe = getRecipe(type);
+    MachineConfig config;
+    config.burgerType = type;
+
     switch (currentStep)
     {
         case ProcessStep::Idle:
             currentStep = ProcessStep::PreparingIngredients;
             break;
+
         case ProcessStep::PreparingIngredients:
+            config.pattyCount = recipe.ingredients.count(IngredientType::PATTY)
+                              ? recipe.ingredients.at(IngredientType::PATTY) : 1;
             currentStep = ProcessStep::GrillPatty;
+            productionLine.configureMachine(currentStep, config);
             productionLine.startMachine(currentStep);
             break;
+
         case ProcessStep::GrillPatty:
+            config.sauceAmount = recipe.ingredients.count(IngredientType::SAUCE)
+                               ? recipe.ingredients.at(IngredientType::SAUCE) : 1;
             currentStep = ProcessStep::AddSauce;
+            productionLine.configureMachine(currentStep, config);
             productionLine.startMachine(currentStep);
             break;
+
         case ProcessStep::AddSauce:
+        {
+            std::vector<IngredientType> order = { IngredientType::BUN, IngredientType::PATTY };
+            if (recipe.ingredients.count(IngredientType::CHEESE))  order.push_back(IngredientType::CHEESE);
+            if (recipe.ingredients.count(IngredientType::LETTUCE)) order.push_back(IngredientType::LETTUCE);
+            if (recipe.ingredients.count(IngredientType::TOMATO))  order.push_back(IngredientType::TOMATO);
+            if (recipe.ingredients.count(IngredientType::ONION))   order.push_back(IngredientType::ONION);
+            order.push_back(IngredientType::SAUCE);
+            order.push_back(IngredientType::BUN);
+            config.assemblyOrder = order;
             currentStep = ProcessStep::AssembleBurger;
+            productionLine.configureMachine(currentStep, config);
             productionLine.startMachine(currentStep);
             break;
+        }
         case ProcessStep::AssembleBurger:
             currentStep = ProcessStep::QualityCheck;
             productionLine.startMachine(currentStep);
             break;
+
         case ProcessStep::QualityCheck:
-            currentStep = ProcessStep::PackBurger;
-            productionLine.startMachine(currentStep);
+            qualityCheckPassed = checkQuality();
+            if (qualityCheckPassed)
+            {
+                currentStep = ProcessStep::PackBurger;
+                productionLine.configureMachine(currentStep, config);
+                productionLine.startMachine(currentStep);
+            }
+            else
+            {
+                preparedIngredients.clear();
+                orderManager.completeOrder();
+                currentStep = ProcessStep::Idle;
+                if (orderManager.hasActiveOrder())
+                    currentStep = ProcessStep::PreparingIngredients;
+            }
             break;
+
         case ProcessStep::PackBurger:
             currentStep = ProcessStep::Done;
             break;
+
         case ProcessStep::Done:
             currentStep = ProcessStep::Idle;
             break;
@@ -102,76 +152,53 @@ void BurgerFactoryModel::addOrder(BurgerType type)
         currentStep = ProcessStep::PreparingIngredients;
 }
 
-// ─────────────────────────────────────────────────────
-// packBurger() - Done 상태에서 완료 처리
-// 버거 타입별 가격은 BurgerRecipe에서 읽는다.
-// ─────────────────────────────────────────────────────
 void BurgerFactoryModel::packBurger()
 {
     if (currentStep != ProcessStep::Done) return;
-
     BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
     moneyManager.add(recipe.price);
     orderManager.completeOrder();
+    preparedIngredients.clear();
     currentStep = ProcessStep::Idle;
-
     if (orderManager.hasActiveOrder())
         currentStep = ProcessStep::PreparingIngredients;
 }
 
-// ── Private ──────────────────────────────────────────
-// consumeIngredients() - BurgerRecipe 기반 재료 소비
-// canProceed()와 같은 레시피를 사용하므로 중복 없음
 bool BurgerFactoryModel::consumeIngredients()
 {
     BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
     for (const auto& [ingredient, amount] : recipe.ingredients)
+        if (!inventoryManager.hasEnough(ingredient, amount)) return false;
+    preparedIngredients.clear();
+    for (const auto& [ingredient, amount] : recipe.ingredients)
     {
-        if (!inventoryManager.use(ingredient, amount))
-            return false;
+        inventoryManager.use(ingredient, amount);
+        preparedIngredients[ingredient] = amount;
     }
     return true;
 }
 
-// ── Getters ──────────────────────────────────────────
-ProcessStep BurgerFactoryModel::getCurrentStep() const
+bool BurgerFactoryModel::checkQuality() const
 {
-    return currentStep;
+    BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
+    if (preparedIngredients.size() != recipe.ingredients.size()) return false;
+    for (const auto& [ingredient, amount] : recipe.ingredients)
+    {
+        auto it = preparedIngredients.find(ingredient);
+        if (it == preparedIngredients.end() || it->second != amount) return false;
+    }
+    return true;
 }
 
-// totalBurgersProduced는 더 이상 멤버 변수가 아님
-// OrderManager의 completedCount로 위임
-int BurgerFactoryModel::getTotalBurgersProduced() const
-{
-    return orderManager.getCompletedCount();
-}
-
-int BurgerFactoryModel::getMoney() const
-{
-    return moneyManager.getMoney();
-}
-
-bool BurgerFactoryModel::hasOrder() const
-{
-    return orderManager.hasOrder();
-}
-
-const Order& BurgerFactoryModel::getCurrentOrder() const
-{
-    return orderManager.getCurrentOrder();
-}
-
-Machine* BurgerFactoryModel::getMachine(ProcessStep step)
-{
-    return productionLine.getMachine(step);
-}
-
-int BurgerFactoryModel::getIngredientAmount(IngredientType type) const
-{
-    return inventoryManager.getAmount(type);
-}
-
-void BurgerFactoryModel::refillInventory()
-{
-    inventoryManager.refill();
-}
+ProcessStep  BurgerFactoryModel::getCurrentStep()          const { return currentStep; }
+int          BurgerFactoryModel::getTotalBurgersProduced() const { return orderManager.getCompletedCount(); }
+int          BurgerFactoryModel::getMoney()                const { return moneyManager.getMoney(); }
+bool         BurgerFactoryModel::hasOrder()                const { return orderManager.hasOrder(); }
+const Order& BurgerFactoryModel::getCurrentOrder()         const { return orderManager.getCurrentOrder(); }
+Machine*     BurgerFactoryModel::getMachine(ProcessStep step)    { return productionLine.getMachine(step); }
+int          BurgerFactoryModel::getIngredientAmount(IngredientType type) const { return inventoryManager.getAmount(type); }
+bool         BurgerFactoryModel::isQualityCheckPassed()    const { return qualityCheckPassed; }
+bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
+bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
+const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients() const { return preparedIngredients; }
+void         BurgerFactoryModel::refillInventory()               { inventoryManager.refill(); }
