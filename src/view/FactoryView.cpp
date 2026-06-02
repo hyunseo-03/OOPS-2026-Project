@@ -132,11 +132,10 @@ void FactoryView::render()
         { "Cheese", IngredientType::CHEESE  },
         { "Lettuce",IngredientType::LETTUCE },
         { "Tomato", IngredientType::TOMATO  },
-        { "Onion",  IngredientType::ONION   },
         { "Sauce",  IngredientType::SAUCE   },
     };
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         int amt = model.getIngredientAmount(ings[i].type);
         bool low = (amt <= 5);

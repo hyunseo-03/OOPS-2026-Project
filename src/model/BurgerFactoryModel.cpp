@@ -44,6 +44,8 @@ void BurgerFactoryModel::startProcess(ProcessStep step)
 {
     if (step != currentStep) return;
     if (productionLine.isMachineFailed(step)) return;
+    Machine* machine = productionLine.getMachine(step);
+    if (machine && (machine->isRunning() || machine->isPaused() || machine->isDone())) return;
 
     if (step == ProcessStep::PreparingIngredients)
         if (!consumeIngredients()) return;
@@ -53,8 +55,11 @@ void BurgerFactoryModel::startProcess(ProcessStep step)
 
 bool BurgerFactoryModel::canProceed(ProcessStep step) const
 {
+    if (step != currentStep) return false;
     if (!orderManager.hasActiveOrder()) return false;
     if (productionLine.isMachineFailed(step)) return false;
+    const Machine* machine = productionLine.getMachine(step);
+    if (machine && (machine->isRunning() || machine->isPaused() || machine->isDone())) return false;
 
     if (step == ProcessStep::PreparingIngredients)
     {
@@ -63,6 +68,22 @@ bool BurgerFactoryModel::canProceed(ProcessStep step) const
             if (!inventoryManager.hasEnough(ingredient, amount)) return false;
     }
     return true;
+}
+
+void BurgerFactoryModel::enterStep(ProcessStep step, bool autoStart, const MachineConfig* config)
+{
+    currentStep = step;
+
+    if (step == ProcessStep::Idle || step == ProcessStep::Done)
+        return;
+
+    productionLine.resetMachine(step);
+
+    if (config)
+        productionLine.configureMachine(step, *config);
+
+    if (autoStart)
+        productionLine.startMachine(step);
 }
 
 // ─────────────────────────────────────────────────────
@@ -80,46 +101,40 @@ void BurgerFactoryModel::nextStep()
     switch (currentStep)
     {
         case ProcessStep::Idle:
-            currentStep = ProcessStep::PreparingIngredients;
+            enterStep(ProcessStep::PreparingIngredients);
             break;
 
         case ProcessStep::PreparingIngredients:
             config.pattyCount = recipe.ingredients.count(IngredientType::PATTY)
                               ? recipe.ingredients.at(IngredientType::PATTY) : 1;
-            currentStep = ProcessStep::GrillPatty;
-            productionLine.configureMachine(currentStep, config);
-            productionLine.startMachine(currentStep);
+            enterStep(ProcessStep::GrillPatty, true, &config);
             break;
 
         case ProcessStep::GrillPatty:
-            currentStep = ProcessStep::AddSauce;
-            productionLine.startMachine(currentStep);
+            enterStep(ProcessStep::AddSauce, true);
             break;
 
         case ProcessStep::AddSauce:
-            currentStep = ProcessStep::AssembleBurger;
-            productionLine.startMachine(currentStep);
+            enterStep(ProcessStep::AssembleBurger, true);
             break;
         case ProcessStep::AssembleBurger:
-            currentStep = ProcessStep::QualityCheck;
-            productionLine.startMachine(currentStep);
+            enterStep(ProcessStep::QualityCheck, true);
             break;
 
         case ProcessStep::QualityCheck:
             qualityCheckPassed = checkQuality();
             if (qualityCheckPassed)
             {
-                currentStep = ProcessStep::PackBurger;
-                productionLine.configureMachine(currentStep, config);
-                productionLine.startMachine(currentStep);
+                enterStep(ProcessStep::PackBurger, true, &config);
             }
             else
             {
                 preparedIngredients.clear();
                 orderManager.completeOrder();
-                currentStep = ProcessStep::Idle;
                 if (orderManager.hasActiveOrder())
-                    currentStep = ProcessStep::PreparingIngredients;
+                    enterStep(ProcessStep::PreparingIngredients);
+                else
+                    enterStep(ProcessStep::Idle);
             }
             break;
 
@@ -133,14 +148,14 @@ void BurgerFactoryModel::nextStep()
                 qualityCheckPassed = false;
                 // 다음 주문 있으면 바로 PrepMachine 단계로
                 if (orderManager.hasActiveOrder())
-                    currentStep = ProcessStep::PreparingIngredients;
+                    enterStep(ProcessStep::PreparingIngredients);
                 else
-                    currentStep = ProcessStep::Idle;
+                    enterStep(ProcessStep::Idle);
             }
             break;
 
         case ProcessStep::Done:
-            currentStep = ProcessStep::Idle;
+            enterStep(ProcessStep::Idle);
             break;
     }
 }
@@ -149,7 +164,7 @@ void BurgerFactoryModel::addOrder(BurgerType type)
 {
     orderManager.addOrder(type);
     if (currentStep == ProcessStep::Idle)
-        currentStep = ProcessStep::PreparingIngredients;
+        enterStep(ProcessStep::PreparingIngredients);
 }
 
 void BurgerFactoryModel::packBurger()
@@ -159,9 +174,9 @@ void BurgerFactoryModel::packBurger()
     moneyManager.add(recipe.price);
     orderManager.completeOrder();
     preparedIngredients.clear();
-    currentStep = ProcessStep::Idle;
+    enterStep(ProcessStep::Idle);
     if (orderManager.hasActiveOrder())
-        currentStep = ProcessStep::PreparingIngredients;
+        enterStep(ProcessStep::PreparingIngredients);
 }
 
 bool BurgerFactoryModel::consumeIngredients()

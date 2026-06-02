@@ -5,7 +5,6 @@ enum class IngredientType {
   PATTY,
   LETTUCE,
   TOMATO,
-  ONION,
   SAUCE,
   CHEESE,
 };

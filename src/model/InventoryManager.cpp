@@ -11,7 +11,6 @@ void InventoryManager::refill()
     inventory[IngredientType::PATTY]  = 20;
     inventory[IngredientType::LETTUCE]= 20;
     inventory[IngredientType::TOMATO] = 20;
-    inventory[IngredientType::ONION]  = 20;
     inventory[IngredientType::SAUCE]  = 20;
     inventory[IngredientType::CHEESE] = 20;
 }

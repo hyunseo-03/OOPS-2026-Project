@@ -24,6 +24,7 @@ private:
     bool consumeIngredients();
     bool checkQuality() const;
     void handleMalfunction();
+    void enterStep(ProcessStep step, bool autoStart = false, const MachineConfig* config = nullptr);
 
 public:
     BurgerFactoryModel();
