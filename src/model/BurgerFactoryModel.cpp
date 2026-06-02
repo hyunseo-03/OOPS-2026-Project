@@ -90,28 +90,14 @@ void BurgerFactoryModel::nextStep()
             break;
 
         case ProcessStep::GrillPatty:
-            config.sauceAmount = recipe.ingredients.count(IngredientType::SAUCE)
-                               ? recipe.ingredients.at(IngredientType::SAUCE) : 1;
             currentStep = ProcessStep::AddSauce;
-            productionLine.configureMachine(currentStep, config);
             productionLine.startMachine(currentStep);
             break;
 
         case ProcessStep::AddSauce:
-        {
-            std::vector<IngredientType> order = { IngredientType::BUN, IngredientType::PATTY };
-            if (recipe.ingredients.count(IngredientType::CHEESE))  order.push_back(IngredientType::CHEESE);
-            if (recipe.ingredients.count(IngredientType::LETTUCE)) order.push_back(IngredientType::LETTUCE);
-            if (recipe.ingredients.count(IngredientType::TOMATO))  order.push_back(IngredientType::TOMATO);
-            if (recipe.ingredients.count(IngredientType::ONION))   order.push_back(IngredientType::ONION);
-            order.push_back(IngredientType::SAUCE);
-            order.push_back(IngredientType::BUN);
-            config.assemblyOrder = order;
             currentStep = ProcessStep::AssembleBurger;
-            productionLine.configureMachine(currentStep, config);
             productionLine.startMachine(currentStep);
             break;
-        }
         case ProcessStep::AssembleBurger:
             currentStep = ProcessStep::QualityCheck;
             productionLine.startMachine(currentStep);

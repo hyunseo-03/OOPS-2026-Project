@@ -1,21 +1,24 @@
 #pragma once
 #include "model/Machine.h"
 
+// ─────────────────────────────────────────────────────
+// GrillMachine - 패티를 굽는 기계
+// pattyCount만큼 사이클을 반복한다.
+// Double 버거 → 패티 2개 → 사이클 2회
+// ─────────────────────────────────────────────────────
 class GrillMachine : public Machine
 {
 private:
-    int   pattyCount;
-    int   pattiesGrilled;
-    float grillTemperature;
-    static constexpr float TARGET_TEMP = 180.0f;
-    static constexpr float BASE_CYCLE  = 3.0f;
+    int pattyCount;      // 총 구워야 할 패티 수
+    int pattiesGrilled;  // 완료된 패티 수
+
+    static constexpr float BASE_CYCLE = 3.0f;  // 패티 1개당 굽는 시간(초)
 
 public:
     GrillMachine();
-    void configure(const MachineConfig& config) override;  // pattyCount 읽기
+    void configure(const MachineConfig& config) override;
     void update(float dt) override;
 
-    float getGrillTemperature() const;
-    int   getPattyCount()       const;
-    int   getPattiesGrilled()   const;
+    int getPattyCount()     const;
+    int getPattiesGrilled() const;
 };
