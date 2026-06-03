@@ -14,6 +14,7 @@
 #include "controller/FactoryController.h"
 #include "view/FactoryView.h"
 
+#include <filesystem>
 #include <stdio.h>
 
 int main(int argc, char* argv[])
@@ -55,8 +56,25 @@ int main(int argc, char* argv[])
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     // 기본 폰트 로드
-    io.Fonts->AddFontFromFileTTF(
-        "../libs/imgui/misc/fonts/Roboto-Medium.ttf", 15.0f);
+    const char* fontPaths[] = {
+        "libs/imgui/misc/fonts/Roboto-Medium.ttf",
+        "../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+        "../../libs/imgui/misc/fonts/Roboto-Medium.ttf"
+    };
+
+    bool fontLoaded = false;
+    for (const char* path : fontPaths)
+    {
+        if (std::filesystem::exists(path))
+        {
+            io.Fonts->AddFontFromFileTTF(path, 15.0f);
+            fontLoaded = true;
+            break;
+        }
+    }
+
+    if (!fontLoaded)
+        io.Fonts->AddFontDefault();
 
     // ============================================================
     // MVC 객체 생성

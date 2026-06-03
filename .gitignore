@@ -1,6 +1,8 @@
 # Build
 build/
+build_*/
 cmake-build-*/
+imgui.ini
 *.o
 *.a
 *.d

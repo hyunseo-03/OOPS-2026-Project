@@ -48,17 +48,26 @@ target_include_directories(imgui_app PRIVATE
     ${IMGUI_DIR}/backends
 )
 
-find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-# [수정] 순서 해결을 위해 if(WIN32) 블록을 위로 올렸습니다.
-if(WIN32)
-    target_link_libraries(imgui_app PRIVATE SDL2::SDL2main)
-    set_target_properties(imgui_app PROPERTIES WIN32_EXECUTABLE TRUE)
-endif()
+if(APPLE)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SDL2 REQUIRED sdl2)
 
-# 그 다음에 본체 라이브러리들을 연결합니다.
-target_link_libraries(imgui_app PRIVATE
-    SDL2::SDL2
-    OpenGL::GL
-)
+    target_include_directories(imgui_app PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_directories(imgui_app PRIVATE ${SDL2_LIBRARY_DIRS})
+    target_compile_options(imgui_app PRIVATE ${SDL2_CFLAGS_OTHER})
+    target_link_libraries(imgui_app PRIVATE ${SDL2_LIBRARIES} OpenGL::GL)
+else()
+    find_package(SDL2 REQUIRED)
+
+    if(WIN32)
+        target_link_libraries(imgui_app PRIVATE SDL2::SDL2main)
+        set_target_properties(imgui_app PROPERTIES WIN32_EXECUTABLE TRUE)
+    endif()
+
+    target_link_libraries(imgui_app PRIVATE
+        SDL2::SDL2
+        OpenGL::GL
+    )
+endif()
