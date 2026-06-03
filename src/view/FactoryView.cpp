@@ -128,131 +128,186 @@ void FactoryView::render()
     // ═══════════════════════════════════════════
     // 기계 목록 영역 - 흐름도형 2열 그리드 배치
     // ═══════════════════════════════════════════
+    // ═══════════════════════════════════════════
+    // 기계 목록 영역 - 흐름도형 2열 그리드 배치 (완전 교정본)
+    // ═══════════════════════════════════════════
     ImGui::Text("⚙️ [FACTORY PRODUCTION LINES FLOW]");
     ImGui::Spacing();
 
-    // 왼쪽 열: 1, 2, 3공정 / 오른쪽 열: 4, 5, 6공정 매핑 구조
-    // ══════════════════════════════════════════════════════════════════
-    // [배열 순서 핵심] 테이블이 좌->우 순서로 채워지므로, 
-    // 코드를 지그재그로 배치해야 화면에서는 좌측열(1,2,3) / 우측열(4,5,6)로 나뉩니다.
-    // ══════════════════════════════════════════════════════════════════
+    // 원하시는 직관적인 공정 순서 배열 구조 정의
     struct MachineRow { 
         const char* name; 
-        const char* icon; // 그림을 대신할 큰 텍스트 아이콘
+        const char* icon; 
         ProcessStep step; 
     };
-    MachineRow rows[] = {
-        { "1. Prep Machine",    "🥣", ProcessStep::PreparingIngredients }, // 1열 1행
-        { "4. Assembly Line",   "🍔", ProcessStep::AssembleBurger       }, // 2열 1행
-        { "2. Grill Machine",   "🔥", ProcessStep::GrillPatty           }, // 1열 2행
-        { "5. Quality Checker", "✅", ProcessStep::QualityCheck         }, // 2열 2행
-        { "3. Sauce Machine",   "🧴", ProcessStep::AddSauce             }, // 1열 3행
-        { "6. Packing Machine", "🎁", ProcessStep::PackBurger           }, // 2열 3행
+    
+    // 왼쪽 라인 (전반부 공정)
+    MachineRow leftColumnRows[] = {
+        { "1. Prep Machine",    "🥣", ProcessStep::PreparingIngredients },
+        { "2. Grill Machine",   "🔥", ProcessStep::GrillPatty           },
+        { "3. Sauce Machine",   "🧴", ProcessStep::AddSauce             }
     };
 
-    // ImGui Table을 이용한 좌우 2열 배치 시작
-    if (ImGui::BeginTable("MachineGridUMLFlowTable", 2, ImGuiTableFlags_SizingFixedSame))
+    // 오른쪽 라인 (후반부 공정)
+    MachineRow rightColumnRows[] = {
+        { "4. Assembly Line",   "🍔", ProcessStep::AssembleBurger       },
+        { "5. Quality Checker", "✅", ProcessStep::QualityCheck         },
+        { "6. Packing Machine", "🎁", ProcessStep::PackBurger           }
+    };
+
+    // ImGui Table 시작 (2열 배치)
+    if (ImGui::BeginTable("MachineGridUMLFlowTable", 2, ImGuiTableFlags_SizingFixedSame | ImGuiTableFlags_BordersOuter))
     {
-        for (int i = 0; i < 6; i++)
+        // 테이블 헤더 설정으로 가독성 상향
+        ImGui::TableSetupColumn("◀ FIRST HALF PROCESS (1-3)", ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn("▶ SECOND HALF PROCESS (4-6)", ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableHeadersRow();
+
+        // 총 3개의 행(Row)을 돌며 왼쪽과 오른쪽을 한 쌍씩 배치
+        for (int rowIdx = 0; rowIdx < 3; rowIdx++)
         {
-            ImGui::TableNextColumn(); // 자동으로 다음 칸으로 이동
-
-            Machine* m = model.getMachine(rows[i].step);
-            if (!m) continue;
-
-            bool isActive = (cur == rows[i].step);
-
-            // 상태별 커스텀 스타일링 (배경 및 테두리 조명 효과 강화)
-            if (m->isFailed()) 
+            // ----------------------------------------------------------------
+            // [1] 좌측 열 배치 (1, 2, 3 공정 세로 나열)
+            // ----------------------------------------------------------------
+            ImGui::TableNextColumn();
             {
-                // 고장: 카드 전체 배경을 투명한 빨간색으로 덮어 시각적 경고 극대화
-                ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.4f, 0.1f, 0.1f, 0.3f));
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.2f, 0.2f, 1.0f)); 
-            } 
-            else if (isActive) 
-            {
-                // 활성화: 테두리를 밝은 하늘색(Cyan)으로 네온 조명 효과
-                ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.08f, 0.15f, 0.22f, 0.8f)); 
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.3f, 0.8f, 1.0f, 1.0f)); 
-            } 
-            else 
-            {
-                // 기본 어두운 카드 스타일
-                ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.11f, 0.11f, 0.13f, 1.0f));
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.25f, 0.25f, 0.28f, 1.0f));
-            }
-
-            // 개별 기계 영역(Child)을 `-1, 100.0f`로 대폭 확장하여 시각화 요소 배치
-            char cardID[32];
-            snprintf(cardID, sizeof(cardID), "MacUMLCard##%d", i);
-            if (ImGui::BeginChild(cardID, ImVec2(-1, 100.0f), true, ImGuiWindowFlags_None))
-            {
-                // [시각화 ①] 크게 표현된 기계 그림(아이콘)과 이름
-                // ImGui는 그래픽 파일이 없으면 이모지를 크게 출력하여 가독성을 높입니다.
-                ImGui::SetCursorPos(ImVec2(10.0f, 15.0f)); // 아이콘 위치 조정
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "%s", rows[i].icon); // 크기 강화 (폰트 크기 조절이 필요할 수 있습니다.)
-
-                ImGui::SameLine();
-                ImGui::SetCursorPosY(15.0f);
-                if (m->isFailed()) {
-                    ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s [FAILED]", rows[i].name);
-                } else if (isActive) {
-                    ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "%s [RUNNING]", rows[i].name);
-                } else {
-                    ImGui::TextDisabled("%s", rows[i].name);
-                }
-
-                // [시각화 ②] UML 흐름 화살표 (텍스트 및 그래픽 조합)
-                // 전반부(1열) 기계 밑에는 내려가는 화살표, 후반부(2열) 밑에는 올라가는 화살표
-                ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 40, 15.0f)); // 우측 상단 화살표 위치
-                if (i % 2 == 0) // 1열 (1,2,3단계)
-                    ImGui::TextDisabled("▼ Flow"); // 아래로 흐르는 화살표
-                else // 2열 (4,5,6단계)
-                    ImGui::TextDisabled("▲ Flow"); // 위로 흐르는 화살표 (UML 흐름도를 위한 시각적 표현)
-
-                ImGui::Spacing();
-                ImGui::Separator(); // 타이틀과 메인 컨텐츠 분리선
-
-                // 메인 컨텐츠 영역
-                if (m->isFailed())
+                MachineRow r = leftColumnRows[rowIdx];
+                Machine* m = model.getMachine(r.step);
+                if (m) 
                 {
-                    // 긴급 수리 버튼 레이아웃
-                    char repairLbl[32];
-                    snprintf(repairLbl, sizeof(repairLbl), "FIX NOW ($%d)##%d", BurgerFactoryModel::REPAIR_COST, (int)rows[i].step);
-                    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.15f, 0.15f, 1.0f));
-                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.25f, 0.25f, 1.0f));
-                    if (ImGui::Button(repairLbl, ImVec2(-1, 26.0f))) controller.onRepairMachine(rows[i].step);
+                    bool isActive = (cur == r.step);
+                    
+                    // 스타일 주입
+                    if (m->isFailed()) {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.4f, 0.1f, 0.1f, 0.3f)); // 투명한 빨강
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));   // 고장 붉은 테두리
+                    } else if (isActive) {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f, 0.18f, 0.15f, 0.8f)); // 연한 녹색빛 감도는 배경
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.2f, 0.9f, 0.5f, 1.0f));   // 활성화: 녹색 네온 조명
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.11f, 0.11f, 0.13f, 1.0f));
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.25f, 0.25f, 0.28f, 1.0f));
+                    }
+
+                    char cardID[32];
+                    snprintf(cardID, sizeof(cardID), "LeftMacCard##%d", rowIdx);
+                    if (ImGui::BeginChild(cardID, ImVec2(-1, 100.0f), true, ImGuiWindowFlags_None))
+                    {
+                        // 아이콘 및 텍스트 출력
+                        ImGui::SetCursorPos(ImVec2(10.0f, 15.0f));
+                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "%s", r.icon);
+
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosY(15.0f);
+                        if (m->isFailed()) ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s [FAILED]", r.name);
+                        else if (isActive) ImGui::TextColored(ImVec4(0.2f, 0.9f, 0.5f, 1.0f), "%s [RUNNING]", r.name);
+                        else ImGui::TextDisabled("%s", r.name);
+
+                        // 아래로 흐르는 화살표 시각화
+                        ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 50, 15.0f));
+                        ImGui::TextDisabled("▼ Flow");
+
+                        ImGui::Spacing();
+                        ImGui::Separator();
+
+                        // 컨텐츠(수리 버튼 또는 프로그레스 바)
+                        if (m->isFailed()) {
+                            char repairLbl[32];
+                            snprintf(repairLbl, sizeof(repairLbl), "FIX NOW ($%d)##L%d", BurgerFactoryModel::REPAIR_COST, (int)r.step);
+                            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.15f, 0.15f, 1.0f));
+                            if (ImGui::Button(repairLbl, ImVec2(-1, 26.0f))) controller.onRepairMachine(r.step);
+                            ImGui::PopStyleColor();
+                        } else {
+                            char overlay[16];
+                            snprintf(overlay, sizeof(overlay), "%.0f%% Done", m->getProgress() * 100.0f);
+                            float barWidth = ImGui::GetContentRegionAvail().x - (isActive ? 75.0f : 0.0f);
+                            ImGui::ProgressBar(m->getProgress(), ImVec2(barWidth, 22.0f), overlay);
+
+                            if (isActive && (m->isRunning() || m->isPaused())) {
+                                ImGui::SameLine();
+                                char pauseLbl[32];
+                                snprintf(pauseLbl, sizeof(pauseLbl), m->isPaused() ? "Resume##L%d" : "Pause##L%d", (int)r.step);
+                                if (ImGui::Button(pauseLbl, ImVec2(65, 22.0f))) controller.onTogglePause(r.step);
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
                     ImGui::PopStyleColor(2);
                 }
-                else
-                {
-                    // [시각화 ③] 진행 상황 시각화 크기 대폭 강화 (높이 22px로 확장)
-                    char overlay[16];
-                    snprintf(overlay, sizeof(overlay), "%.0f%% Done", m->getProgress() * 100.0f);
-                    
-                    // 우측에 일시정지 버튼 공간(75px)을 제외한 나머지 폭을 가득 채움
-                    float barWidth = ImGui::GetContentRegionAvail().x - (isActive ? 75.0f : 0.0f);
-                    ImGui::ProgressBar(m->getProgress(), ImVec2(barWidth, 22.0f), overlay); 
+            }
 
-                    // 활성화 상태일 때만 일시정지/재개 제어 패널 노출
-                    if (isActive && (m->isRunning() || m->isPaused()))
-                    {
-                        ImGui::SameLine();
-                        char pauseLbl[32];
-                        snprintf(pauseLbl, sizeof(pauseLbl), m->isPaused() ? "Resume##%d" : "Pause##%d", (int)rows[i].step);
-                        if (ImGui::Button(pauseLbl, ImVec2(65, 22.0f))) controller.onTogglePause(rows[i].step);
+            // ----------------------------------------------------------------
+            // [2] 우측 열 배치 (4, 5, 6 공정 세로 나열)
+            // ----------------------------------------------------------------
+            ImGui::TableNextColumn();
+            {
+                MachineRow r = rightColumnRows[rowIdx];
+                Machine* m = model.getMachine(r.step);
+                if (m) 
+                {
+                    bool isActive = (cur == r.step);
+                    
+                    // 스타일 주입
+                    if (m->isFailed()) {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.4f, 0.1f, 0.1f, 0.3f)); // 투명한 빨강
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));   // 고장 붉은 테두리
+                    } else if (isActive) {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.08f, 0.15f, 0.22f, 0.8f)); // 연한 하늘색 배경
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.3f, 0.8f, 1.0f, 1.0f));   // 활성화: 하늘색 네온 조명
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.11f, 0.11f, 0.13f, 1.0f));
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.25f, 0.25f, 0.28f, 1.0f));
                     }
+
+                    char cardID[32];
+                    snprintf(cardID, sizeof(cardID), "RightMacCard##%d", rowIdx);
+                    if (ImGui::BeginChild(cardID, ImVec2(-1, 100.0f), true, ImGuiWindowFlags_None))
+                    {
+                        // 아이콘 및 텍스트 출력
+                        ImGui::SetCursorPos(ImVec2(10.0f, 15.0f));
+                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "%s", r.icon);
+
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosY(15.0f);
+                        if (m->isFailed()) ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s [FAILED]", r.name);
+                        else if (isActive) ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "%s [RUNNING]", r.name);
+                        else ImGui::TextDisabled("%s", r.name);
+
+                        // 아래로 똑같이 흐르거나 진행되는 흐름 시각화
+                        ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 50, 15.0f));
+                        ImGui::TextDisabled("▼ Flow");
+
+                        ImGui::Spacing();
+                        ImGui::Separator();
+
+                        // 컨텐츠 (수리 버튼 또는 프로그레스 바)
+                        if (m->isFailed()) {
+                            char repairLbl[32];
+                            snprintf(repairLbl, sizeof(repairLbl), "FIX NOW ($%d)##R%d", BurgerFactoryModel::REPAIR_COST, (int)r.step);
+                            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.15f, 0.15f, 1.0f));
+                            if (ImGui::Button(repairLbl, ImVec2(-1, 26.0f))) controller.onRepairMachine(r.step);
+                            ImGui::PopStyleColor();
+                        } else {
+                            char overlay[16];
+                            snprintf(overlay, sizeof(overlay), "%.0f%% Done", m->getProgress() * 100.0f);
+                            float barWidth = ImGui::GetContentRegionAvail().x - (isActive ? 75.0f : 0.0f);
+                            ImGui::ProgressBar(m->getProgress(), ImVec2(barWidth, 22.0f), overlay);
+
+                            if (isActive && (m->isRunning() || m->isPaused())) {
+                                ImGui::SameLine();
+                                char pauseLbl[32];
+                                snprintf(pauseLbl, sizeof(pauseLbl), m->isPaused() ? "Resume##R%d" : "Pause##R%d", (int)r.step);
+                                if (ImGui::Button(pauseLbl, ImVec2(65, 22.0f))) controller.onTogglePause(r.step);
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
+                    ImGui::PopStyleColor(2);
                 }
             }
-            ImGui::EndChild();
-            ImGui::PopStyleColor(2); 
         }
         ImGui::EndTable();
     }
-
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();    
     // 통합 마스터 공장 제어 영역 (중복 완벽 청소됨)
     // ═══════════════════════════════════════════
     ImGui::Text("🎮 FACTORY CONTROL PANEL");
