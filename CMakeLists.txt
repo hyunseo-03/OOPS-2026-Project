@@ -51,12 +51,14 @@ target_include_directories(imgui_app PRIVATE
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(imgui_app PRIVATE
-    SDL2::SDL2
-    OpenGL::GL
-)
-
+# [수정] 순서 해결을 위해 if(WIN32) 블록을 위로 올렸습니다.
 if(WIN32)
     target_link_libraries(imgui_app PRIVATE SDL2::SDL2main)
     set_target_properties(imgui_app PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
+
+# 그 다음에 본체 라이브러리들을 연결합니다.
+target_link_libraries(imgui_app PRIVATE
+    SDL2::SDL2
+    OpenGL::GL
+)
