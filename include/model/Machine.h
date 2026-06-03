@@ -10,6 +10,7 @@ protected:
     bool        paused;
     bool        failed;
     bool        hasCompleted;   // start() 후 stop()까지 완주했는지 여부
+    int         level;           // 기계 레벨 (업그레이드 시 증가)
     float       progress;
     float       cycleTime;
     float       malfunctionRate;
