@@ -1,5 +1,6 @@
 #include "view/FactoryView.h"
-#include <cstdio> // snprintf 사용을 위해 추가
+
+#include "imgui.h"
 
 FactoryView::FactoryView(BurgerFactoryModel& model, FactoryController& controller)
     : model(model), controller(controller) {}
@@ -8,445 +9,451 @@ const char* FactoryView::stepToString(ProcessStep step) const
 {
     switch (step)
     {
-        case ProcessStep::Idle:                  return "Idle";
-        case ProcessStep::PreparingIngredients:  return "Preparing Ingredients";
-        case ProcessStep::GrillPatty:            return "Grilling Patty";
-        case ProcessStep::AddSauce:              return "Adding Sauce";
-        case ProcessStep::AssembleBurger:        return "Assembling Burger";
-        case ProcessStep::QualityCheck:          return "Quality Check";
-        case ProcessStep::PackBurger:            return "Packing";
-        case ProcessStep::Done:                  return "Done";
-        default:                                 return "Unknown";
+        case ProcessStep::Idle:                 return "Idle";
+        case ProcessStep::PreparingIngredients: return "Preparing Ingredients";
+        case ProcessStep::GrillPatty:           return "Grilling Patty";
+        case ProcessStep::AddSauce:             return "Adding Sauce";
+        case ProcessStep::AssembleBurger:       return "Assembling Burger";
+        case ProcessStep::QualityCheck:         return "Quality Check";
+        case ProcessStep::PackBurger:           return "Packing";
+        case ProcessStep::Done:                 return "Done";
+        default:                                return "Unknown";
     }
 }
 
 void FactoryView::render()
 {
-    ImGuiIO& io   = ImGui::GetIO();
-    float    W    = io.DisplaySize.x;
-    float    H    = io.DisplaySize.y;
-    float    left = W * 0.65f;   // 왼쪽 공장 창 너비
-    float    right = W - left;   // 오른쪽 주문 창 너비
+    ImGuiIO& io = ImGui::GetIO();
+    const float W = io.DisplaySize.x;
+    const float H = io.DisplaySize.y;
 
-    // ═══════════════════════════════════════════
-    // 왼쪽: 공장 메인 창
-    // ═══════════════════════════════════════════
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(left, H), ImGuiCond_Always);
-    
-    // 스타일 가미: 메인 윈도우 패딩 및 라운딩 설정
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(15.0f, 15.0f));
-    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 8.0f);   // 카드 모서리 둥글게
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);   // 버튼/바 모서리 둥글게
+    const ImVec4 bg        = ImVec4(0.045f, 0.060f, 0.075f, 1.0f);
+    const ImVec4 panel     = ImVec4(0.075f, 0.100f, 0.125f, 1.0f);
+    const ImVec4 panel2    = ImVec4(0.095f, 0.125f, 0.155f, 1.0f);
+    const ImVec4 border    = ImVec4(0.140f, 0.180f, 0.220f, 1.0f);
+    const ImVec4 text      = ImVec4(0.920f, 0.940f, 0.960f, 1.0f);
+    const ImVec4 muted     = ImVec4(0.540f, 0.590f, 0.640f, 1.0f);
+    const ImVec4 green     = ImVec4(0.230f, 0.820f, 0.360f, 1.0f);
+    const ImVec4 blue      = ImVec4(0.320f, 0.620f, 1.000f, 1.0f);
+    const ImVec4 yellow    = ImVec4(1.000f, 0.780f, 0.220f, 1.0f);
+    const ImVec4 red       = ImVec4(1.000f, 0.300f, 0.260f, 1.0f);
 
-    ImGui::Begin("Burger Factory", nullptr,
-        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-
-    // 타이틀
-    ImGui::TextColored(ImVec4(0.9f, 0.7f, 0.2f, 1.0f), "🍔 BURGER FACTORY MANAGEMENT");
-    ImGui::Separator();
-    ImGui::Spacing();
-
-    // 최상단 대시보드 - 대형 스탯 카드화
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.12f, 0.16f, 1.0f)); // 짙은 네이비 그레이 배경
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.3f, 0.3f, 0.4f, 1.0f));    // 부드러운 테두리 색상
-    
-    if (ImGui::BeginChild("DashboardCard", ImVec2(-1, 65), true, ImGuiWindowFlags_None))
-    {
-        ImGui::SetCursorPosY(14.0f); // 카드 중앙 정렬을 위한 Y축 조정
-        ImGui::Text("💰 CURRENT MONEY :");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(0.3f, 0.85f, 0.3f, 1.0f), "$%d", model.getMoney());
-
-        ImGui::SameLine(left * 0.55f); 
-        ImGui::SetCursorPosY(14.0f);
-        ImGui::Text("📦 TOTAL PRODUCED :");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(0.3f, 0.7f, 1.0f, 1.0f), "%d EA", model.getTotalBurgersProduced());
-    }
-    ImGui::EndChild();
-    ImGui::PopStyleColor(2); 
-
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();
-
-    // 현재 공정 단계 요약 요약창
-    ProcessStep cur = model.getCurrentStep();
-    ImGui::Text("Current Global Step : ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "%s", stepToString(cur));
-
-    if (model.isCurrentMachineFailed())
-        ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "⚠️ !! MACHINE FAILED IN CURRENT STEP !!");
-    else if (model.isCurrentMachinePaused())
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.3f, 1.0f), "⏸️ -- CURRENT PROCESS PAUSED --");
-
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();
-
-    // ═══════════════════════════════════════════
-    // 주문 버튼 영역 ([ORDER SELECTION])
-    // ═══════════════════════════════════════════
-    ImGui::Text("🛒 [ORDER SELECTION]");
-    ImGui::Spacing();
-
-    // 1. Classic 버거 버튼 (연녹색)
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.9f, 0.4f, 1.0f));       
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.4f, 0.9f, 0.4f, 1.0f)); 
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);                  
-    if (ImGui::Button("Classic ($100)", ImVec2(130, 30))) controller.onNewOrder(BurgerType::CLASSIC);
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor(2);
-
-    ImGui::SameLine();
-
-    // 2. Cheese 버거 버튼 (체다 치즈색)
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.8f, 0.2f, 1.0f));       
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.8f, 0.2f, 1.0f)); 
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-    if (ImGui::Button("Cheese ($130)", ImVec2(130, 30)))  controller.onNewOrder(BurgerType::CHEESE);
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor(2);
-
-    ImGui::SameLine();
-
-    // 3. Double 버거 버튼 (패티 브라운)
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.5f, 0.2f, 1.0f));       
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.9f, 0.5f, 0.2f, 1.0f)); 
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-    if (ImGui::Button("Double ($160)", ImVec2(130, 30)))  controller.onNewOrder(BurgerType::DOUBLE);
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor(2);
-
-
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();
-
-    // ═══════════════════════════════════════════
-    // 기계 목록 영역 - 흐름도형 2열 그리드 배치
-    // ═══════════════════════════════════════════
-    // ═══════════════════════════════════════════
-    // 기계 목록 영역 - 흐름도형 2열 그리드 배치 (완전 교정본)
-    // ═══════════════════════════════════════════
-    ImGui::Text("⚙️ [FACTORY PRODUCTION LINES FLOW]");
-    ImGui::Spacing();
-
-    // 원하시는 직관적인 공정 순서 배열 구조 정의
-    struct MachineRow { 
-        const char* name; 
-        const char* icon; 
-        ProcessStep step; 
-    };
-    
-    // 왼쪽 라인 (전반부 공정)
-    MachineRow leftColumnRows[] = {
-        { "1. Prep Machine",    "🥣", ProcessStep::PreparingIngredients },
-        { "2. Grill Machine",   "🔥", ProcessStep::GrillPatty           },
-        { "3. Sauce Machine",   "🧴", ProcessStep::AddSauce             }
+    auto burgerName = [](BurgerType type) -> const char* {
+        return type == BurgerType::CLASSIC ? "Classic" :
+               type == BurgerType::CHEESE  ? "Cheese"  : "Double";
     };
 
-    // 오른쪽 라인 (후반부 공정)
-    MachineRow rightColumnRows[] = {
-        { "4. Assembly Line",   "🍔", ProcessStep::AssembleBurger       },
-        { "5. Quality Checker", "✅", ProcessStep::QualityCheck         },
-        { "6. Packing Machine", "🎁", ProcessStep::PackBurger           }
+    auto burgerPrice = [](BurgerType type) -> int {
+        return type == BurgerType::CLASSIC ? 100 :
+               type == BurgerType::CHEESE  ? 130 : 160;
     };
 
-    // ImGui Table 시작 (2열 배치)
-    if (ImGui::BeginTable("MachineGridUMLFlowTable", 2, ImGuiTableFlags_SizingFixedSame | ImGuiTableFlags_BordersOuter))
-    {
-        // 테이블 헤더 설정으로 가독성 상향
-        ImGui::TableSetupColumn("◀ FIRST HALF PROCESS (1-3)", ImGuiTableColumnFlags_WidthFixed);
-        ImGui::TableSetupColumn("▶ SECOND HALF PROCESS (4-6)", ImGuiTableColumnFlags_WidthFixed);
-        ImGui::TableHeadersRow();
+    auto progress01 = [](float value) -> float {
+        if (value < 0.0f) return 0.0f;
+        if (value > 1.0f) return 1.0f;
+        return value;
+    };
 
-        // 총 3개의 행(Row)을 돌며 왼쪽과 오른쪽을 한 쌍씩 배치
-        for (int rowIdx = 0; rowIdx < 3; rowIdx++)
+    auto ingredientProgress = [](int amount) -> float {
+        float value = amount / 60.0f;
+        if (value < 0.0f) return 0.0f;
+        if (value > 1.0f) return 1.0f;
+        return value;
+    };
+
+    auto machineColor = [&](Machine* machine, bool active) -> ImVec4 {
+        if (machine && machine->isFailed()) return red;
+        if (machine && machine->isPaused()) return yellow;
+        if (active && machine && machine->isRunning()) return green;
+        if (active) return blue;
+        return muted;
+    };
+
+    auto machineState = [](Machine* machine, bool active) -> const char* {
+        if (machine && machine->isFailed()) return "Repair";
+        if (machine && machine->isPaused()) return "Paused";
+        if (active && machine && machine->isRunning()) return "Running";
+        if (active) return "Waiting";
+        return "Idle";
+    };
+
+    auto currentStatusText = [&]() -> const char* {
+        if (model.isCurrentMachineFailed()) return "Machine failure detected. Repair the current station.";
+        if (model.isCurrentMachinePaused()) return "Production is paused.";
+
+        switch (model.getCurrentStep())
         {
-            // ----------------------------------------------------------------
-            // [1] 좌측 열 배치 (1, 2, 3 공정 세로 나열)
-            // ----------------------------------------------------------------
-            ImGui::TableNextColumn();
+            case ProcessStep::Idle:
+                return model.hasOrder() ? "Order received. Ready to start production." : "Waiting for a new order.";
+            case ProcessStep::PreparingIngredients: return "Preparing ingredients...";
+            case ProcessStep::GrillPatty:           return "Grilling patty...";
+            case ProcessStep::AddSauce:             return "Adding sauce...";
+            case ProcessStep::AssembleBurger:       return "Assembling burger...";
+            case ProcessStep::QualityCheck:         return "Checking quality...";
+            case ProcessStep::PackBurger:           return "Packing order...";
+            case ProcessStep::Done:                 return "Burger completed.";
+            default:                                return "Factory is ready.";
+        }
+    };
+
+    auto drawStatCard = [&](const char* id, const char* title, const ImVec4& valueColor, int kind) {
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, panel2);
+        ImGui::PushStyleColor(ImGuiCol_Border, border);
+        ImGui::BeginChild(id, ImVec2(0.0f, 74.0f), true, ImGuiWindowFlags_NoScrollbar);
+        ImGui::TextColored(muted, "%s", title);
+        ImGui::Spacing();
+
+        if (kind == 0)
+        {
+            ImGui::TextColored(valueColor, "$%d", model.getMoney());
+        }
+        else if (kind == 1)
+        {
+            ImGui::TextColored(valueColor, "%d", model.getTotalBurgersProduced());
+        }
+        else if (kind == 2)
+        {
+            const int activeOrders = (int)model.getQueuedOrders().size() + (model.hasOrder() ? 1 : 0);
+            ImGui::TextColored(valueColor, "%d / 10", activeOrders);
+        }
+        else
+        {
+            const int reputation = 4;
+            for (int i = 0; i < 5; ++i)
             {
-                MachineRow r = leftColumnRows[rowIdx];
-                Machine* m = model.getMachine(r.step);
-                if (m) 
-                {
-                    bool isActive = (cur == r.step);
-                    
-                    // 스타일 주입
-                    if (m->isFailed()) {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.4f, 0.1f, 0.1f, 0.3f)); // 투명한 빨강
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));   // 고장 붉은 테두리
-                    } else if (isActive) {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f, 0.18f, 0.15f, 0.8f)); // 연한 녹색빛 감도는 배경
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.2f, 0.9f, 0.5f, 1.0f));   // 활성화: 녹색 네온 조명
-                    } else {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.11f, 0.11f, 0.13f, 1.0f));
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.25f, 0.25f, 0.28f, 1.0f));
-                    }
-
-                    char cardID[32];
-                    snprintf(cardID, sizeof(cardID), "LeftMacCard##%d", rowIdx);
-                    if (ImGui::BeginChild(cardID, ImVec2(-1, 100.0f), true, ImGuiWindowFlags_None))
-                    {
-                        // 아이콘 및 텍스트 출력
-                        ImGui::SetCursorPos(ImVec2(10.0f, 15.0f));
-                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "%s", r.icon);
-
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosY(15.0f);
-                        if (m->isFailed()) ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s [FAILED]", r.name);
-                        else if (isActive) ImGui::TextColored(ImVec4(0.2f, 0.9f, 0.5f, 1.0f), "%s [RUNNING]", r.name);
-                        else ImGui::TextDisabled("%s", r.name);
-
-                        // 아래로 흐르는 화살표 시각화
-                        ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 50, 15.0f));
-                        ImGui::TextDisabled("▼ Flow");
-
-                        ImGui::Spacing();
-                        ImGui::Separator();
-
-                        // 컨텐츠(수리 버튼 또는 프로그레스 바)
-                        if (m->isFailed()) {
-                            char repairLbl[32];
-                            snprintf(repairLbl, sizeof(repairLbl), "FIX NOW ($%d)##L%d", BurgerFactoryModel::REPAIR_COST, (int)r.step);
-                            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.15f, 0.15f, 1.0f));
-                            if (ImGui::Button(repairLbl, ImVec2(-1, 26.0f))) controller.onRepairMachine(r.step);
-                            ImGui::PopStyleColor();
-                        } else {
-                            char overlay[16];
-                            snprintf(overlay, sizeof(overlay), "%.0f%% Done", m->getProgress() * 100.0f);
-                            float barWidth = ImGui::GetContentRegionAvail().x - (isActive ? 75.0f : 0.0f);
-                            ImGui::ProgressBar(m->getProgress(), ImVec2(barWidth, 22.0f), overlay);
-
-                            if (isActive && (m->isRunning() || m->isPaused())) {
-                                ImGui::SameLine();
-                                char pauseLbl[32];
-                                snprintf(pauseLbl, sizeof(pauseLbl), m->isPaused() ? "Resume##L%d" : "Pause##L%d", (int)r.step);
-                                if (ImGui::Button(pauseLbl, ImVec2(65, 22.0f))) controller.onTogglePause(r.step);
-                            }
-                        }
-                    }
-                    ImGui::EndChild();
-                    ImGui::PopStyleColor(2);
-                }
-            }
-
-            // ----------------------------------------------------------------
-            // [2] 우측 열 배치 (4, 5, 6 공정 세로 나열)
-            // ----------------------------------------------------------------
-            ImGui::TableNextColumn();
-            {
-                MachineRow r = rightColumnRows[rowIdx];
-                Machine* m = model.getMachine(r.step);
-                if (m) 
-                {
-                    bool isActive = (cur == r.step);
-                    
-                    // 스타일 주입
-                    if (m->isFailed()) {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.4f, 0.1f, 0.1f, 0.3f)); // 투명한 빨강
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));   // 고장 붉은 테두리
-                    } else if (isActive) {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.08f, 0.15f, 0.22f, 0.8f)); // 연한 하늘색 배경
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.3f, 0.8f, 1.0f, 1.0f));   // 활성화: 하늘색 네온 조명
-                    } else {
-                        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.11f, 0.11f, 0.13f, 1.0f));
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.25f, 0.25f, 0.28f, 1.0f));
-                    }
-
-                    char cardID[32];
-                    snprintf(cardID, sizeof(cardID), "RightMacCard##%d", rowIdx);
-                    if (ImGui::BeginChild(cardID, ImVec2(-1, 100.0f), true, ImGuiWindowFlags_None))
-                    {
-                        // 아이콘 및 텍스트 출력
-                        ImGui::SetCursorPos(ImVec2(10.0f, 15.0f));
-                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "%s", r.icon);
-
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosY(15.0f);
-                        if (m->isFailed()) ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s [FAILED]", r.name);
-                        else if (isActive) ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "%s [RUNNING]", r.name);
-                        else ImGui::TextDisabled("%s", r.name);
-
-                        // 아래로 똑같이 흐르거나 진행되는 흐름 시각화
-                        ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 50, 15.0f));
-                        ImGui::TextDisabled("▼ Flow");
-
-                        ImGui::Spacing();
-                        ImGui::Separator();
-
-                        // 컨텐츠 (수리 버튼 또는 프로그레스 바)
-                        if (m->isFailed()) {
-                            char repairLbl[32];
-                            snprintf(repairLbl, sizeof(repairLbl), "FIX NOW ($%d)##R%d", BurgerFactoryModel::REPAIR_COST, (int)r.step);
-                            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.15f, 0.15f, 1.0f));
-                            if (ImGui::Button(repairLbl, ImVec2(-1, 26.0f))) controller.onRepairMachine(r.step);
-                            ImGui::PopStyleColor();
-                        } else {
-                            char overlay[16];
-                            snprintf(overlay, sizeof(overlay), "%.0f%% Done", m->getProgress() * 100.0f);
-                            float barWidth = ImGui::GetContentRegionAvail().x - (isActive ? 75.0f : 0.0f);
-                            ImGui::ProgressBar(m->getProgress(), ImVec2(barWidth, 22.0f), overlay);
-
-                            if (isActive && (m->isRunning() || m->isPaused())) {
-                                ImGui::SameLine();
-                                char pauseLbl[32];
-                                snprintf(pauseLbl, sizeof(pauseLbl), m->isPaused() ? "Resume##R%d" : "Pause##R%d", (int)r.step);
-                                if (ImGui::Button(pauseLbl, ImVec2(65, 22.0f))) controller.onTogglePause(r.step);
-                            }
-                        }
-                    }
-                    ImGui::EndChild();
-                    ImGui::PopStyleColor(2);
-                }
+                ImGui::TextColored(i < reputation ? yellow : muted, "*");
+                if (i < 4) ImGui::SameLine();
             }
         }
+
+        ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+    };
+
+    auto drawInventoryRow = [&](const char* name, const char* code, IngredientType type) {
+        const int amount = model.getIngredientAmount(type);
+        const bool low = amount <= 5;
+
+        ImGui::PushID(name);
+        ImGui::TextColored(low ? red : text, "%s", code);
+        ImGui::SameLine(56.0f);
+        ImGui::TextColored(low ? red : text, "%s", name);
+        ImGui::SameLine();
+        ImGui::TextColored(low ? red : muted, "%d", amount);
+
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, low ? red : green);
+        ImGui::ProgressBar(ingredientProgress(amount), ImVec2(-1.0f, 7.0f), "");
+        ImGui::PopStyleColor();
+        ImGui::Spacing();
+        ImGui::PopID();
+    };
+
+    auto drawMachineCard = [&](const char* title, const char* shortName, ProcessStep step) {
+        Machine* machine = model.getMachine(step);
+        const bool active = model.getCurrentStep() == step;
+        const ImVec4 stateColor = machineColor(machine, active);
+
+        ImGui::PushID(shortName);
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, active ? ImVec4(0.095f, 0.155f, 0.145f, 1.0f) : panel2);
+        ImGui::PushStyleColor(ImGuiCol_Border, machine && machine->isFailed() ? red : (active ? green : border));
+        ImGui::BeginChild("MachineCard", ImVec2(0.0f, 160.0f), true, ImGuiWindowFlags_NoScrollbar);
+
+        ImGui::TextWrapped("%s", title);
+        ImGui::Spacing();
+        ImGui::TextColored(stateColor, "%s", shortName);
+        ImGui::Spacing();
+
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+        ImVec2 dotPos = ImGui::GetCursorScreenPos();
+        drawList->AddCircleFilled(ImVec2(dotPos.x + 5.0f, dotPos.y + 8.0f), 4.0f, ImGui::GetColorU32(stateColor));
+        ImGui::Dummy(ImVec2(14.0f, 16.0f));
+        ImGui::SameLine();
+        ImGui::TextDisabled("%s", machineState(machine, active));
+        ImGui::Spacing();
+
+        if (machine && machine->isFailed())
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.650f, 0.130f, 0.130f, 1.0f));
+            if (ImGui::Button("Repair", ImVec2(-1.0f, 30.0f)))
+                controller.onRepairMachine(step);
+            ImGui::PopStyleColor();
+            ImGui::TextDisabled("$%d", BurgerFactoryModel::REPAIR_COST);
+        }
+        else if (machine)
+        {
+            const float progress = progress01(machine->getProgress());
+            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, active ? green : ImVec4(0.180f, 0.260f, 0.350f, 1.0f));
+            ImGui::ProgressBar(progress, ImVec2(-1.0f, 8.0f), "");
+            ImGui::PopStyleColor();
+            ImGui::TextDisabled("%.0f%%", progress * 100.0f);
+        }
+        else
+        {
+            ImGui::TextDisabled("Unavailable");
+        }
+
+        ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+        ImGui::PopID();
+    };
+
+    ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(W, H), ImGuiCond_Always);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(12.0f, 12.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 8.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
+
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, bg);
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, panel);
+    ImGui::PushStyleColor(ImGuiCol_Border, border);
+    ImGui::PushStyleColor(ImGuiCol_Text, text);
+    ImGui::PushStyleColor(ImGuiCol_TextDisabled, muted);
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.120f, 0.250f, 0.520f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.170f, 0.350f, 0.720f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.090f, 0.200f, 0.430f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.055f, 0.075f, 0.095f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.075f, 0.105f, 0.135f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, green);
+    ImGui::PushStyleColor(ImGuiCol_Separator, border);
+
+    ImGui::Begin("Burger Factory Dashboard", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoCollapse);
+
+    ProcessStep cur = model.getCurrentStep();
+    Machine* currentMachine = model.getMachine(cur);
+    const bool canStart = model.canProceed(cur);
+    const bool canPause = currentMachine &&
+        (currentMachine->isRunning() || currentMachine->isPaused()) &&
+        !currentMachine->isFailed();
+
+    if (ImGui::BeginTable("HeaderTable", 2, ImGuiTableFlags_SizingStretchProp))
+    {
+        ImGui::TableSetupColumn("Title", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("Controls", ImGuiTableColumnFlags_WidthFixed, 240.0f);
+        ImGui::TableNextRow();
+
+        ImGui::TableSetColumnIndex(0);
+        ImGui::TextColored(text, "BURGER FACTORY");
+
+        ImGui::TableSetColumnIndex(1);
+        ImGui::BeginDisabled(!canStart);
+        if (ImGui::Button("Start", ImVec2(66.0f, 34.0f)))
+            controller.onStartMachine(cur);
+        ImGui::EndDisabled();
+
+        ImGui::SameLine();
+        ImGui::BeginDisabled(!canPause);
+        if (ImGui::Button(currentMachine && currentMachine->isPaused() ? "Resume" : "Pause", ImVec2(74.0f, 34.0f)))
+            controller.onTogglePause(cur);
+        ImGui::EndDisabled();
+
+        ImGui::SameLine();
+        if (ImGui::Button("Refill", ImVec2(74.0f, 34.0f)))
+            controller.onRefillInventory();
+
         ImGui::EndTable();
     }
-    // 통합 마스터 공장 제어 영역 (중복 완벽 청소됨)
-    // ═══════════════════════════════════════════
-    ImGui::Text("🎮 FACTORY CONTROL PANEL");
-    ImGui::Spacing();
 
-    bool canStart = model.canProceed(cur); 
-    if (!canStart) ImGui::BeginDisabled();
-
-    // 대형 네온 블루 스타일 가동 버튼
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.12f, 0.35f, 0.65f, 1.0f));        
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.22f, 0.55f, 0.95f, 1.0f)); 
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.08f, 0.25f, 0.50f, 1.0f));  
-    if (ImGui::Button("🚀 START PRODUCTION LINE", ImVec2(-1, 38.0f))) controller.onStartMachine(cur);
-    ImGui::PopStyleColor(3);
-
-    if (!canStart) ImGui::EndDisabled();
-
-    ImGui::Spacing();
-
-    // 재고 리필 마스터 버튼
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.72f, 0.42f, 0.12f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.92f, 0.52f, 0.22f, 1.0f));
-    if (ImGui::Button("📦 Refill Factory Inventory Storage", ImVec2(-1, 30.0f))) controller.onRefillInventory();
-    ImGui::PopStyleColor(2);
-
-    ImGui::Spacing();
     ImGui::Separator();
-    ImGui::Spacing();
 
-    // ═══════════════════════════════════════════
-    // 재고 상태 현황 영역 ([INVENTORY])
-    // ═══════════════════════════════════════════
-    ImGui::Text("🏪 [RAW MATERIAL INVENTORY STATUS]");
-    ImGui::Spacing();
-
-    struct IngRow { const char* name; IngredientType type; };
-    IngRow ings[] = {
-        { "Bun",     IngredientType::BUN     },
-        { "Patty",   IngredientType::PATTY   },
-        { "Cheese",  IngredientType::CHEESE  },
-        { "Lettuce", IngredientType::LETTUCE },
-        { "Tomato",  IngredientType::TOMATO  },
-        { "Sauce",   IngredientType::SAUCE   },
-    };
-
-    for (int i = 0; i < 6; i++)
+    if (ImGui::BeginTable("MetricCards", 4, ImGuiTableFlags_SizingStretchSame))
     {
-        int amt = model.getIngredientAmount(ings[i].type);
-        bool low = (amt <= 5);
-        if (low) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.3f, 0.3f, 1.0f));
-        
-        char label[32];
-        snprintf(label, sizeof(label), "%s: %d", ings[i].name, amt);
-        ImGui::ProgressBar(amt / 20.0f, ImVec2(150, 14), label);
-        if (low) ImGui::PopStyleColor();
-        if (i % 2 == 0) ImGui::SameLine(200);
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        drawStatCard("MoneyCard", "Money", green, 0);
+        ImGui::TableSetColumnIndex(1);
+        drawStatCard("CompletedCard", "Completed Burgers", yellow, 1);
+        ImGui::TableSetColumnIndex(2);
+        drawStatCard("OrdersCard", "Orders", blue, 2);
+        ImGui::TableSetColumnIndex(3);
+        drawStatCard("ReputationCard", "Reputation", yellow, 3);
+        ImGui::EndTable();
     }
 
-    // QualityCheck 결과 출력 (Idle 상태일 때 노출)
-    if (cur == ProcessStep::Idle)
+    const float contentH = ImGui::GetContentRegionAvail().y;
+    if (ImGui::BeginTable("MainLayout", 3, ImGuiTableFlags_SizingStretchProp))
     {
-        ImGui::Spacing();
+        ImGui::TableSetupColumn("Inventory", ImGuiTableColumnFlags_WidthStretch, 0.22f);
+        ImGui::TableSetupColumn("Factory", ImGuiTableColumnFlags_WidthStretch, 0.53f);
+        ImGui::TableSetupColumn("Orders", ImGuiTableColumnFlags_WidthStretch, 0.25f);
+        ImGui::TableNextRow();
+
+        ImGui::TableSetColumnIndex(0);
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, panel);
+        ImGui::PushStyleColor(ImGuiCol_Border, border);
+        ImGui::BeginChild("InventoryPanel", ImVec2(0.0f, contentH), true);
+        ImGui::TextColored(text, "INVENTORY");
         ImGui::Separator();
-        ImGui::Spacing();
-        if (model.isQualityCheckPassed())
-            ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), "✅ Quality Check Summary: LAST ORDER PASSED");
-        else
-            ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "❌ Quality Check Summary: LAST ORDER FAILED");
-    }
-    
-    ImGui::PopStyleVar(3); // 맨 위에서 추가한 3개의 스타일 변수들 안전 해제
-    ImGui::End();
-
-    // ═══════════════════════════════════════════
-    // 오른쪽: 주문 내역 창
-    // ═══════════════════════════════════════════
-    ImGui::SetNextWindowPos(ImVec2(left, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(right, H), ImGuiCond_Always);
-    ImGui::Begin("Orders", nullptr,
-        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-
-    auto burgerName  = [](BurgerType t) -> const char* {
-        return t == BurgerType::CLASSIC ? "Classic" :
-               t == BurgerType::CHEESE  ? "Cheese"  : "Double";
-    };
-    auto burgerPrice = [](BurgerType t) -> int {
-        return t == BurgerType::CLASSIC ? 100 :
-               t == BurgerType::CHEESE  ? 130 : 160;
-    };
-
-    // 현재 생산 중인 주문
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.3f, 1.0f), "[In Production]");
-    ImGui::Separator();
-    if (model.hasOrder())
-    {
-        const Order& o = model.getCurrentOrder();
-        ImGui::Text("  %s Burger  $%d", burgerName(o.type), burgerPrice(o.type));
-        ImGui::TextDisabled("  Step: %s", stepToString(cur));
-    }
-    else
-    {
-        ImGui::TextDisabled("  None");
-    }
-    ImGui::Spacing();
-
-    // 대기 중인 주문
-    const auto& queued = model.getQueuedOrders();
-    ImGui::TextColored(ImVec4(0.8f, 0.6f, 1.0f, 1.0f), "[Waiting (%d)]", (int)queued.size());
-    ImGui::Separator();
-    if (queued.empty())
-    {
-        ImGui::TextDisabled("  No queued orders");
-    }
-    else
-    {
-        for (int i = 0; i < (int)queued.size(); i++)
-            ImGui::Text("  %d. %s  $%d", i+1,
-                burgerName(queued[i].type), burgerPrice(queued[i].type));
-    }
-    ImGui::Spacing();
-
-    // 판매 완료 목록
-    const auto& done = model.getCompletedOrders();
-    ImGui::TextColored(ImVec4(0.6f, 0.8f, 1.0f, 1.0f), "[Sold (%d)]", (int)done.size());
-    ImGui::Separator();
-    if (done.empty())
-    {
-        ImGui::TextDisabled("  None yet.");
-    }
-    else
-    {
-        ImGui::BeginChild("SoldScroll", ImVec2(0, 0), false);
-        for (int i = (int)done.size() - 1; i >= 0; i--)
-            ImGui::Text("  #%d  %-8s  +$%d", i+1,
-                burgerName(done[i].type), burgerPrice(done[i].type));
+        drawInventoryRow("Buns", "BUN", IngredientType::BUN);
+        drawInventoryRow("Patties", "PAT", IngredientType::PATTY);
+        drawInventoryRow("Lettuce", "LET", IngredientType::LETTUCE);
+        drawInventoryRow("Tomato", "TOM", IngredientType::TOMATO);
+        drawInventoryRow("Cheese", "CHS", IngredientType::CHEESE);
+        drawInventoryRow("Sauce", "SAU", IngredientType::SAUCE);
         ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+
+        ImGui::TableSetColumnIndex(1);
+        ImGui::BeginGroup();
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, panel);
+        ImGui::PushStyleColor(ImGuiCol_Border, border);
+        ImGui::BeginChild("ProductionPanel", ImVec2(0.0f, contentH * 0.62f), true);
+        ImGui::TextColored(text, "PRODUCTION LINE");
+        ImGui::Separator();
+
+        if (ImGui::BeginTable("ProductionLine", 11, ImGuiTableFlags_SizingStretchProp))
+        {
+            for (int i = 0; i < 11; ++i)
+            {
+                if (i % 2 == 0)
+                    ImGui::TableSetupColumn("Machine", ImGuiTableColumnFlags_WidthStretch, 1.0f);
+                else
+                    ImGui::TableSetupColumn("Arrow", ImGuiTableColumnFlags_WidthFixed, 22.0f);
+            }
+
+            ImGui::TableNextRow();
+
+            ImGui::TableSetColumnIndex(0);
+            drawMachineCard("Prep\nStation", "PREP", ProcessStep::PreparingIngredients);
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Dummy(ImVec2(1.0f, 54.0f));
+            ImGui::TextColored(muted, ">");
+            ImGui::TableSetColumnIndex(2);
+            drawMachineCard("Patty\nGrill", "GRIL", ProcessStep::GrillPatty);
+            ImGui::TableSetColumnIndex(3);
+            ImGui::Dummy(ImVec2(1.0f, 54.0f));
+            ImGui::TextColored(muted, ">");
+            ImGui::TableSetColumnIndex(4);
+            drawMachineCard("Sauce\nDispenser", "SAUC", ProcessStep::AddSauce);
+            ImGui::TableSetColumnIndex(5);
+            ImGui::Dummy(ImVec2(1.0f, 54.0f));
+            ImGui::TextColored(muted, ">");
+            ImGui::TableSetColumnIndex(6);
+            drawMachineCard("Assembly\nMachine", "ASMB", ProcessStep::AssembleBurger);
+            ImGui::TableSetColumnIndex(7);
+            ImGui::Dummy(ImVec2(1.0f, 54.0f));
+            ImGui::TextColored(muted, ">");
+            ImGui::TableSetColumnIndex(8);
+            drawMachineCard("Quality\nCheck", "QC", ProcessStep::QualityCheck);
+            ImGui::TableSetColumnIndex(9);
+            ImGui::Dummy(ImVec2(1.0f, 54.0f));
+            ImGui::TextColored(muted, ">");
+            ImGui::TableSetColumnIndex(10);
+            drawMachineCard("Packing\nMachine", "PACK", ProcessStep::PackBurger);
+
+            ImGui::EndTable();
+        }
+
+        ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, panel);
+        ImGui::PushStyleColor(ImGuiCol_Border, border);
+        ImGui::BeginChild("StatusPanel", ImVec2(0.0f, 0.0f), true);
+        ImGui::TextColored(text, "CURRENT STATUS");
+        ImGui::TextColored(model.isCurrentMachineFailed() ? red : text, "%s", currentStatusText());
+        ImGui::Separator();
+
+        if (ImGui::BeginTable("ActionButtons", 3, ImGuiTableFlags_SizingStretchSame))
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            if (ImGui::Button("Classic $100", ImVec2(-1.0f, 38.0f)))
+                controller.onNewOrder(BurgerType::CLASSIC);
+            ImGui::TableSetColumnIndex(1);
+            if (ImGui::Button("Cheese $130", ImVec2(-1.0f, 38.0f)))
+                controller.onNewOrder(BurgerType::CHEESE);
+            ImGui::TableSetColumnIndex(2);
+            if (ImGui::Button("Double $160", ImVec2(-1.0f, 38.0f)))
+                controller.onNewOrder(BurgerType::DOUBLE);
+            ImGui::EndTable();
+        }
+
+        if (ImGui::BeginTable("ControlButtons", 2, ImGuiTableFlags_SizingStretchSame))
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::BeginDisabled(!canStart);
+            if (ImGui::Button("Start Production Line", ImVec2(-1.0f, 38.0f)))
+                controller.onStartMachine(cur);
+            ImGui::EndDisabled();
+            ImGui::TableSetColumnIndex(1);
+            ImGui::BeginDisabled(true);
+            ImGui::Button("Sell Burger", ImVec2(-1.0f, 38.0f));
+            ImGui::EndDisabled();
+            ImGui::EndTable();
+        }
+
+        ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+        ImGui::EndGroup();
+
+        ImGui::TableSetColumnIndex(2);
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, panel);
+        ImGui::PushStyleColor(ImGuiCol_Border, border);
+        ImGui::BeginChild("OrdersPanel", ImVec2(0.0f, contentH), true);
+        ImGui::TextColored(text, "ORDERS");
+        ImGui::Separator();
+
+        ImGui::TextColored(yellow, "In Production");
+        if (model.hasOrder())
+        {
+            const Order& order = model.getCurrentOrder();
+            ImGui::Text("%s Burger", burgerName(order.type));
+            ImGui::TextDisabled("$%d | %s", burgerPrice(order.type), stepToString(cur));
+        }
+        else
+        {
+            ImGui::TextDisabled("None");
+        }
+
+        ImGui::Spacing();
+        const auto& queued = model.getQueuedOrders();
+        ImGui::TextColored(blue, "Waiting (%d)", (int)queued.size());
+        ImGui::Separator();
+        if (queued.empty())
+        {
+            ImGui::TextDisabled("No queued orders");
+        }
+        else
+        {
+            for (int i = 0; i < (int)queued.size(); ++i)
+                ImGui::Text("%d. %s $%d", i + 1, burgerName(queued[i].type), burgerPrice(queued[i].type));
+        }
+
+        ImGui::Spacing();
+        const auto& done = model.getCompletedOrders();
+        ImGui::TextColored(green, "Sold (%d)", (int)done.size());
+        ImGui::Separator();
+        if (done.empty())
+        {
+            ImGui::TextDisabled("None yet");
+        }
+        else
+        {
+            ImGui::BeginChild("SoldScroll", ImVec2(0.0f, 0.0f), false);
+            for (int i = (int)done.size() - 1; i >= 0; --i)
+                ImGui::Text("#%d %s +$%d", i + 1, burgerName(done[i].type), burgerPrice(done[i].type));
+            ImGui::EndChild();
+        }
+
+        ImGui::EndChild();
+        ImGui::PopStyleColor(2);
+
+        ImGui::EndTable();
     }
 
     ImGui::End();
+
+    ImGui::PopStyleColor(12);
+    ImGui::PopStyleVar(6);
 }
 
 void FactoryView::renderOrderHistory() {}
