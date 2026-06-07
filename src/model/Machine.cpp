@@ -44,3 +44,14 @@ bool  Machine::isRunning() const { return running && !paused; }
 bool  Machine::isPaused()  const { return paused; }
 float Machine::getProgress()       const { return progress; }
 const std::string& Machine::getName() const { return name; }
+
+
+void Machine::upgrade()
+{
+    if (level < maxLevel) {
+        level++;
+        upgradeCost *= 1.5f; // 다음 레벨업 비용 1.5배 증가
+        // 사이클 타임 감소 (예: 레벨당 15% 단축)
+        cycleTime = baseCycleTime * (1.0f - ((level - 1) * 0.15f)); 
+    }
+}

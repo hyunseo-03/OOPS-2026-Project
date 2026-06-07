@@ -1,6 +1,6 @@
 #include "view/FactoryView.h"
-
 #include "imgui.h"
+#include <string>
 
 FactoryView::FactoryView(BurgerFactoryModel& model, FactoryController& controller)
     : model(model), controller(controller) {}
@@ -116,14 +116,21 @@ void FactoryView::render()
             const int activeOrders = (int)model.getQueuedOrders().size() + (model.hasOrder() ? 1 : 0);
             ImGui::TextColored(valueColor, "%d / 10", activeOrders);
         }
-        else
+        else // Reputation (kind == 3)
         {
-            const int reputation = 4;
+            // 백엔드에서 평균 평판 가져오기 (예: 3.8 등)
+            // OrderManager에서 getAverageReputation()을 가져오도록 모델에 함수가 있다고 가정
+            // (없다면 model.getAverageReputation()으로 연결해 주세요)
+            float repScore = model.getAverageReputation(); 
+            int repInt = (int)(repScore + 0.5f); // 반올림해서 별 개수 결정
+
             for (int i = 0; i < 5; ++i)
             {
-                ImGui::TextColored(i < reputation ? yellow : muted, "*");
+                ImGui::TextColored(i < repInt ? yellow : muted, "*");
                 if (i < 4) ImGui::SameLine();
             }
+            ImGui::SameLine();
+            ImGui::TextDisabled("(%.1f)", repScore); // 숫자도 옆에 작게 표시
         }
 
         ImGui::EndChild();
@@ -148,6 +155,10 @@ void FactoryView::render()
         ImGui::PopID();
     };
 
+    // 추가: 팝업을 띄우기 위해 저장할 변수
+    static ProcessStep machineToUpgrade = ProcessStep::Idle;
+    static bool showUpgradePopup = false;
+
     auto drawMachineCard = [&](const char* title, const char* shortName, ProcessStep step) {
         Machine* machine = model.getMachine(step);
         const bool active = model.getCurrentStep() == step;
@@ -156,10 +167,18 @@ void FactoryView::render()
         ImGui::PushID(shortName);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, active ? ImVec4(0.095f, 0.155f, 0.145f, 1.0f) : panel2);
         ImGui::PushStyleColor(ImGuiCol_Border, machine && machine->isFailed() ? red : (active ? green : border));
-        ImGui::BeginChild("MachineCard", ImVec2(0.0f, 160.0f), true, ImGuiWindowFlags_NoScrollbar);
+        
+        // 카드를 클릭 가능하게 만들기 위한 꼼수 (투명한 버튼을 배경에 덮음)
+        ImGui::BeginChild("MachineCard", ImVec2(0.0f, 180.0f), true, ImGuiWindowFlags_NoScrollbar); // 높이 조금 증가
 
+        // 카드 상단: 이름과 레벨 표시
         ImGui::TextWrapped("%s", title);
+        if (machine) {
+            ImGui::SameLine();
+            ImGui::TextColored(blue, "[Lv.%d]", machine->getLevel());
+        }
         ImGui::Spacing();
+        
         ImGui::TextColored(stateColor, "%s", shortName);
         ImGui::Spacing();
 
@@ -186,6 +205,20 @@ void FactoryView::render()
             ImGui::ProgressBar(progress, ImVec2(-1.0f, 8.0f), "");
             ImGui::PopStyleColor();
             ImGui::TextDisabled("%.0f%%", progress * 100.0f);
+            
+            // 업그레이드 버튼 추가
+            ImGui::Spacing();
+            if (machine->getLevel() < machine->getMaxLevel()) {
+                std::string upgText = "UPG ($" + std::to_string(machine->getUpgradeCost()) + ")";
+                if (ImGui::Button(upgText.c_str(), ImVec2(-1.0f, 25.0f))) {
+                    machineToUpgrade = step;
+                    showUpgradePopup = true;
+                }
+            } else {
+                ImGui::BeginDisabled();
+                ImGui::Button("MAX LV", ImVec2(-1.0f, 25.0f));
+                ImGui::EndDisabled();
+            }
         }
         else
         {
@@ -225,6 +258,42 @@ void FactoryView::render()
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse);
+
+    // -----------------------------------------------------
+    // 업그레이드 팝업창 렌더링 로직 (추가된 부분)
+    // -----------------------------------------------------
+    if (showUpgradePopup) {
+        ImGui::OpenPopup("Upgrade Machine");
+    }
+
+    if (ImGui::BeginPopupModal("Upgrade Machine", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        Machine* m = model.getMachine(machineToUpgrade);
+        if (m) {
+            ImGui::Text("Upgrade %s?", m->getName().c_str());
+            ImGui::Separator();
+            ImGui::Text("Current Level: %d", m->getLevel());
+            ImGui::Text("Next Level: %d", m->getLevel() + 1);
+            ImGui::TextColored(yellow, "Cost: $%d", m->getUpgradeCost());
+            ImGui::Spacing();
+            
+            if (ImGui::Button("Confirm Upgrade", ImVec2(120, 0))) {
+                // 모델에 업그레이드 요청
+                if (!model.upgradeMachine(machineToUpgrade)) {
+                    // (선택사항) 돈 부족 에러 메시지를 띄우는 로직
+                }
+                showUpgradePopup = false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                showUpgradePopup = false;
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        ImGui::EndPopup();
+    }
+    // -----------------------------------------------------
 
     ProcessStep cur = model.getCurrentStep();
     Machine* currentMachine = model.getMachine(cur);
