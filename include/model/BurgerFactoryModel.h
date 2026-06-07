@@ -39,7 +39,7 @@ public:
     bool repairMachine(ProcessStep step);
     void togglePauseMachine(ProcessStep step);
     void refillInventory();
-
+    bool upgradeMachine(ProcessStep step);
     ProcessStep  getCurrentStep()          const;
     int          getTotalBurgersProduced() const;
     int          getMoney()                const;
@@ -53,4 +53,5 @@ public:
     const std::map<IngredientType, int>& getPreparedIngredients() const;
     const std::vector<Order>& getCompletedOrders() const;
     const std::vector<Order>& getQueuedOrders()    const;
+    float getAverageReputation() const;
 };

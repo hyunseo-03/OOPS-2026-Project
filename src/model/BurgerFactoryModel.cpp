@@ -6,6 +6,11 @@ BurgerFactoryModel::BurgerFactoryModel()
 
 void BurgerFactoryModel::update(float dt)
 {
+    // 주문이 진행 중일 때 걸린 시간 누적 추가
+    if (hasOrder() && orderManager.hasActiveOrder()) {
+        orderManager.updateActiveOrderTime(dt); 
+    }
+
     if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done) return;
 
     productionLine.update(dt);
@@ -14,12 +19,16 @@ void BurgerFactoryModel::update(float dt)
         nextStep();
 }
 
+void BurgerFactoryModel::handleMalfunction()
+{
+    // 고장 감지: 단계는 그대로 유지 (수리 후 재시작 가능하도록)
+}
+
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
 {
     if (!productionLine.isMachineFailed(step)) return false;
     if (!moneyManager.spend(REPAIR_COST))      return false;
     productionLine.repairMachine(step);
-    // 수리 완료 후 해당 단계 기계 자동 재시작
     if (step == currentStep)
         productionLine.startMachine(step);
     return true;
@@ -79,11 +88,6 @@ void BurgerFactoryModel::enterStep(ProcessStep step, bool autoStart, const Machi
         productionLine.startMachine(step);
 }
 
-// ─────────────────────────────────────────────────────
-// nextStep() - 다음 단계로 이동
-// configureMachine()으로 MachineConfig를 넘긴다.
-// BurgerFactoryModel은 구체 기계 타입을 전혀 모른다.
-// ─────────────────────────────────────────────────────
 void BurgerFactoryModel::nextStep()
 {
     BurgerType   type   = orderManager.getCurrentOrder().type;
@@ -110,6 +114,7 @@ void BurgerFactoryModel::nextStep()
         case ProcessStep::AddSauce:
             enterStep(ProcessStep::AssembleBurger, true);
             break;
+
         case ProcessStep::AssembleBurger:
             enterStep(ProcessStep::QualityCheck, true);
             break;
@@ -132,14 +137,12 @@ void BurgerFactoryModel::nextStep()
             break;
 
         case ProcessStep::PackBurger:
-            // 자동 판매: 수동 버튼 없이 바로 돈 수령 + 주문 완료
             {
                 BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
                 moneyManager.add(r.price);
                 orderManager.completeOrder();
                 preparedIngredients.clear();
                 qualityCheckPassed = false;
-                // 다음 주문 있으면 바로 PrepMachine 단계로
                 if (orderManager.hasActiveOrder())
                     enterStep(ProcessStep::PreparingIngredients);
                 else
@@ -203,7 +206,7 @@ int          BurgerFactoryModel::getTotalBurgersProduced() const { return orderM
 int          BurgerFactoryModel::getMoney()                const { return moneyManager.getMoney(); }
 bool         BurgerFactoryModel::hasOrder()                const { return orderManager.hasOrder(); }
 const Order& BurgerFactoryModel::getCurrentOrder()         const { return orderManager.getCurrentOrder(); }
-Machine*     BurgerFactoryModel::getMachine(ProcessStep step)    { return productionLine.getMachine(step); }
+Machine* BurgerFactoryModel::getMachine(ProcessStep step)    { return productionLine.getMachine(step); }
 int          BurgerFactoryModel::getIngredientAmount(IngredientType type) const { return inventoryManager.getAmount(type); }
 bool         BurgerFactoryModel::isQualityCheckPassed()    const { return qualityCheckPassed; }
 bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
@@ -212,3 +215,27 @@ const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients(
 void         BurgerFactoryModel::refillInventory()               { moneyManager.spend(100); inventoryManager.refill(); }
 const std::vector<Order>& BurgerFactoryModel::getCompletedOrders() const { return orderManager.getCompletedOrders(); }
 const std::vector<Order>& BurgerFactoryModel::getQueuedOrders() const { return orderManager.getQueuedOrders(); }
+
+bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
+{
+    Machine* machine = productionLine.getMachine(step);
+    if (!machine) return false;
+
+    if (machine->getLevel() >= machine->getMaxLevel()) {
+        return false; // 이미 만렙
+    }
+
+    int cost = machine->getUpgradeCost();
+    
+    // moneyManager에서 돈 차감 시도
+    if (moneyManager.spend(cost)) {
+        machine->upgrade();
+        return true; // 업그레이드 성공
+    }
+    
+    return false; // 돈 부족
+}
+float BurgerFactoryModel::getAverageReputation() const
+{
+    return orderManager.getAverageReputation();
+}

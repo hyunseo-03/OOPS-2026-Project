@@ -3,8 +3,9 @@
 
 Machine::Machine(const std::string& name, float cycleTime, float malfunctionRate)
     : name(name), running(false), paused(false), failed(false),
-      hasCompleted(false), progress(0.0f),
-      cycleTime(cycleTime), malfunctionRate(malfunctionRate)
+      hasCompleted(false), level(1), progress(0.0f),
+      cycleTime(cycleTime), malfunctionRate(malfunctionRate),
+      baseCycleTime(cycleTime)
 {}
 
 void Machine::checkMalfunction(float dt)
@@ -44,3 +45,14 @@ bool  Machine::isRunning() const { return running && !paused; }
 bool  Machine::isPaused()  const { return paused; }
 float Machine::getProgress()       const { return progress; }
 const std::string& Machine::getName() const { return name; }
+
+
+void Machine::upgrade()
+{
+    if (level < maxLevel) {
+        level++;
+        upgradeCost *= 1.5f; // 다음 레벨업 비용 1.5배 증가
+        // 사이클 타임 감소 (예: 레벨당 15% 단축)
+        cycleTime = baseCycleTime * (1.0f - ((level - 1) * 0.15f)); 
+    }
+}
