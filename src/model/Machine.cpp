@@ -5,7 +5,7 @@ Machine::Machine(const std::string& name, float cycleTime, float malfunctionRate
     : name(name), running(false), paused(false), failed(false),
       hasCompleted(false), level(1), progress(0.0f),
       cycleTime(cycleTime), malfunctionRate(malfunctionRate),
-      baseCycleTime(cycleTime)
+      baseCycleTime(cycleTime), baseMalfunctionRate(malfunctionRate)
 {}
 
 void Machine::checkMalfunction(float dt)
@@ -52,7 +52,8 @@ void Machine::upgrade()
     if (level < maxLevel) {
         level++;
         upgradeCost *= 1.5f; // 다음 레벨업 비용 1.5배 증가
-        // 사이클 타임 감소 (예: 레벨당 15% 단축)
-        cycleTime = baseCycleTime * (1.0f - ((level - 1) * 0.15f)); 
+        // 레벨당 작업 시간은 15%씩 단축하고, 고장 확률은 20%씩 감소시킨다.
+        cycleTime = baseCycleTime * (1.0f - ((level - 1) * 0.15f));
+        malfunctionRate = baseMalfunctionRate * (1.0f - ((level - 1) * 0.20f));
     }
 }

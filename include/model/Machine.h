@@ -17,6 +17,7 @@ protected:
     const int maxLevel = 5;      // 최대 레벨
     int upgradeCost = 100;       // 업그레이드 비용 (기본값)
     float baseCycleTime;
+    float baseMalfunctionRate;
 
     void checkMalfunction(float dt);
 
@@ -43,6 +44,8 @@ public:
     int getLevel() const { return level; }
     int getMaxLevel() const { return maxLevel; }
     int getUpgradeCost() const { return upgradeCost; }
+    float getCycleTime() const { return cycleTime; }
+    float getMalfunctionRate() const { return malfunctionRate; }
     
     // 업그레이드 실행 함수
     void upgrade();

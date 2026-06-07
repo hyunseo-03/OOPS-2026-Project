@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <string>
 #include <vector>
 #include "ProcessStep.h"
 #include "IngredientType.h"
@@ -15,6 +16,9 @@ private:
     ProcessStep currentStep;
     std::map<IngredientType, int> preparedIngredients;
     bool qualityCheckPassed;
+    bool productionTimerRunning;
+    bool gameOver;
+    std::string statusMessage;
 
     InventoryManager inventoryManager;
     MoneyManager     moneyManager;
@@ -50,6 +54,8 @@ public:
     bool         isQualityCheckPassed()    const;
     bool         isCurrentMachineFailed()  const;
     bool         isCurrentMachinePaused()  const;
+    bool         isGameOver()              const;
+    const std::string& getStatusMessage()  const;
     const std::map<IngredientType, int>& getPreparedIngredients() const;
     const std::vector<Order>& getCompletedOrders() const;
     const std::vector<Order>& getQueuedOrders()    const;

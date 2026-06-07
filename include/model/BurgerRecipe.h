@@ -22,7 +22,7 @@ inline BurgerRecipe getRecipe(BurgerType type)
         case BurgerType::CLASSIC:
             return {
                 {
-                    { IngredientType::BUN,     2 },
+                    { IngredientType::BUN,     1 },
                     { IngredientType::PATTY,   1 },
                     { IngredientType::CHEESE,  1 },
                     { IngredientType::LETTUCE, 1 },
@@ -35,7 +35,7 @@ inline BurgerRecipe getRecipe(BurgerType type)
         case BurgerType::CHEESE:
             return {
                 {
-                    { IngredientType::BUN,     2 },
+                    { IngredientType::BUN,     1 },
                     { IngredientType::PATTY,   1 },
                     { IngredientType::CHEESE,  2 },
                     { IngredientType::LETTUCE, 1 },
@@ -47,7 +47,7 @@ inline BurgerRecipe getRecipe(BurgerType type)
         case BurgerType::DOUBLE:
             return {
                 {
-                    { IngredientType::BUN,     2 },
+                    { IngredientType::BUN,     1 },
                     { IngredientType::PATTY,   2 },
                     { IngredientType::CHEESE,  1 },
                     { IngredientType::LETTUCE, 1 },

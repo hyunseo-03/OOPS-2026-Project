@@ -3,7 +3,7 @@
 FactoryController::FactoryController(BurgerFactoryModel& model) : model(model) {}
 
 void FactoryController::update(float dt)                  { model.update(dt); }
-void FactoryController::onStartMachine(ProcessStep step)  { if (model.canProceed(step)) model.startProcess(step); }
+void FactoryController::onStartMachine(ProcessStep step)  { model.startProcess(step); }
 void FactoryController::onNewOrder(BurgerType type)       { model.addOrder(type); }
 void FactoryController::onPackBurger()                    { model.packBurger(); }
 void FactoryController::onRefillInventory()               { model.refillInventory(); }

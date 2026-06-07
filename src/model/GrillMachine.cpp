@@ -15,7 +15,7 @@ void GrillMachine::update(float dt)
     checkMalfunction(dt);
     if (!running || paused) return;
 
-    progress += dt / BASE_CYCLE;
+    progress += dt / cycleTime;
 
     if (progress >= 1.0f)
     {

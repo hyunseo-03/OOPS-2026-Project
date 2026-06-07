@@ -2,18 +2,29 @@
 #include "model/BurgerRecipe.h"
 
 BurgerFactoryModel::BurgerFactoryModel()
-    : currentStep(ProcessStep::Idle), qualityCheckPassed(false) {}
+    : currentStep(ProcessStep::Idle), qualityCheckPassed(false),
+      productionTimerRunning(false), gameOver(false), statusMessage("") {}
 
 void BurgerFactoryModel::update(float dt)
 {
-    // 주문이 진행 중일 때 걸린 시간 누적 추가
-    if (hasOrder() && orderManager.hasActiveOrder()) {
+    if (gameOver) return;
+
+    // Start Production Line을 누른 뒤부터 평점용 시간을 누적한다.
+    if (productionTimerRunning && hasOrder() && orderManager.hasActiveOrder()) {
         orderManager.updateActiveOrderTime(dt); 
     }
 
     if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done) return;
 
     productionLine.update(dt);
+
+    if (productionLine.isMachineFailed(currentStep) && moneyManager.getMoney() < REPAIR_COST)
+    {
+        gameOver = true;
+        productionTimerRunning = false;
+        statusMessage = "GAME OVER: Machine broke down and you do not have enough money to repair it.";
+        return;
+    }
 
     if (productionLine.isMachineDone(currentStep))
         nextStep();
@@ -27,8 +38,19 @@ void BurgerFactoryModel::handleMalfunction()
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
 {
     if (!productionLine.isMachineFailed(step)) return false;
-    if (!moneyManager.spend(REPAIR_COST))      return false;
+    if (!moneyManager.spend(REPAIR_COST))
+    {
+        statusMessage = "Not enough money to repair the machine.";
+        if (step == currentStep)
+        {
+            gameOver = true;
+            productionTimerRunning = false;
+            statusMessage = "GAME OVER: Machine broke down and you do not have enough money to repair it.";
+        }
+        return false;
+    }
     productionLine.repairMachine(step);
+    statusMessage = "Machine repaired.";
     if (step == currentStep)
         productionLine.startMachine(step);
     return true;
@@ -44,19 +66,38 @@ void BurgerFactoryModel::togglePauseMachine(ProcessStep step)
 
 void BurgerFactoryModel::startProcess(ProcessStep step)
 {
+    if (gameOver) return;
     if (step != currentStep) return;
     if (productionLine.isMachineFailed(step)) return;
     Machine* machine = productionLine.getMachine(step);
     if (machine && (machine->isRunning() || machine->isPaused() || machine->isDone())) return;
 
     if (step == ProcessStep::PreparingIngredients)
-        if (!consumeIngredients()) return;
+    {
+        if (!consumeIngredients())
+        {
+            if (moneyManager.getMoney() < 100)
+            {
+                gameOver = true;
+                productionTimerRunning = false;
+                statusMessage = "GAME OVER: Not enough ingredients and not enough money to refill inventory.";
+            }
+            else
+            {
+                statusMessage = "Not enough ingredients. Refill inventory to continue.";
+            }
+            return;
+        }
+    }
 
     productionLine.startMachine(step);
+    productionTimerRunning = true;
+    statusMessage = "";
 }
 
 bool BurgerFactoryModel::canProceed(ProcessStep step) const
 {
+    if (gameOver) return false;
     if (step != currentStep) return false;
     if (!orderManager.hasActiveOrder()) return false;
     if (productionLine.isMachineFailed(step)) return false;
@@ -129,6 +170,7 @@ void BurgerFactoryModel::nextStep()
             {
                 preparedIngredients.clear();
                 orderManager.completeOrder();
+                productionTimerRunning = false;
                 if (orderManager.hasActiveOrder())
                     enterStep(ProcessStep::PreparingIngredients);
                 else
@@ -141,6 +183,7 @@ void BurgerFactoryModel::nextStep()
                 BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
                 moneyManager.add(r.price);
                 orderManager.completeOrder();
+                productionTimerRunning = false;
                 preparedIngredients.clear();
                 qualityCheckPassed = false;
                 if (orderManager.hasActiveOrder())
@@ -158,7 +201,9 @@ void BurgerFactoryModel::nextStep()
 
 void BurgerFactoryModel::addOrder(BurgerType type)
 {
+    if (gameOver) return;
     orderManager.addOrder(type);
+    statusMessage = "";
     if (currentStep == ProcessStep::Idle)
         enterStep(ProcessStep::PreparingIngredients);
 }
@@ -169,6 +214,7 @@ void BurgerFactoryModel::packBurger()
     BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
     moneyManager.add(recipe.price);
     orderManager.completeOrder();
+    productionTimerRunning = false;
     preparedIngredients.clear();
     enterStep(ProcessStep::Idle);
     if (orderManager.hasActiveOrder())
@@ -211,13 +257,29 @@ int          BurgerFactoryModel::getIngredientAmount(IngredientType type) const 
 bool         BurgerFactoryModel::isQualityCheckPassed()    const { return qualityCheckPassed; }
 bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
 bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
+bool         BurgerFactoryModel::isGameOver()              const { return gameOver; }
+const std::string& BurgerFactoryModel::getStatusMessage()  const { return statusMessage; }
 const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients() const { return preparedIngredients; }
-void         BurgerFactoryModel::refillInventory()               { moneyManager.spend(100); inventoryManager.refill(); }
+void BurgerFactoryModel::refillInventory()
+{
+    if (gameOver) return;
+
+    if (!moneyManager.spend(100))
+    {
+        statusMessage = "Not enough money to refill inventory.";
+        return;
+    }
+
+    inventoryManager.refill();
+    statusMessage = "Inventory refilled.";
+}
 const std::vector<Order>& BurgerFactoryModel::getCompletedOrders() const { return orderManager.getCompletedOrders(); }
 const std::vector<Order>& BurgerFactoryModel::getQueuedOrders() const { return orderManager.getQueuedOrders(); }
 
 bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
 {
+    if (gameOver) return false;
+
     Machine* machine = productionLine.getMachine(step);
     if (!machine) return false;
 
@@ -230,9 +292,11 @@ bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
     // moneyManager에서 돈 차감 시도
     if (moneyManager.spend(cost)) {
         machine->upgrade();
+        statusMessage = "Machine upgraded.";
         return true; // 업그레이드 성공
     }
     
+    statusMessage = "Not enough money to upgrade this machine.";
     return false; // 돈 부족
 }
 float BurgerFactoryModel::getAverageReputation() const
