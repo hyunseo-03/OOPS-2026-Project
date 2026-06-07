@@ -9,16 +9,9 @@ void BurgerFactoryModel::update(float dt)
     if (currentStep == ProcessStep::Idle || currentStep == ProcessStep::Done) return;
 
     productionLine.update(dt);
-    handleMalfunction();
 
     if (productionLine.isMachineDone(currentStep))
         nextStep();
-}
-
-void BurgerFactoryModel::handleMalfunction()
-{
-    // 고장 감지: 단계는 그대로 유지 (수리 후 재시작 가능하도록)
-    // update()에서 isMachineDone이 true가 되지 않으므로 자동으로 멈춘다
 }
 
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
