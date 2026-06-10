@@ -1,8 +1,13 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <map>
 #include "model/Machine.h"
+#include "model/BurgerRecipe.h"
 #include "ProcessStep.h"
+#include "IngredientType.h"
+
+class QualityChecker;
 
 // ─────────────────────────────────────────────────────
 // ProductionLine - 모든 기계를 보유 (Composition)
@@ -16,6 +21,7 @@ class ProductionLine
 {
 private:
     std::vector<std::unique_ptr<Machine>> machines;
+    QualityChecker* qualityChecker;
     int stepToIndex(ProcessStep step) const;
 
 public:
@@ -32,6 +38,8 @@ public:
     void resumeMachine(ProcessStep step);
     void repairMachine(ProcessStep step);
     void resetMachine(ProcessStep step);
+    bool inspectQuality(const std::map<IngredientType, int>& preparedIngredients,
+                        const BurgerRecipe& recipe) const;
 
     Machine*       getMachine(ProcessStep step);
     const Machine* getMachine(ProcessStep step) const;

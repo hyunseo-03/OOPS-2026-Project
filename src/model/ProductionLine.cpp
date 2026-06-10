@@ -9,12 +9,17 @@
 // 구체 타입 생성은 ProductionLine 생성자에만 존재
 // 이후 외부는 Machine* (추상)만 사용
 ProductionLine::ProductionLine()
+    : qualityChecker(nullptr)
 {
     machines.push_back(std::make_unique<PrepMachine>());
     machines.push_back(std::make_unique<GrillMachine>());
     machines.push_back(std::make_unique<SauceMachine>());
     machines.push_back(std::make_unique<AssemblyMachine>());
-    machines.push_back(std::make_unique<QualityChecker>());
+
+    auto checker = std::make_unique<QualityChecker>();
+    qualityChecker = checker.get();
+    machines.push_back(std::move(checker));
+
     machines.push_back(std::make_unique<PackingMachine>());
 }
 
@@ -107,4 +112,10 @@ void ProductionLine::resetMachine(ProcessStep step)
 {
     Machine* m = getMachine(step);
     if (m) m->reset();
+}
+
+bool ProductionLine::inspectQuality(const std::map<IngredientType, int>& preparedIngredients,
+                                    const BurgerRecipe& recipe) const
+{
+    return qualityChecker && qualityChecker->inspect(preparedIngredients, recipe);
 }

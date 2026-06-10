@@ -76,7 +76,7 @@ void BurgerFactoryModel::startProcess(ProcessStep step)
     {
         if (!consumeIngredients())
         {
-            if (moneyManager.getMoney() < 100)
+            if (moneyManager.getMoney() < REFILL_COST)
             {
                 gameOver = true;
                 productionTimerRunning = false;
@@ -238,13 +238,7 @@ bool BurgerFactoryModel::consumeIngredients()
 bool BurgerFactoryModel::checkQuality() const
 {
     BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
-    if (preparedIngredients.size() != recipe.ingredients.size()) return false;
-    for (const auto& [ingredient, amount] : recipe.ingredients)
-    {
-        auto it = preparedIngredients.find(ingredient);
-        if (it == preparedIngredients.end() || it->second != amount) return false;
-    }
-    return true;
+    return productionLine.inspectQuality(preparedIngredients, recipe);
 }
 
 ProcessStep  BurgerFactoryModel::getCurrentStep()          const { return currentStep; }
@@ -264,7 +258,7 @@ void BurgerFactoryModel::refillInventory()
 {
     if (gameOver) return;
 
-    if (!moneyManager.spend(100))
+    if (!moneyManager.spend(REFILL_COST))
     {
         statusMessage = "Not enough money to refill inventory.";
         return;

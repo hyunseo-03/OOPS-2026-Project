@@ -33,6 +33,7 @@ private:
 public:
     BurgerFactoryModel();
     static constexpr int REPAIR_COST = 20;
+    static constexpr int REFILL_COST = 100;
 
     void update(float dt);
     void startProcess(ProcessStep step);
