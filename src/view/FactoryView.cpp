@@ -349,8 +349,7 @@ void FactoryView::render()
             ImGui::Spacing();
             
             if (ImGui::Button("Confirm Upgrade", ImVec2(170, 36))) {
-                // 모델에 업그레이드 요청
-                if (model.upgradeMachine(machineToUpgrade)) {
+                if (controller.onUpgradeMachine(machineToUpgrade)) {
                     showUpgradePopup = false;
                     ImGui::CloseCurrentPopup();
                 }

@@ -15,4 +15,5 @@ public:
     void onRefillInventory();
     void onRepairMachine(ProcessStep step);
     void onTogglePause(ProcessStep step);   // 일시정지 / 재개 토글
+    bool onUpgradeMachine(ProcessStep step);
 };

@@ -9,3 +9,4 @@ void FactoryController::onPackBurger()                    { model.packBurger(); 
 void FactoryController::onRefillInventory()               { model.refillInventory(); }
 void FactoryController::onRepairMachine(ProcessStep step) { model.repairMachine(step); }
 void FactoryController::onTogglePause(ProcessStep step)   { model.togglePauseMachine(step); }
+bool FactoryController::onUpgradeMachine(ProcessStep step){ return model.upgradeMachine(step); }
