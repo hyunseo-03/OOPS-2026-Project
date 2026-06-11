@@ -53,7 +53,7 @@ void ProductionLine::configureMachine(ProcessStep step, const MachineConfig& con
 void ProductionLine::startMachine(ProcessStep step)
 {
     Machine* m = getMachine(step);
-    if (m) m->start();
+    if (m) m->setState(MachineState::Running);
 }
 
 bool ProductionLine::isMachineDone(ProcessStep step) const
@@ -77,19 +77,19 @@ bool ProductionLine::isMachinePaused(ProcessStep step) const
 void ProductionLine::pauseMachine(ProcessStep step)
 {
     Machine* m = getMachine(step);
-    if (m) m->pause();
+    if (m) m->setState(MachineState::Paused);
 }
 
 void ProductionLine::resumeMachine(ProcessStep step)
 {
     Machine* m = getMachine(step);
-    if (m) m->resume();
+    if (m) m->setState(MachineState::Running);
 }
 
 void ProductionLine::repairMachine(ProcessStep step)
 {
     Machine* m = getMachine(step);
-    if (m) m->repair();
+    if (m) m->reset();
 }
 
 Machine* ProductionLine::getMachine(ProcessStep step)

@@ -23,14 +23,14 @@ void PackingMachine::configure(const MachineConfig& config)
 void PackingMachine::update(float dt)
 {
     checkMalfunction(dt);
-    if (!running || paused) return;
+    if (!isRunning()) return;
 
     progress += dt / cycleTime;
     if (progress >= 1.0f)
     {
         progress = 1.0f;
         sealed   = true;
-        stop();
+        finishCycle();
     }
 }
 

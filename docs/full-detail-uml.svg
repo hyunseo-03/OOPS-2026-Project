@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="3600" height="2840" viewBox="0 0 3600 2840">
+<svg xmlns="http://www.w3.org/2000/svg" width="3900" height="2840" viewBox="0 0 3900 2840">
   <defs>
     <style>
       text { font-family: Arial, Helvetica, sans-serif; fill: #172033; }
@@ -43,7 +43,7 @@
     </marker>
   </defs>
 
-  <rect x="0" y="0" width="3600" height="2840" fill="#f3f6fb"/>
+  <rect x="0" y="0" width="3900" height="2840" fill="#f3f6fb"/>
   <text x="80" y="75" class="title">Burger Factory Simulation - Clean UML Overview</text>
   <text x="80" y="112" class="subtitle">Complete class structure, organized for presentation: MVC, Model composition, Machine inheritance, value types, and relationship summary</text>
 
@@ -114,111 +114,139 @@
   <text x="905" y="365" class="label">updates model</text>
 
   <!-- Model package -->
-  <rect x="1185" y="285" width="2265" height="1065" class="package package-model"/>
+  <rect x="1185" y="285" width="2635" height="1245" class="package package-model"/>
   <text x="1215" y="328" class="package-title">Model Layer and Composition</text>
 
   <g id="BurgerFactoryModel">
-    <rect x="1225" y="370" width="545" height="540" class="box"/>
-    <rect x="1225" y="370" width="545" height="58" class="head head-model"/>
+    <rect x="1225" y="370" width="785" height="860" class="box"/>
+    <rect x="1225" y="370" width="785" height="58" class="head head-model"/>
     <text x="1250" y="394" class="stereo">&lt;&lt;Model Coordinator&gt;&gt;</text>
     <text x="1250" y="420" class="class-name">BurgerFactoryModel</text>
-    <line x1="1225" y1="428" x2="1770" y2="428" class="line"/>
+    <line x1="1225" y1="428" x2="2010" y2="428" class="line"/>
     <text x="1250" y="460" class="member">- currentStep: ProcessStep</text>
     <text x="1250" y="486" class="member">- preparedIngredients: map&lt;IngredientType,int&gt;</text>
     <text x="1250" y="512" class="member">- qualityCheckPassed: bool</text>
     <text x="1250" y="538" class="member">- productionTimerRunning: bool</text>
     <text x="1250" y="564" class="member">- gameOver: bool</text>
     <text x="1250" y="590" class="member">- statusMessage: string</text>
-    <text x="1250" y="616" class="member">- inventoryManager, moneyManager</text>
-    <text x="1250" y="642" class="member">- orderManager, productionLine</text>
-    <text x="1250" y="668" class="member">- consumeIngredients(), checkQuality()</text>
-    <text x="1250" y="694" class="member">- handleMalfunction(), enterStep(...)</text>
-    <line x1="1225" y1="717" x2="1770" y2="717" class="line"/>
-    <text x="1250" y="748" class="member">+ REPAIR_COST = 20, REFILL_COST = 100</text>
-    <text x="1250" y="774" class="member">+ update(dt), startProcess(step), nextStep()</text>
-    <text x="1250" y="800" class="member">+ addOrder(type), packBurger()</text>
-    <text x="1250" y="826" class="member">+ repairMachine(step), togglePauseMachine(step)</text>
-    <text x="1250" y="852" class="member">+ refillInventory(), upgradeMachine(step)</text>
-    <text x="1250" y="878" class="member">+ getCurrentStep(), getMoney(), getMachine(step)</text>
-    <text x="1250" y="904" class="member">+ order/status/reputation getters</text>
+    <text x="1250" y="616" class="member">- inventoryManager: InventoryManager</text>
+    <text x="1250" y="642" class="member">- moneyManager: MoneyManager</text>
+    <text x="1250" y="668" class="member">- orderManager: OrderManager</text>
+    <text x="1250" y="694" class="member">- productionLine: ProductionLine</text>
+    <text x="1250" y="720" class="member">- consumeIngredients(): bool</text>
+    <text x="1250" y="746" class="member">- checkQuality(): bool</text>
+    <text x="1250" y="772" class="member">- handleMalfunction(): void</text>
+    <text x="1250" y="798" class="member">- enterStep(step, autoStart, config): void</text>
+    <line x1="1225" y1="821" x2="2010" y2="821" class="line"/>
+    <text x="1250" y="852" class="member">+ BurgerFactoryModel()</text>
+    <text x="1250" y="878" class="member">+ REPAIR_COST: int = 20</text>
+    <text x="1250" y="904" class="member">+ REFILL_COST: int = 100</text>
+    <text x="1250" y="930" class="member">+ update(dt): void</text>
+    <text x="1250" y="956" class="member">+ startProcess(step): void</text>
+    <text x="1250" y="982" class="member">+ canProceed(step): bool</text>
+    <text x="1250" y="1008" class="member">+ nextStep(): void</text>
+    <text x="1250" y="1034" class="member">+ addOrder(type): void</text>
+    <text x="1250" y="1060" class="member">+ packBurger(): void</text>
+    <text x="1250" y="1086" class="member">+ repairMachine(step): bool</text>
+    <text x="1250" y="1112" class="member">+ togglePauseMachine(step): void</text>
+    <text x="1250" y="1138" class="member">+ refillInventory(): void</text>
+    <text x="1250" y="1164" class="member">+ upgradeMachine(step): bool</text>
+    <text x="1250" y="1190" class="member">+ getCurrentStep(): ProcessStep</text>
+    <text x="1250" y="1216" class="member">+ getTotalBurgersProduced(): int</text>
+    <text x="1615" y="852" class="member">+ getMoney(): int</text>
+    <text x="1615" y="878" class="member">+ hasOrder(): bool</text>
+    <text x="1615" y="904" class="member">+ getCurrentOrder(): const Order&amp;</text>
+    <text x="1615" y="930" class="member">+ getMachine(step): Machine*</text>
+    <text x="1615" y="956" class="member">+ getIngredientAmount(type): int</text>
+    <text x="1615" y="982" class="member">+ isQualityCheckPassed(): bool</text>
+    <text x="1615" y="1008" class="member">+ isCurrentMachineFailed(): bool</text>
+    <text x="1615" y="1034" class="member">+ isCurrentMachinePaused(): bool</text>
+    <text x="1615" y="1060" class="member">+ isGameOver(): bool</text>
+    <text x="1615" y="1086" class="member">+ getStatusMessage(): const string&amp;</text>
+    <text x="1615" y="1112" class="member">+ getPreparedIngredients(): const map&amp;</text>
+    <text x="1615" y="1138" class="member">+ getCompletedOrders(): const vector&lt;Order&gt;&amp;</text>
+    <text x="1615" y="1164" class="member">+ getQueuedOrders(): const vector&lt;Order&gt;&amp;</text>
+    <text x="1615" y="1190" class="member">+ getAverageReputation(): float</text>
   </g>
 
   <g id="Managers">
-    <rect x="1830" y="370" width="360" height="245" class="box"/>
-    <rect x="1830" y="370" width="360" height="50" class="head head-model"/>
-    <text x="1855" y="402" class="class-name">InventoryManager</text>
-    <line x1="1830" y1="420" x2="2190" y2="420" class="line"/>
-    <text x="1855" y="452" class="member">- inventory: map&lt;IngredientType,int&gt;</text>
-    <line x1="1830" y1="475" x2="2190" y2="475" class="line"/>
-    <text x="1855" y="506" class="member">+ hasEnough(type, amount): bool</text>
-    <text x="1855" y="532" class="member">+ use(type, amount): bool</text>
-    <text x="1855" y="558" class="member">+ add(type, amount): void</text>
-    <text x="1855" y="584" class="member">+ getAmount(type): int</text>
-    <text x="1855" y="610" class="member">+ refill(): void</text>
+    <rect x="2070" y="370" width="360" height="245" class="box"/>
+    <rect x="2070" y="370" width="360" height="50" class="head head-model"/>
+    <text x="2095" y="402" class="class-name">InventoryManager</text>
+    <line x1="2070" y1="420" x2="2430" y2="420" class="line"/>
+    <text x="2095" y="452" class="member">- inventory: map&lt;IngredientType,int&gt;</text>
+    <line x1="2070" y1="475" x2="2430" y2="475" class="line"/>
+    <text x="2095" y="506" class="member">+ hasEnough(type, amount): bool</text>
+    <text x="2095" y="532" class="member">+ use(type, amount): bool</text>
+    <text x="2095" y="558" class="member">+ add(type, amount): void</text>
+    <text x="2095" y="584" class="member">+ getAmount(type): int</text>
+    <text x="2095" y="610" class="member">+ refill(): void</text>
 
-    <rect x="1830" y="665" width="360" height="185" class="box"/>
-    <rect x="1830" y="665" width="360" height="50" class="head head-model"/>
-    <text x="1855" y="697" class="class-name">MoneyManager</text>
-    <line x1="1830" y1="715" x2="2190" y2="715" class="line"/>
-    <text x="1855" y="747" class="member">- money: int</text>
-    <line x1="1830" y1="770" x2="2190" y2="770" class="line"/>
-    <text x="1855" y="801" class="member">+ add(amount): void</text>
-    <text x="1855" y="827" class="member">+ spend(amount): bool</text>
-    <text x="1855" y="853" class="member">+ getMoney(): int</text>
+    <rect x="2070" y="665" width="360" height="185" class="box"/>
+    <rect x="2070" y="665" width="360" height="50" class="head head-model"/>
+    <text x="2095" y="697" class="class-name">MoneyManager</text>
+    <line x1="2070" y1="715" x2="2430" y2="715" class="line"/>
+    <text x="2095" y="747" class="member">- money: int</text>
+    <line x1="2070" y1="770" x2="2430" y2="770" class="line"/>
+    <text x="2095" y="801" class="member">+ add(amount): void</text>
+    <text x="2095" y="827" class="member">+ spend(amount): bool</text>
+    <text x="2095" y="853" class="member">+ getMoney(): int</text>
   </g>
 
   <g id="OrderManager">
-    <rect x="2270" y="370" width="430" height="350" class="box"/>
-    <rect x="2270" y="370" width="430" height="50" class="head head-model"/>
-    <text x="2295" y="402" class="class-name">OrderManager</text>
-    <line x1="2270" y1="420" x2="2700" y2="420" class="line"/>
-    <text x="2295" y="452" class="member">- currentOrder: Order</text>
-    <text x="2295" y="478" class="member">- orderQueue: vector&lt;Order&gt;</text>
-    <text x="2295" y="504" class="member">- completedOrders: vector&lt;Order&gt;</text>
-    <text x="2295" y="530" class="member">- completedCount: int</text>
-    <text x="2295" y="556" class="member">- totalReputation: float = 0.0f</text>
-    <line x1="2270" y1="579" x2="2700" y2="579" class="line"/>
-    <text x="2295" y="610" class="member">+ addOrder(type), completeOrder()</text>
-    <text x="2295" y="636" class="member">+ getCurrentOrder(): const Order&amp;</text>
-    <text x="2295" y="662" class="member">+ hasOrder(), hasActiveOrder(): bool</text>
-    <text x="2295" y="688" class="member">+ completed/queued getters</text>
-    <text x="2295" y="714" class="member">+ updateActiveOrderTime(dt)</text>
-    <text x="2295" y="740" class="member">+ getAverageReputation(): float</text>
+    <rect x="2510" y="370" width="460" height="420" class="box"/>
+    <rect x="2510" y="370" width="460" height="50" class="head head-model"/>
+    <text x="2535" y="402" class="class-name">OrderManager</text>
+    <line x1="2510" y1="420" x2="2970" y2="420" class="line"/>
+    <text x="2535" y="452" class="member">- currentOrder: Order</text>
+    <text x="2535" y="478" class="member">- orderQueue: vector&lt;Order&gt;</text>
+    <text x="2535" y="504" class="member">- completedOrders: vector&lt;Order&gt;</text>
+    <text x="2535" y="530" class="member">- completedCount: int</text>
+    <text x="2535" y="556" class="member">- totalReputation: float = 0.0f</text>
+    <line x1="2510" y1="579" x2="2970" y2="579" class="line"/>
+    <text x="2535" y="610" class="member">+ addOrder(type), completeOrder()</text>
+    <text x="2535" y="636" class="member">+ getCurrentOrder(): const Order&amp;</text>
+    <text x="2535" y="662" class="member">+ hasOrder(), hasActiveOrder(): bool</text>
+    <text x="2535" y="688" class="member">+ getCompletedCount(): int</text>
+    <text x="2535" y="714" class="member">+ getCompletedOrders(): const vector&lt;Order&gt;&amp;</text>
+    <text x="2535" y="740" class="member">+ getQueuedOrders(): const vector&lt;Order&gt;&amp;</text>
+    <text x="2535" y="766" class="member">+ updateActiveOrderTime(dt)</text>
+    <text x="2535" y="792" class="member">+ getAverageReputation(): float</text>
   </g>
 
   <g id="ProductionLine">
-    <rect x="2780" y="370" width="580" height="420" class="box"/>
-    <rect x="2780" y="370" width="580" height="58" class="head head-model"/>
-    <text x="2805" y="394" class="stereo">&lt;&lt;Composition Owner&gt;&gt;</text>
-    <text x="2805" y="420" class="class-name">ProductionLine</text>
-    <line x1="2780" y1="428" x2="3360" y2="428" class="line"/>
-    <text x="2805" y="460" class="member">- machines: vector&lt;unique_ptr&lt;Machine&gt;&gt;</text>
-    <text x="2805" y="486" class="member">- qualityChecker: QualityChecker*</text>
-    <text x="2805" y="512" class="member">- stepToIndex(step): int</text>
-    <line x1="2780" y1="535" x2="3360" y2="535" class="line"/>
-    <text x="2805" y="566" class="member">+ update(dt), configureMachine(step, config)</text>
-    <text x="2805" y="592" class="member">+ startMachine(step)</text>
-    <text x="2805" y="618" class="member">+ isMachineDone/Failed/Paused(step): bool</text>
-    <text x="2805" y="644" class="member">+ pause/resume/repair/resetMachine(step)</text>
-    <text x="2805" y="670" class="member">+ inspectQuality(prepared, recipe): bool</text>
-    <text x="2805" y="696" class="member">+ getMachine(step): Machine*</text>
-    <text x="2805" y="722" class="tiny">owns concrete stations through Machine abstraction</text>
+    <rect x="3040" y="370" width="580" height="420" class="box"/>
+    <rect x="3040" y="370" width="580" height="58" class="head head-model"/>
+    <text x="3065" y="394" class="stereo">&lt;&lt;Composition Owner&gt;&gt;</text>
+    <text x="3065" y="420" class="class-name">ProductionLine</text>
+    <line x1="3040" y1="428" x2="3620" y2="428" class="line"/>
+    <text x="3065" y="460" class="member">- machines: vector&lt;unique_ptr&lt;Machine&gt;&gt;</text>
+    <text x="3065" y="486" class="member">- qualityChecker: QualityChecker*</text>
+    <text x="3065" y="512" class="member">- stepToIndex(step): int</text>
+    <line x1="3040" y1="535" x2="3620" y2="535" class="line"/>
+    <text x="3065" y="566" class="member">+ update(dt), configureMachine(step, config)</text>
+    <text x="3065" y="592" class="member">+ startMachine(step)</text>
+    <text x="3065" y="618" class="member">+ isMachineDone/Failed/Paused(step): bool</text>
+    <text x="3065" y="644" class="member">+ pause/resume/repair/resetMachine(step)</text>
+    <text x="3065" y="670" class="member">+ inspectQuality(prepared, recipe): bool</text>
+    <text x="3065" y="696" class="member">+ getMachine(step): Machine*</text>
+    <text x="3065" y="722" class="tiny">owns concrete stations through Machine abstraction</text>
   </g>
 
-  <path d="M 1770 530 L 1830 490" class="arrow" marker-end="url(#diamond)"/>
-  <path d="M 1770 660 L 1830 745" class="arrow" marker-end="url(#diamond)"/>
-  <path d="M 1770 605 C 1950 455 2100 455 2270 455" class="arrow" marker-end="url(#diamond)"/>
-  <path d="M 1770 760 C 2070 885 2460 850 2780 650" class="arrow" marker-end="url(#diamond)"/>
-  <text x="1785" y="445" class="label">has-a manager objects</text>
-  <text x="2415" y="895" class="label">has-a ProductionLine</text>
+  <path d="M 2010 530 L 2070 490" class="arrow" marker-end="url(#diamond)"/>
+  <path d="M 2010 660 L 2070 745" class="arrow" marker-end="url(#diamond)"/>
+  <path d="M 2010 605 C 2190 455 2340 455 2510 455" class="arrow" marker-end="url(#diamond)"/>
+  <path d="M 2010 760 C 2310 885 2700 850 3040 650" class="arrow" marker-end="url(#diamond)"/>
+  <text x="2025" y="445" class="label">has-a manager objects</text>
+  <text x="2655" y="895" class="label">has-a ProductionLine</text>
 
-  <rect x="1830" y="920" width="1530" height="340" class="note"/>
-  <text x="1860" y="962" class="class-name">Model Responsibility Split</text>
-  <text x="1860" y="1000" class="small">BurgerFactoryModel coordinates the factory process, but delegates details:</text>
-  <text x="1890" y="1034" class="small">InventoryManager = ingredient stock, MoneyManager = money, OrderManager = orders and reputation.</text>
-  <text x="1890" y="1068" class="small">ProductionLine = machines and station state. QualityChecker performs actual inspection.</text>
-  <text x="1860" y="1118" class="small">Quality flow: BurgerFactoryModel.checkQuality() -> ProductionLine.inspectQuality() -> QualityChecker.inspect().</text>
-  <text x="1860" y="1168" class="small">MVC rule: View reads state through getters and sends user actions through FactoryController.</text>
+  <rect x="2070" y="920" width="1640" height="340" class="note"/>
+  <text x="2100" y="962" class="class-name">Model Responsibility Split</text>
+  <text x="2100" y="1000" class="small">BurgerFactoryModel coordinates the factory process, but delegates details:</text>
+  <text x="2130" y="1034" class="small">InventoryManager = ingredient stock, MoneyManager = money, OrderManager = orders and reputation.</text>
+  <text x="2130" y="1068" class="small">ProductionLine = machines and station state. QualityChecker performs actual inspection.</text>
+  <text x="2100" y="1118" class="small">Quality flow: BurgerFactoryModel.checkQuality() -> ProductionLine.inspectQuality() -> QualityChecker.inspect().</text>
+  <text x="2100" y="1168" class="small">MVC rule: View reads state through getters and sends user actions through FactoryController.</text>
 
   <g id="MachineHierarchyGroup" transform="translate(0,140)">
   <!-- Machine package -->
@@ -226,24 +254,27 @@
   <text x="110" y="893" class="package-title">Machine is-a Hierarchy</text>
 
   <g id="Machine">
-    <rect x="390" y="935" width="760" height="430" class="box"/>
+    <rect x="390" y="935" width="760" height="500" class="box"/>
     <rect x="390" y="935" width="760" height="58" class="head head-machine"/>
     <text x="415" y="959" class="stereo">&lt;&lt;abstract&gt;&gt;</text>
     <text x="415" y="985" class="class-name">Machine</text>
     <line x1="390" y1="993" x2="1150" y2="993" class="line"/>
     <text x="415" y="1025" class="member"># name: string</text>
-    <text x="415" y="1051" class="member"># running, paused, failed, hasCompleted: bool</text>
-    <text x="415" y="1077" class="member"># level: int</text>
-    <text x="415" y="1103" class="member"># progress, cycleTime, malfunctionRate: float</text>
-    <text x="415" y="1129" class="member"># maxLevel = 5, upgradeCost = 100</text>
-    <text x="415" y="1155" class="member"># baseCycleTime, baseMalfunctionRate: float</text>
-    <text x="415" y="1181" class="member"># checkMalfunction(dt)</text>
-    <line x1="390" y1="1204" x2="1150" y2="1204" class="line"/>
-    <text x="415" y="1235" class="member">+ configure(config), update(dt) = 0</text>
-    <text x="415" y="1261" class="member">+ start(), stop(), reset(), repair(), pause(), resume()</text>
-    <text x="415" y="1287" class="member">+ isDone(), isFailed(), isRunning(), isPaused()</text>
-    <text x="415" y="1313" class="member">+ getProgress(), getName(), getLevel(), getMaxLevel()</text>
-    <text x="415" y="1339" class="member">+ getUpgradeCost(), getCycleTime(), getMalfunctionRate(), upgrade()</text>
+    <text x="415" y="1051" class="member"># state: MachineState</text>
+    <text x="415" y="1077" class="member"># hasCompleted: bool</text>
+    <text x="415" y="1103" class="member"># level: int</text>
+    <text x="415" y="1129" class="member"># progress, cycleTime, malfunctionRate: float</text>
+    <text x="415" y="1155" class="member"># maxLevel = 5, upgradeCost = 100</text>
+    <text x="415" y="1181" class="member"># baseCycleTime, baseMalfunctionRate: float</text>
+    <text x="415" y="1207" class="member"># checkMalfunction(dt)</text>
+    <text x="415" y="1233" class="member"># finishCycle(): void</text>
+    <line x1="390" y1="1256" x2="1150" y2="1256" class="line"/>
+    <text x="415" y="1287" class="member">+ configure(config), update(dt) = 0</text>
+    <text x="415" y="1313" class="member">+ setState(newState: MachineState): void</text>
+    <text x="415" y="1339" class="member">+ reset(): void</text>
+    <text x="415" y="1365" class="member">+ isDone(), isFailed(), isRunning(), isPaused()</text>
+    <text x="415" y="1391" class="member">+ getProgress(), getName(), getLevel(), getMaxLevel()</text>
+    <text x="415" y="1417" class="member">+ getUpgradeCost(), getCycleTime(), getMalfunctionRate(), upgrade()</text>
   </g>
 
   <!-- Machine subclasses in grid -->
@@ -309,7 +340,7 @@
   <path d="M 315 1745 C 330 1580 520 1430 700 1365" class="arrow" marker-end="url(#inherit)"/>
   <path d="M 770 1745 C 770 1605 770 1500 770 1365" class="arrow" marker-end="url(#inherit)"/>
   <path d="M 1225 1745 C 1210 1580 1025 1430 840 1365" class="arrow" marker-end="url(#inherit)"/>
-  <path d="M 2780 735 C 2190 1010 1660 1250 1150 1180" class="arrow" marker-end="url(#diamond)"/>
+  <path d="M 3040 735 C 2320 1010 1660 1250 1150 1180" class="arrow" marker-end="url(#diamond)"/>
   <text x="1780" y="1045" class="label">ProductionLine owns vector&lt;unique_ptr&lt;Machine&gt;&gt;</text>
   </g>
 
@@ -363,6 +394,14 @@
     <text x="2540" y="1844" class="stereo">&lt;&lt;enum&gt;&gt; ProcessStep</text>
     <text x="2540" y="1885" class="member">Idle, PreparingIngredients, GrillPatty, AddSauce, AssembleBurger</text>
     <text x="2540" y="1911" class="member">QualityCheck, PackBurger, Done</text>
+
+    <rect x="2985" y="1525" width="310" height="170" class="box"/>
+    <rect x="2985" y="1525" width="310" height="48" class="head head-value"/>
+    <text x="3010" y="1554" class="stereo">&lt;&lt;enum&gt;&gt; MachineState</text>
+    <text x="3010" y="1595" class="member">Idle</text>
+    <text x="3010" y="1621" class="member">Running</text>
+    <text x="3010" y="1647" class="member">Paused</text>
+    <text x="3010" y="1673" class="member">Failed</text>
   </g>
 
   <g id="RelationshipSummaryGroup" transform="translate(0,140)">

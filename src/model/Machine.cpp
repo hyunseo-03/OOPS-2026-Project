@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 Machine::Machine(const std::string& name, float cycleTime, float malfunctionRate)
-    : name(name), running(false), paused(false), failed(false),
+    : name(name), state(MachineState::Idle),
       hasCompleted(false), level(1), progress(0.0f),
       cycleTime(cycleTime), malfunctionRate(malfunctionRate),
       baseCycleTime(cycleTime), baseMalfunctionRate(malfunctionRate)
@@ -10,39 +10,40 @@ Machine::Machine(const std::string& name, float cycleTime, float malfunctionRate
 
 void Machine::checkMalfunction(float dt)
 {
-    if (!running || paused || failed) return;
+    if (state != MachineState::Running) return;
     float roll = static_cast<float>(rand()) / RAND_MAX;
     if (roll < malfunctionRate * dt)
     {
-        running = false;
-        failed  = true;
+        state = MachineState::Failed;
     }
 }
 
-void Machine::start()
+void Machine::setState(MachineState newState)
 {
-    if (failed) return;
-    running      = true;
-    paused       = false;
-    progress     = 0.0f;
-    hasCompleted = false;   // 새 사이클 시작 → 완주 플래그 초기화
+    if (state == MachineState::Failed && newState != MachineState::Idle) return;
+    if (newState == MachineState::Paused && state != MachineState::Running) return;
+
+    if (newState == MachineState::Running && state != MachineState::Paused)
+    {
+        progress = 0.0f;
+        hasCompleted = false;
+    }
+
+    state = newState;
 }
 
-void Machine::stop()
+void Machine::finishCycle()
 {
-    if (running) hasCompleted = true;  // 실제로 돌다가 멈춰야만 완주로 인정
-    running = false;
+    if (state == MachineState::Running) hasCompleted = true;  // 실제로 돌다가 멈춰야만 완주로 인정
+    state = MachineState::Idle;
 }
 
-void Machine::reset()  { running = false; paused = false; progress = 0.0f; failed = false; hasCompleted = false; }
-void Machine::repair() { failed = false; running = false; paused = false; progress = 0.0f; hasCompleted = false; }
-void Machine::pause()  { if (running) paused = true; }
-void Machine::resume() { if (paused) paused = false; }
+void Machine::reset()  { state = MachineState::Idle; progress = 0.0f; hasCompleted = false; }
 
-bool  Machine::isDone()    const { return !failed && hasCompleted && progress >= 1.0f; }
-bool  Machine::isFailed()  const { return failed; }
-bool  Machine::isRunning() const { return running && !paused; }
-bool  Machine::isPaused()  const { return paused; }
+bool  Machine::isDone()    const { return state != MachineState::Failed && hasCompleted && progress >= 1.0f; }
+bool  Machine::isFailed()  const { return state == MachineState::Failed; }
+bool  Machine::isRunning() const { return state == MachineState::Running; }
+bool  Machine::isPaused()  const { return state == MachineState::Paused; }
 float Machine::getProgress()       const { return progress; }
 const std::string& Machine::getName() const { return name; }
 

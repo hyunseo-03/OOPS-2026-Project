@@ -1,15 +1,14 @@
 #pragma once
 #include <string>
 #include "model/MachineConfig.h"
+#include "MachineState.h"
 
 class Machine
 {
 protected:
     std::string name;
-    bool        running;
-    bool        paused;
-    bool        failed;
-    bool        hasCompleted;   // start() 후 stop()까지 완주했는지 여부
+    MachineState state;
+    bool        hasCompleted;   // 현재 작업 사이클을 완주했는지 여부
     int         level;           // 기계 레벨 (업그레이드 시 증가)
     float       progress;
     float       cycleTime;
@@ -20,6 +19,7 @@ protected:
     float baseMalfunctionRate;
 
     void checkMalfunction(float dt);
+    void finishCycle();
 
 public:
     Machine(const std::string& name, float cycleTime, float malfunctionRate = 0.0003f);
@@ -28,12 +28,8 @@ public:
     virtual void configure(const MachineConfig& config) {}
     virtual void update(float dt) = 0;
 
-    void start();
-    void stop();
+    void setState(MachineState newState);
     void reset();
-    void repair();
-    void pause();
-    void resume();
 
     bool  isDone()    const;
     bool  isFailed()  const;

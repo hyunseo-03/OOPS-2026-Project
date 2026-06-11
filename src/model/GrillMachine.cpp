@@ -13,7 +13,7 @@ void GrillMachine::configure(const MachineConfig& config)
 void GrillMachine::update(float dt)
 {
     checkMalfunction(dt);
-    if (!running || paused) return;
+    if (!isRunning()) return;
 
     progress += dt / cycleTime;
 
@@ -30,7 +30,7 @@ void GrillMachine::update(float dt)
         {
             // 모든 패티 완료
             progress = 1.0f;
-            stop();
+            finishCycle();
         }
     }
 }
