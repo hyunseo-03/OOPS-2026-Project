@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <string>
 
-FactoryView::FactoryView(BurgerFactoryModel& model, FactoryController& controller)
+FactoryView::FactoryView(IFactoryViewData& model, FactoryController& controller)
     : model(model), controller(controller) {}
 
 const char* FactoryView::stepToString(ProcessStep step) const
@@ -62,18 +62,18 @@ void FactoryView::render()
         return value;
     };
 
-    auto machineColor = [&](Machine* machine, bool active) -> ImVec4 {
-        if (machine && machine->isFailed()) return red;
-        if (machine && machine->isPaused()) return yellow;
-        if (active && machine && machine->isRunning()) return green;
+    auto machineColor = [&](ProcessStep step, bool active) -> ImVec4 {
+        if (model.isMachineFailed(step)) return red;
+        if (model.isMachinePaused(step)) return yellow;
+        if (active && model.isMachineRunning(step)) return green;
         if (active) return blue;
         return muted;
     };
 
-    auto machineState = [](Machine* machine, bool active) -> const char* {
-        if (machine && machine->isFailed()) return "Repair";
-        if (machine && machine->isPaused()) return "Paused";
-        if (active && machine && machine->isRunning()) return "Running";
+    auto machineState = [&](ProcessStep step, bool active) -> const char* {
+        if (model.isMachineFailed(step)) return "Repair";
+        if (model.isMachinePaused(step)) return "Paused";
+        if (active && model.isMachineRunning(step)) return "Running";
         if (active) return "Waiting";
         return "Idle";
     };
@@ -168,14 +168,14 @@ void FactoryView::render()
     static bool showUpgradePopup = false;
 
     auto drawMachineCard = [&](const char* title, const char* shortName, ProcessStep step) {
-        Machine* machine = model.getMachine(step);
+        const bool hasMachine = model.hasMachine(step);
         const bool active = model.getCurrentStep() == step;
-        const ImVec4 stateColor = machineColor(machine, active);
-        const float progress = machine ? progress01(machine->getProgress()) : 0.0f;
+        const ImVec4 stateColor = machineColor(step, active);
+        const float progress = hasMachine ? progress01(model.getMachineProgress(step)) : 0.0f;
 
         ImGui::PushID(shortName);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, active ? ImVec4(0.095f, 0.155f, 0.145f, 1.0f) : panel2);
-        ImGui::PushStyleColor(ImGuiCol_Border, machine && machine->isFailed() ? red : (active ? green : border));
+        ImGui::PushStyleColor(ImGuiCol_Border, model.isMachineFailed(step) ? red : (active ? green : border));
         
         const float cardWidth = 200.0f;
         const float cardHeight = 150.0f;
@@ -190,9 +190,9 @@ void FactoryView::render()
         ImGui::BeginChild("MachineCard", ImVec2(cardWidth, cardHeight), true, ImGuiWindowFlags_NoScrollbar);
         // 카드 상단: 이름과 레벨 표시
         ImGui::TextWrapped("%s", title);
-        if (machine) {
+        if (hasMachine) {
             ImGui::SameLine();
-            ImGui::TextColored(blue, "[Lv.%d]", machine->getLevel());
+            ImGui::TextColored(blue, "[Lv.%d]", model.getMachineLevel(step));
         }
         ImGui::Spacing();
         
@@ -204,8 +204,8 @@ void FactoryView::render()
         drawList->AddCircleFilled(ImVec2(dotPos.x + 5.0f, dotPos.y + 8.0f), 4.0f, ImGui::GetColorU32(stateColor));
         ImGui::Dummy(ImVec2(14.0f, 16.0f));
         ImGui::SameLine();
-        ImGui::TextDisabled("%s", machineState(machine, active));
-        if (machine)
+        ImGui::TextDisabled("%s", machineState(step, active));
+        if (hasMachine)
         {
             char progressText[16];
             snprintf(progressText, sizeof(progressText), "%.0f%%", progress * 100.0f);
@@ -217,15 +217,15 @@ void FactoryView::render()
         }
         ImGui::Spacing();
 
-        if (machine && machine->isFailed())
+        if (hasMachine && model.isMachineFailed(step))
         {
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.650f, 0.130f, 0.130f, 1.0f));
             if (ImGui::Button("Repair", ImVec2(-1.0f, 30.0f)))
                 controller.onRepairMachine(step);
             ImGui::PopStyleColor();
-            ImGui::TextDisabled("$%d", BurgerFactoryModel::REPAIR_COST);
+            ImGui::TextDisabled("$%d", model.getRepairCost());
         }
-        else if (machine)
+        else if (hasMachine)
         {
             ImGui::PushStyleColor(ImGuiCol_PlotHistogram, active ? green : ImVec4(0.180f, 0.260f, 0.350f, 1.0f));
             ImGui::ProgressBar(progress, ImVec2(-1.0f, 8.0f), "");
@@ -233,8 +233,8 @@ void FactoryView::render()
             
             // 업그레이드 버튼 추가
             ImGui::Spacing();
-            if (machine->getLevel() < machine->getMaxLevel()) {
-                std::string upgText = "UPG ($" + std::to_string(machine->getUpgradeCost()) + ")";
+            if (model.getMachineLevel(step) < model.getMachineMaxLevel(step)) {
+                std::string upgText = "UPG ($" + std::to_string(model.getMachineUpgradeCost(step)) + ")";
                 if (ImGui::Button(upgText.c_str(), ImVec2(-1.0f, 34.0f))) {
                     machineToUpgrade = step;
                     showUpgradePopup = true;
@@ -300,31 +300,30 @@ void FactoryView::render()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(22.0f, 18.0f));
     if (ImGui::BeginPopupModal("Upgrade Machine", NULL, ImGuiWindowFlags_AlwaysAutoResize))
     {
-        Machine* m = model.getMachine(machineToUpgrade);
-        if (m) {
+        if (model.hasMachine(machineToUpgrade)) {
             ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + 360.0f);
-            ImGui::TextColored(text, "Upgrade %s?", m->getName().c_str());
+            ImGui::TextColored(text, "Upgrade %s?", model.getMachineName(machineToUpgrade).c_str());
             ImGui::TextColored(muted, "Upgrades make this station faster and more reliable.");
             ImGui::PopTextWrapPos();
             ImGui::Separator();
 
-            const int nextLevel = m->getLevel() + 1;
-            const float nextCycleTime = m->getCycleTime() * 0.85f;
-            const float nextMalfunctionRate = m->getMalfunctionRate() * 0.80f;
+            const int nextLevel = model.getMachineLevel(machineToUpgrade) + 1;
+            const float nextCycleTime = model.getMachineCycleTime(machineToUpgrade) * 0.85f;
+            const float nextMalfunctionRate = model.getMachineMalfunctionRate(machineToUpgrade) * 0.80f;
 
             ImGui::Spacing();
             ImGui::Text("Level");
             ImGui::SameLine(180.0f);
-            ImGui::TextColored(blue, "%d -> %d", m->getLevel(), nextLevel);
+            ImGui::TextColored(blue, "%d -> %d", model.getMachineLevel(machineToUpgrade), nextLevel);
 
             ImGui::Text("Cycle Time");
             ImGui::SameLine(180.0f);
-            ImGui::TextColored(green, "%.2fs -> %.2fs", m->getCycleTime(), nextCycleTime);
+            ImGui::TextColored(green, "%.2fs -> %.2fs", model.getMachineCycleTime(machineToUpgrade), nextCycleTime);
 
             ImGui::Text("Failure Chance");
             ImGui::SameLine(180.0f);
             ImGui::TextColored(green, "%.2f%% -> %.2f%%",
-                               m->getMalfunctionRate() * 100.0f,
+                               model.getMachineMalfunctionRate(machineToUpgrade) * 100.0f,
                                nextMalfunctionRate * 100.0f);
 
             ImGui::Spacing();
@@ -341,7 +340,7 @@ void FactoryView::render()
             ImGui::PopStyleColor(2);
             ImGui::PopStyleVar(2);
 
-            ImGui::TextColored(yellow, "Cost: $%d", m->getUpgradeCost());
+            ImGui::TextColored(yellow, "Cost: $%d", model.getMachineUpgradeCost(machineToUpgrade));
             if (!model.getStatusMessage().empty())
             {
                 ImGui::TextColored(red, "%s", model.getStatusMessage().c_str());
@@ -366,17 +365,16 @@ void FactoryView::render()
     // -----------------------------------------------------
 
     ProcessStep cur = model.getCurrentStep();
-    Machine* currentMachine = model.getMachine(cur);
     const bool canTryStart = !model.isGameOver() &&
         model.hasOrder() &&
-        currentMachine &&
-        !currentMachine->isRunning() &&
-        !currentMachine->isPaused() &&
-        !currentMachine->isDone() &&
-        !currentMachine->isFailed();
-    const bool canPause = currentMachine &&
-        (currentMachine->isRunning() || currentMachine->isPaused()) &&
-        !currentMachine->isFailed();
+        model.hasMachine(cur) &&
+        !model.isMachineRunning(cur) &&
+        !model.isMachinePaused(cur) &&
+        !model.isMachineDone(cur) &&
+        !model.isMachineFailed(cur);
+    const bool canPause = model.hasMachine(cur) &&
+        (model.isMachineRunning(cur) || model.isMachinePaused(cur)) &&
+        !model.isMachineFailed(cur);
 
     if (ImGui::BeginTable("HeaderTable", 2, ImGuiTableFlags_SizingStretchProp))
     {
@@ -389,7 +387,7 @@ void FactoryView::render()
 
         ImGui::TableSetColumnIndex(1);
         ImGui::BeginDisabled(!canPause);
-        if (ImGui::Button(currentMachine && currentMachine->isPaused() ? "Resume" : "Pause", ImVec2(74.0f, 34.0f)))
+        if (ImGui::Button(model.isMachinePaused(cur) ? "Resume" : "Pause", ImVec2(74.0f, 34.0f)))
             controller.onTogglePause(cur);
         ImGui::EndDisabled();
 

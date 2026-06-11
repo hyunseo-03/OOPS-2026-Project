@@ -151,22 +151,11 @@
     <text x="1250" y="1112" class="member">+ togglePauseMachine(step): void</text>
     <text x="1250" y="1138" class="member">+ refillInventory(): void</text>
     <text x="1250" y="1164" class="member">+ upgradeMachine(step): bool</text>
-    <text x="1250" y="1190" class="member">+ getCurrentStep(): ProcessStep</text>
-    <text x="1250" y="1216" class="member">+ getTotalBurgersProduced(): int</text>
-    <text x="1615" y="852" class="member">+ getMoney(): int</text>
-    <text x="1615" y="878" class="member">+ hasOrder(): bool</text>
-    <text x="1615" y="904" class="member">+ getCurrentOrder(): const Order&amp;</text>
-    <text x="1615" y="930" class="member">+ getMachine(step): Machine*</text>
-    <text x="1615" y="956" class="member">+ getIngredientAmount(type): int</text>
-    <text x="1615" y="982" class="member">+ isQualityCheckPassed(): bool</text>
-    <text x="1615" y="1008" class="member">+ isCurrentMachineFailed(): bool</text>
-    <text x="1615" y="1034" class="member">+ isCurrentMachinePaused(): bool</text>
-    <text x="1615" y="1060" class="member">+ isGameOver(): bool</text>
-    <text x="1615" y="1086" class="member">+ getStatusMessage(): const string&amp;</text>
-    <text x="1615" y="1112" class="member">+ getPreparedIngredients(): const map&amp;</text>
-    <text x="1615" y="1138" class="member">+ getCompletedOrders(): const vector&lt;Order&gt;&amp;</text>
-    <text x="1615" y="1164" class="member">+ getQueuedOrders(): const vector&lt;Order&gt;&amp;</text>
-    <text x="1615" y="1190" class="member">+ getAverageReputation(): float</text>
+    <text x="1250" y="1190" class="member">+ hasOrder(): bool</text>
+    <text x="1250" y="1216" class="member">+ isGameOver(): bool</text>
+    <text x="1615" y="852" class="member">+ isQualityCheckPassed(): bool</text>
+    <text x="1615" y="878" class="member">+ isCurrentMachineFailed(): bool</text>
+    <text x="1615" y="904" class="member">+ isCurrentMachinePaused(): bool</text>
   </g>
 
   <g id="Managers">
@@ -179,8 +168,7 @@
     <text x="2095" y="506" class="member">+ hasEnough(type, amount): bool</text>
     <text x="2095" y="532" class="member">+ use(type, amount): bool</text>
     <text x="2095" y="558" class="member">+ add(type, amount): void</text>
-    <text x="2095" y="584" class="member">+ getAmount(type): int</text>
-    <text x="2095" y="610" class="member">+ refill(): void</text>
+    <text x="2095" y="584" class="member">+ refill(): void</text>
 
     <rect x="2070" y="665" width="360" height="185" class="box"/>
     <rect x="2070" y="665" width="360" height="50" class="head head-model"/>
@@ -190,7 +178,6 @@
     <line x1="2070" y1="770" x2="2430" y2="770" class="line"/>
     <text x="2095" y="801" class="member">+ add(amount): void</text>
     <text x="2095" y="827" class="member">+ spend(amount): bool</text>
-    <text x="2095" y="853" class="member">+ getMoney(): int</text>
   </g>
 
   <g id="OrderManager">
@@ -205,13 +192,8 @@
     <text x="2535" y="556" class="member">- totalReputation: float = 0.0f</text>
     <line x1="2510" y1="579" x2="2970" y2="579" class="line"/>
     <text x="2535" y="610" class="member">+ addOrder(type), completeOrder()</text>
-    <text x="2535" y="636" class="member">+ getCurrentOrder(): const Order&amp;</text>
-    <text x="2535" y="662" class="member">+ hasOrder(), hasActiveOrder(): bool</text>
-    <text x="2535" y="688" class="member">+ getCompletedCount(): int</text>
-    <text x="2535" y="714" class="member">+ getCompletedOrders(): const vector&lt;Order&gt;&amp;</text>
-    <text x="2535" y="740" class="member">+ getQueuedOrders(): const vector&lt;Order&gt;&amp;</text>
-    <text x="2535" y="766" class="member">+ updateActiveOrderTime(dt)</text>
-    <text x="2535" y="792" class="member">+ getAverageReputation(): float</text>
+    <text x="2535" y="636" class="member">+ hasOrder(), hasActiveOrder(): bool</text>
+    <text x="2535" y="662" class="member">+ updateActiveOrderTime(dt)</text>
   </g>
 
   <g id="ProductionLine">
@@ -229,7 +211,6 @@
     <text x="3065" y="618" class="member">+ isMachineDone/Failed/Paused(step): bool</text>
     <text x="3065" y="644" class="member">+ pause/resume/repair/resetMachine(step)</text>
     <text x="3065" y="670" class="member">+ inspectQuality(prepared, recipe): bool</text>
-    <text x="3065" y="696" class="member">+ getMachine(step): Machine*</text>
     <text x="3065" y="722" class="tiny">owns concrete stations through Machine abstraction</text>
   </g>
 
@@ -270,11 +251,9 @@
     <text x="415" y="1233" class="member"># finishCycle(): void</text>
     <line x1="390" y1="1256" x2="1150" y2="1256" class="line"/>
     <text x="415" y="1287" class="member">+ configure(config), update(dt) = 0</text>
-    <text x="415" y="1313" class="member">+ setState(newState: MachineState): void</text>
-    <text x="415" y="1339" class="member">+ reset(): void</text>
-    <text x="415" y="1365" class="member">+ isDone(), isFailed(), isRunning(), isPaused()</text>
-    <text x="415" y="1391" class="member">+ getProgress(), getName(), getLevel(), getMaxLevel()</text>
-    <text x="415" y="1417" class="member">+ getUpgradeCost(), getCycleTime(), getMalfunctionRate(), upgrade()</text>
+    <text x="415" y="1313" class="member">+ reset(): void</text>
+    <text x="415" y="1339" class="member">+ isDone(), isFailed(), isRunning(), isPaused()</text>
+    <text x="415" y="1365" class="member">+ upgrade(): void</text>
   </g>
 
   <!-- Machine subclasses in grid -->
@@ -295,7 +274,6 @@
     <text x="580" y="1592" class="member">- BASE_CYCLE = 3.0f</text>
     <line x1="555" y1="1615" x2="985" y2="1615" class="line"/>
     <text x="580" y="1646" class="member">+ configure(config), update(dt)</text>
-    <text x="580" y="1672" class="member">+ getPattyCount(), getPattiesGrilled()</text>
 
     <rect x="1030" y="1460" width="390" height="185" class="box"/>
     <rect x="1030" y="1460" width="390" height="48" class="head head-machine"/>
@@ -331,7 +309,6 @@
     <text x="1055" y="1851" class="member">- sealed: bool</text>
     <line x1="1030" y1="1874" x2="1420" y2="1874" class="line"/>
     <text x="1055" y="1905" class="member">+ configure(config), update(dt)</text>
-    <text x="1055" y="1931" class="member">+ getBurgerLabel(), isSealed()</text>
   </g>
 
   <path d="M 315 1460 C 315 1415 510 1380 650 1365" class="arrow" marker-end="url(#inherit)"/>
@@ -366,8 +343,6 @@
     <line x1="2085" y1="1573" x2="2505" y2="1573" class="line"/>
     <text x="2110" y="1605" class="member">+ ingredients: map&lt;IngredientType,int&gt;</text>
     <text x="2110" y="1631" class="member">+ price: int</text>
-    <line x1="2085" y1="1654" x2="2505" y2="1654" class="line"/>
-    <text x="2110" y="1685" class="member">+ getRecipe(type): BurgerRecipe</text>
 
     <rect x="2555" y="1525" width="390" height="170" class="box"/>
     <rect x="2555" y="1525" width="390" height="48" class="head head-struct"/>

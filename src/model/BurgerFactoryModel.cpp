@@ -208,19 +208,6 @@ void BurgerFactoryModel::addOrder(BurgerType type)
         enterStep(ProcessStep::PreparingIngredients);
 }
 
-void BurgerFactoryModel::packBurger()
-{
-    if (currentStep != ProcessStep::Done) return;
-    BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
-    moneyManager.add(recipe.price);
-    orderManager.completeOrder();
-    productionTimerRunning = false;
-    preparedIngredients.clear();
-    enterStep(ProcessStep::Idle);
-    if (orderManager.hasActiveOrder())
-        enterStep(ProcessStep::PreparingIngredients);
-}
-
 bool BurgerFactoryModel::consumeIngredients()
 {
     BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
@@ -246,14 +233,11 @@ int          BurgerFactoryModel::getTotalBurgersProduced() const { return orderM
 int          BurgerFactoryModel::getMoney()                const { return moneyManager.getMoney(); }
 bool         BurgerFactoryModel::hasOrder()                const { return orderManager.hasOrder(); }
 const Order& BurgerFactoryModel::getCurrentOrder()         const { return orderManager.getCurrentOrder(); }
-Machine* BurgerFactoryModel::getMachine(ProcessStep step)    { return productionLine.getMachine(step); }
 int          BurgerFactoryModel::getIngredientAmount(IngredientType type) const { return inventoryManager.getAmount(type); }
-bool         BurgerFactoryModel::isQualityCheckPassed()    const { return qualityCheckPassed; }
 bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
 bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
 bool         BurgerFactoryModel::isGameOver()              const { return gameOver; }
 const std::string& BurgerFactoryModel::getStatusMessage()  const { return statusMessage; }
-const std::map<IngredientType, int>& BurgerFactoryModel::getPreparedIngredients() const { return preparedIngredients; }
 void BurgerFactoryModel::refillInventory()
 {
     if (gameOver) return;
@@ -269,6 +253,7 @@ void BurgerFactoryModel::refillInventory()
 }
 const std::vector<Order>& BurgerFactoryModel::getCompletedOrders() const { return orderManager.getCompletedOrders(); }
 const std::vector<Order>& BurgerFactoryModel::getQueuedOrders() const { return orderManager.getQueuedOrders(); }
+int BurgerFactoryModel::getRepairCost() const { return REPAIR_COST; }
 
 bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
 {
@@ -296,4 +281,73 @@ bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
 float BurgerFactoryModel::getAverageReputation() const
 {
     return orderManager.getAverageReputation();
+}
+
+bool BurgerFactoryModel::hasMachine(ProcessStep step) const
+{
+    return productionLine.getMachine(step) != nullptr;
+}
+
+bool BurgerFactoryModel::isMachineRunning(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine && machine->isRunning();
+}
+
+bool BurgerFactoryModel::isMachinePaused(ProcessStep step) const
+{
+    return productionLine.isMachinePaused(step);
+}
+
+bool BurgerFactoryModel::isMachineFailed(ProcessStep step) const
+{
+    return productionLine.isMachineFailed(step);
+}
+
+bool BurgerFactoryModel::isMachineDone(ProcessStep step) const
+{
+    return productionLine.isMachineDone(step);
+}
+
+float BurgerFactoryModel::getMachineProgress(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getProgress() : 0.0f;
+}
+
+const std::string& BurgerFactoryModel::getMachineName(ProcessStep step) const
+{
+    static const std::string emptyName = "";
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getName() : emptyName;
+}
+
+int BurgerFactoryModel::getMachineLevel(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getLevel() : 0;
+}
+
+int BurgerFactoryModel::getMachineMaxLevel(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getMaxLevel() : 0;
+}
+
+int BurgerFactoryModel::getMachineUpgradeCost(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getUpgradeCost() : 0;
+}
+
+float BurgerFactoryModel::getMachineCycleTime(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getCycleTime() : 0.0f;
+}
+
+float BurgerFactoryModel::getMachineMalfunctionRate(ProcessStep step) const
+{
+    const Machine* machine = productionLine.getMachine(step);
+    return machine ? machine->getMalfunctionRate() : 0.0f;
 }

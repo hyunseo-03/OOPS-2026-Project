@@ -1,18 +1,18 @@
 #pragma once
 #include "imgui.h"
-#include "model/BurgerFactoryModel.h"
+#include "model/IFactoryViewData.h"
 #include "controller/FactoryController.h"
 
 class FactoryView
 {
 private:
-    BurgerFactoryModel& model;
+    IFactoryViewData& model;
     FactoryController&  controller;
 
     const char* stepToString(ProcessStep step) const;
 
 public:
-    FactoryView(BurgerFactoryModel& model, FactoryController& controller);
+    FactoryView(IFactoryViewData& model, FactoryController& controller);
 
     void render();
     void renderOrderHistory();
