@@ -13,6 +13,6 @@ public:
     void onNewOrder(BurgerType type);
     void onRefillInventory();
     void onRepairMachine(ProcessStep step);
-    void onTogglePause(ProcessStep step);   // 일시정지 / 재개 토글
+    void onTogglePause(ProcessStep step);
     bool onUpgradeMachine(ProcessStep step);
 };

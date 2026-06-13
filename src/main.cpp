@@ -1,4 +1,3 @@
-/* CROSS-PLATFORM */
 #include <SDL.h>
 #if defined(__APPLE__)
 #define GL_SILENCE_DEPRECATION
@@ -9,7 +8,6 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 
-// MVC 클래스 포함
 #include "model/BurgerFactoryModel.h"
 #include "controller/FactoryController.h"
 #include "view/FactoryView.h"
@@ -99,9 +97,6 @@ int main(int argc, char* argv[])
     if (!mainFont)
         io.Fonts->AddFontDefault();
 
-    // ============================================================
-    // MVC 객체 생성
-    // ============================================================
     BurgerFactoryModel model;
     FactoryController  controller(model);
     FactoryView        view(model, controller);
@@ -111,9 +106,6 @@ int main(int argc, char* argv[])
 
     ImVec4 clearColor = ImVec4(0.08f, 0.08f, 0.13f, 1.0f);
 
-    // ============================================================
-    // 게임 루프
-    // ============================================================
     Uint64 lastTime = SDL_GetPerformanceCounter();
     bool   running  = true;
 
