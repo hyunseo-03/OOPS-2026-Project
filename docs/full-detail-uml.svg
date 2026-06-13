@@ -372,11 +372,10 @@
     <text x="1670" y="1554" class="stereo">&lt;&lt;struct&gt;&gt; Order</text>
     <line x1="1645" y1="1573" x2="2035" y2="1573" class="line"/>
     <text x="1670" y="1605" class="member">+ type: BurgerType = CLASSIC</text>
-    <text x="1670" y="1631" class="member">+ quantity: int = 1</text>
-    <text x="1670" y="1657" class="member">+ isCompleted: bool = false</text>
-    <text x="1670" y="1683" class="member">+ timeTaken: float = 0.0f</text>
-    <text x="1670" y="1709" class="member">+ earnedReputation: float = 5.0f</text>
-    <text x="1670" y="1735" class="member">+ Order(), Order(t, q=1)</text>
+    <text x="1670" y="1631" class="member">+ isCompleted: bool = false</text>
+    <text x="1670" y="1657" class="member">+ timeTaken: float = 0.0f</text>
+    <text x="1670" y="1683" class="member">+ earnedReputation: float = 5.0f</text>
+    <text x="1670" y="1735" class="member">+ Order(), Order(t: BurgerType)</text>
 
     <rect x="2085" y="1525" width="420" height="200" class="box"/>
     <rect x="2085" y="1525" width="420" height="48" class="head head-struct"/>

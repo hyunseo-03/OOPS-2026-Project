@@ -16,6 +16,8 @@
 
 #include <filesystem>
 #include <stdio.h>
+#include <string>
+#include <vector>
 
 int main(int argc, char* argv[])
 {
@@ -55,25 +57,46 @@ int main(int argc, char* argv[])
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    // 기본 폰트 로드
-    const char* fontPaths[] = {
+    std::vector<std::filesystem::path> fontPaths = {
+        "fonts/Roboto-Medium.ttf",
         "libs/imgui/misc/fonts/Roboto-Medium.ttf",
         "../libs/imgui/misc/fonts/Roboto-Medium.ttf",
-        "../../libs/imgui/misc/fonts/Roboto-Medium.ttf"
+        "../../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+        "../Resources/Roboto-Medium.ttf",
+        "C:/Windows/Fonts/segoeui.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "C:/Windows/Fonts/calibri.ttf",
+        "/System/Library/Fonts/SFNS.ttf",
+        "/System/Library/Fonts/SFNSMono.ttf",
+        "/System/Library/Fonts/HelveticaNeue.ttc"
     };
 
-    bool fontLoaded = false;
-    for (const char* path : fontPaths)
+    char* basePath = SDL_GetBasePath();
+    if (basePath)
+    {
+        std::filesystem::path executableDir(basePath);
+        fontPaths.insert(fontPaths.begin(), {
+            executableDir / "fonts/Roboto-Medium.ttf",
+            executableDir / "libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../Resources/Roboto-Medium.ttf"
+        });
+        SDL_free(basePath);
+    }
+
+    ImFont* mainFont = nullptr;
+    for (const auto& path : fontPaths)
     {
         if (std::filesystem::exists(path))
         {
-            io.Fonts->AddFontFromFileTTF(path, 15.0f);
-            fontLoaded = true;
-            break;
+            mainFont = io.Fonts->AddFontFromFileTTF(path.string().c_str(), 15.0f);
+            if (mainFont)
+                break;
         }
     }
 
-    if (!fontLoaded)
+    if (!mainFont)
         io.Fonts->AddFontDefault();
 
     // ============================================================

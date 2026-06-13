@@ -7,15 +7,14 @@
 
 struct Order {
     BurgerType type = BurgerType::CLASSIC;
-    int        quantity = 1;
     bool       isCompleted = false;
     float      timeTaken = 0.0f;
     float      earnedReputation = 5.0f;
 
     Order() {}
 
-    Order(BurgerType t, int q = 1)
-        : type(t), quantity(q), isCompleted(false), timeTaken(0.0f), earnedReputation(5.0f) {}
+    Order(BurgerType t)
+        : type(t), isCompleted(false), timeTaken(0.0f), earnedReputation(5.0f) {}
 };
 
 struct BurgerRecipe
