@@ -43,7 +43,6 @@ add_executable(imgui_app ${SOURCES})
 target_include_directories(imgui_app PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/enum      # ProcessStep, BurgerType, IngredientType
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
 )

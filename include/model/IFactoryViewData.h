@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "IngredientType.h"
+#include "enum/IngredientType.h"
 #include "model/Order.h"
-#include "ProcessStep.h"
+#include "enum/ProcessStep.h"
 
 class IFactoryViewData
 {

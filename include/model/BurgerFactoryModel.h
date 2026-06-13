@@ -2,8 +2,8 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "ProcessStep.h"
-#include "IngredientType.h"
+#include "enum/ProcessStep.h"
+#include "enum/IngredientType.h"
 #include "model/MachineConfig.h"
 #include "model/IFactoryActions.h"
 #include "model/IFactoryViewData.h"

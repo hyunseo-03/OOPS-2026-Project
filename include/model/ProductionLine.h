@@ -4,8 +4,8 @@
 #include <map>
 #include "model/Machine.h"
 #include "model/BurgerRecipe.h"
-#include "ProcessStep.h"
-#include "IngredientType.h"
+#include "enum/ProcessStep.h"
+#include "enum/IngredientType.h"
 
 class QualityChecker;
 

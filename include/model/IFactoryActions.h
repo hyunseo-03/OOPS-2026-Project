@@ -1,6 +1,6 @@
 #pragma once
-#include "BurgerType.h"
-#include "ProcessStep.h"
+#include "enum/BurgerType.h"
+#include "enum/ProcessStep.h"
 
 class IFactoryActions
 {

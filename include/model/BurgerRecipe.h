@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
-#include "IngredientType.h"
-#include "BurgerType.h"
+#include "enum/IngredientType.h"
+#include "enum/BurgerType.h"
 
 // ─────────────────────────────────────────────────────
 // BurgerRecipe - 버거 타입별 필요 재료 정의

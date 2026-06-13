@@ -1,5 +1,5 @@
 #pragma once
-#include "BurgerType.h"
+#include "enum/BurgerType.h"
 
 struct Order {
     BurgerType type = BurgerType::CLASSIC;

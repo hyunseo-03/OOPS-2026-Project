@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "model/MachineConfig.h"
-#include "MachineState.h"
+#include "enum/MachineState.h"
 
 class Machine
 {

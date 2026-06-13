@@ -1,5 +1,5 @@
 #pragma once
-#include "BurgerType.h"
+#include "enum/BurgerType.h"
 
 // ─────────────────────────────────────────────────────
 // MachineConfig - 기계 설정값 전달 구조체

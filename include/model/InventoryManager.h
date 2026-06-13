@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include "IngredientType.h"
+#include "enum/IngredientType.h"
 
 // ─────────────────────────────────────────────
 // InventoryManager - 재고 관리 클래스

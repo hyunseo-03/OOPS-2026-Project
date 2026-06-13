@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "BurgerType.h"
+#include "enum/BurgerType.h"
 #include "model/Order.h"
 
 class OrderManager

@@ -2,7 +2,7 @@
 #include <map>
 #include "model/Machine.h"
 #include "model/BurgerRecipe.h"
-#include "IngredientType.h"
+#include "enum/IngredientType.h"
 
 class QualityChecker : public Machine {
 public:
