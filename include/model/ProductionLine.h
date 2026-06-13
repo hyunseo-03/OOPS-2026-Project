@@ -9,14 +9,6 @@
 
 class QualityChecker;
 
-// ─────────────────────────────────────────────────────
-// ProductionLine - 모든 기계를 보유 (Composition)
-//
-// [Loosely Coupled]
-// 외부(BurgerFactoryModel)는 Machine 추상 타입만 사용한다.
-// GrillMachine, SauceMachine 등 구체 타입은 이 클래스 내부에만 존재.
-// configureMachine()으로 MachineConfig를 전달해 설정한다.
-// ─────────────────────────────────────────────────────
 class ProductionLine
 {
 private:

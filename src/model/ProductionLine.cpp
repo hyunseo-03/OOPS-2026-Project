@@ -6,8 +6,6 @@
 #include "model/QualityChecker.h"
 #include "model/PackingMachine.h"
 
-// 구체 타입 생성은 ProductionLine 생성자에만 존재
-// 이후 외부는 Machine* (추상)만 사용
 ProductionLine::ProductionLine()
     : qualityChecker(nullptr)
 {
@@ -43,8 +41,6 @@ void ProductionLine::update(float dt)
     for (auto& m : machines) m->update(dt);
 }
 
-// configure() - Machine 추상 인터페이스를 통해 설정값 전달
-// 각 기계는 자신에게 필요한 필드만 읽는다
 void ProductionLine::configureMachine(ProcessStep step, const MachineConfig& config)
 {
     Machine* m = getMachine(step);

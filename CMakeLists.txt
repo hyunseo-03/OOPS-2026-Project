@@ -41,7 +41,24 @@ set(SOURCES
 
 add_executable(imgui_app ${SOURCES})
 
+<<<<<<< HEAD
 # OpenGL 패키지 찾기
+=======
+target_include_directories(imgui_app PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+)
+
+add_custom_command(TARGET imgui_app POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:imgui_app>/fonts"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${IMGUI_DIR}/misc/fonts/Roboto-Medium.ttf"
+            "$<TARGET_FILE_DIR:imgui_app>/fonts/Roboto-Medium.ttf"
+)
+
+>>>>>>> c294aadea3418bdaeffb354fcc9ad67d40fd4d05
 find_package(OpenGL REQUIRED)
 
 if(APPLE)

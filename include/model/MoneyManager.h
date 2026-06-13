@@ -1,8 +1,5 @@
 #pragma once
 
-// ─────────────────────────────────────────────
-// MoneyManager - 돈 관리 클래스
-// ─────────────────────────────────────────────
 class MoneyManager {
 private:
     int money;

@@ -1,6 +1,6 @@
 #include "model/MoneyManager.h"
 
-MoneyManager::MoneyManager() : money(500) {}  // 시작 자금 500
+MoneyManager::MoneyManager() : money(500) {}
 
 void MoneyManager::add(int amount)
 {

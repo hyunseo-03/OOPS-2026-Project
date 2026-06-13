@@ -10,7 +10,7 @@ private:
 
 public:
     PackingMachine();
-    void configure(const MachineConfig& config) override;  // burgerType 읽기
+    void configure(const MachineConfig& config) override;
     void update(float dt) override;
 
     const std::string& getBurgerLabel() const;

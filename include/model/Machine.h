@@ -8,13 +8,13 @@ class Machine
 protected:
     std::string name;
     MachineState state;
-    bool        hasCompleted;   // 현재 작업 사이클을 완주했는지 여부
-    int         level;           // 기계 레벨 (업그레이드 시 증가)
+    bool        hasCompleted;
+    int         level;
     float       progress;
     float       cycleTime;
     float       malfunctionRate;
-    const int maxLevel = 5;      // 최대 레벨
-    int upgradeCost = 100;       // 업그레이드 비용 (기본값)
+    const int maxLevel = 5;
+    int upgradeCost = 100;
     float baseCycleTime;
     float baseMalfunctionRate;
 
@@ -39,7 +39,5 @@ public:
     int getUpgradeCost() const { return upgradeCost; }
     float getCycleTime() const { return cycleTime; }
     float getMalfunctionRate() const { return malfunctionRate; }
-    
-    // 업그레이드 실행 함수
     void upgrade();
 };

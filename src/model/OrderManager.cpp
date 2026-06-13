@@ -41,7 +41,7 @@ void OrderManager::completeOrder()
 
 float OrderManager::getAverageReputation() const
 {
-    if (completedCount == 0) return 5.0f; // 시작은 5점 만점
+    if (completedCount == 0) return 5.0f;
     return totalReputation / static_cast<float>(completedCount);
 }
 

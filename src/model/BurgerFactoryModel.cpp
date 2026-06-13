@@ -9,7 +9,6 @@ void BurgerFactoryModel::update(float dt)
 {
     if (gameOver) return;
 
-    // Start Production Line을 누른 뒤부터 평점용 시간을 누적한다.
     if (productionTimerRunning && hasOrder() && orderManager.hasActiveOrder()) {
         orderManager.updateActiveOrderTime(dt); 
     }
@@ -33,7 +32,6 @@ void BurgerFactoryModel::update(float dt)
 
 void BurgerFactoryModel::handleMalfunction()
 {
-    // 고장 감지: 단계는 그대로 유지 (수리 후 재시작 가능하도록)
 }
 
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
@@ -268,20 +266,19 @@ bool BurgerFactoryModel::upgradeMachine(ProcessStep step)
     if (!machine) return false;
 
     if (machine->getLevel() >= machine->getMaxLevel()) {
-        return false; // 이미 만렙
+        return false;
     }
 
     int cost = machine->getUpgradeCost();
     
-    // moneyManager에서 돈 차감 시도
     if (moneyManager.spend(cost)) {
         machine->upgrade();
         statusMessage = "Machine upgraded.";
-        return true; // 업그레이드 성공
+        return true;
     }
     
     statusMessage = "Not enough money to upgrade this machine.";
-    return false; // 돈 부족
+    return false;
 }
 float BurgerFactoryModel::getAverageReputation() const
 {

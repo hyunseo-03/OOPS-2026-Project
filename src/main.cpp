@@ -1,4 +1,3 @@
-/* CROSS-PLATFORM */
 #include <SDL.h>
 #if defined(__APPLE__)
 #define GL_SILENCE_DEPRECATION
@@ -9,13 +8,14 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 
-// MVC 클래스 포함
 #include "model/BurgerFactoryModel.h"
 #include "controller/FactoryController.h"
 #include "view/FactoryView.h"
 
 #include <filesystem>
 #include <stdio.h>
+#include <string>
+#include <vector>
 
 int main(int argc, char* argv[])
 {
@@ -55,30 +55,48 @@ int main(int argc, char* argv[])
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    // 기본 폰트 로드
-    const char* fontPaths[] = {
+    std::vector<std::filesystem::path> fontPaths = {
+        "fonts/Roboto-Medium.ttf",
         "libs/imgui/misc/fonts/Roboto-Medium.ttf",
         "../libs/imgui/misc/fonts/Roboto-Medium.ttf",
-        "../../libs/imgui/misc/fonts/Roboto-Medium.ttf"
+        "../../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+        "../Resources/Roboto-Medium.ttf",
+        "C:/Windows/Fonts/segoeui.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "C:/Windows/Fonts/calibri.ttf",
+        "/System/Library/Fonts/SFNS.ttf",
+        "/System/Library/Fonts/SFNSMono.ttf",
+        "/System/Library/Fonts/HelveticaNeue.ttc"
     };
 
-    bool fontLoaded = false;
-    for (const char* path : fontPaths)
+    char* basePath = SDL_GetBasePath();
+    if (basePath)
+    {
+        std::filesystem::path executableDir(basePath);
+        fontPaths.insert(fontPaths.begin(), {
+            executableDir / "fonts/Roboto-Medium.ttf",
+            executableDir / "libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../../libs/imgui/misc/fonts/Roboto-Medium.ttf",
+            executableDir / "../Resources/Roboto-Medium.ttf"
+        });
+        SDL_free(basePath);
+    }
+
+    ImFont* mainFont = nullptr;
+    for (const auto& path : fontPaths)
     {
         if (std::filesystem::exists(path))
         {
-            io.Fonts->AddFontFromFileTTF(path, 15.0f);
-            fontLoaded = true;
-            break;
+            mainFont = io.Fonts->AddFontFromFileTTF(path.string().c_str(), 15.0f);
+            if (mainFont)
+                break;
         }
     }
 
-    if (!fontLoaded)
+    if (!mainFont)
         io.Fonts->AddFontDefault();
 
-    // ============================================================
-    // MVC 객체 생성
-    // ============================================================
     BurgerFactoryModel model;
     FactoryController  controller(model);
     FactoryView        view(model, controller);
@@ -88,9 +106,6 @@ int main(int argc, char* argv[])
 
     ImVec4 clearColor = ImVec4(0.08f, 0.08f, 0.13f, 1.0f);
 
-    // ============================================================
-    // 게임 루프
-    // ============================================================
     Uint64 lastTime = SDL_GetPerformanceCounter();
     bool   running  = true;
 

@@ -126,13 +126,10 @@ void FactoryView::render()
             const float timeTaken = model.hasOrder() ? model.getCurrentOrder().timeTaken : 0.0f;
             ImGui::TextColored(valueColor, "%.1fs / 20s", timeTaken);
         }
-        else // Reputation (kind == 4)
+        else
         {
-            // 백엔드에서 평균 평판 가져오기 (예: 3.8 등)
-            // OrderManager에서 getAverageReputation()을 가져오도록 모델에 함수가 있다고 가정
-            // (없다면 model.getAverageReputation()으로 연결해 주세요)
             float repScore = model.getAverageReputation(); 
-            int repInt = (int)(repScore + 0.5f); // 반올림해서 별 개수 결정
+            int repInt = (int)(repScore + 0.5f);
 
             ImGui::SetWindowFontScale(1.35f);
             for (int i = 0; i < 5; ++i)
@@ -142,7 +139,7 @@ void FactoryView::render()
             }
             ImGui::SetWindowFontScale(1.0f);
             ImGui::SameLine();
-            ImGui::TextDisabled("(%.1f)", repScore); // 숫자도 옆에 작게 표시
+            ImGui::TextDisabled("(%.1f)", repScore);
         }
 
         ImGui::EndChild();
@@ -167,7 +164,6 @@ void FactoryView::render()
         ImGui::PopID();
     };
 
-    // 추가: 팝업을 띄우기 위해 저장할 변수
     static ProcessStep machineToUpgrade = ProcessStep::Idle;
     static bool showUpgradePopup = false;
 
@@ -191,19 +187,13 @@ void FactoryView::render()
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offsetX);
         }
 
-        // 카드를 클릭 가능하게 만들기 위한 꼼수 (투명한 버튼을 배경에 덮음)
         ImGui::BeginChild("MachineCard", ImVec2(cardWidth, cardHeight), true, ImGuiWindowFlags_NoScrollbar);
-        // 카드 상단: 이름과 레벨 표시
         ImGui::TextWrapped("%s", title);
         if (hasMachine) {
             ImGui::SameLine();
             ImGui::TextColored(blue, "[Lv.%d]", model.getMachineLevel(step));
         }
         ImGui::Spacing();
-        
-        // ImGui::TextColored(stateColor, "%s", shortName);
-        // ImGui::Spacing();
-
         ImDrawList* drawList = ImGui::GetWindowDrawList();
         ImVec2 dotPos = ImGui::GetCursorScreenPos();
         drawList->AddCircleFilled(ImVec2(dotPos.x + 5.0f, dotPos.y + 8.0f), 4.0f, ImGui::GetColorU32(stateColor));
@@ -235,8 +225,6 @@ void FactoryView::render()
             ImGui::PushStyleColor(ImGuiCol_PlotHistogram, active ? green : ImVec4(0.180f, 0.260f, 0.350f, 1.0f));
             ImGui::ProgressBar(progress, ImVec2(-1.0f, 8.0f), "");
             ImGui::PopStyleColor();
-            
-            // 업그레이드 버튼 추가
             ImGui::Spacing();
             if (model.getMachineLevel(step) < model.getMachineMaxLevel(step)) {
                 std::string upgText = "UPG ($" + std::to_string(model.getMachineUpgradeCost(step)) + ")";
@@ -294,9 +282,6 @@ void FactoryView::render()
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse);
 
-    // -----------------------------------------------------
-    // 업그레이드 팝업창 렌더링 로직 (추가된 부분)
-    // -----------------------------------------------------
     if (showUpgradePopup) {
         ImGui::OpenPopup("Upgrade Machine");
     }
@@ -367,8 +352,6 @@ void FactoryView::render()
         ImGui::EndPopup();
     }
     ImGui::PopStyleVar(2);
-    // -----------------------------------------------------
-
     ProcessStep cur = model.getCurrentStep();
     MachineState curState = model.getMachineState(cur);
     const bool canTryStart = !model.isGameOver() &&

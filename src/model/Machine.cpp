@@ -34,7 +34,7 @@ void Machine::setState(MachineState newState)
 
 void Machine::finishCycle()
 {
-    if (state == MachineState::Running) hasCompleted = true;  // 실제로 돌다가 멈춰야만 완주로 인정
+    if (state == MachineState::Running) hasCompleted = true;
     state = MachineState::Completed;
 }
 
@@ -49,8 +49,7 @@ void Machine::upgrade()
 {
     if (level < maxLevel) {
         level++;
-        upgradeCost *= 1.5f; // 다음 레벨업 비용 1.5배 증가
-        // 레벨당 작업 시간은 15%씩 단축하고, 고장 확률은 20%씩 감소시킨다.
+        upgradeCost *= 1.5f;
         cycleTime = baseCycleTime * (1.0f - ((level - 1) * 0.15f));
         malfunctionRate = baseMalfunctionRate * (1.0f - ((level - 1) * 0.20f));
     }

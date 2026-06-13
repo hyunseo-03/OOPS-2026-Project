@@ -40,7 +40,6 @@ public:
     static constexpr int REFILL_COST = 100;
 
 private:
-    // Controller command interface
     void update(float dt) override;
     void startProcess(ProcessStep step) override;
     void addOrder(BurgerType type) override;
@@ -49,7 +48,6 @@ private:
     void refillInventory() override;
     bool upgradeMachine(ProcessStep step) override;
 
-    // View read-only interface
     ProcessStep  getCurrentStep()          const override;
     int          getTotalBurgersProduced() const override;
     int          getMoney()                const override;
