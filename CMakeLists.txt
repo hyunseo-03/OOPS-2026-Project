@@ -47,6 +47,13 @@ target_include_directories(imgui_app PRIVATE
     ${IMGUI_DIR}/backends
 )
 
+add_custom_command(TARGET imgui_app POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:imgui_app>/fonts"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${IMGUI_DIR}/misc/fonts/Roboto-Medium.ttf"
+            "$<TARGET_FILE_DIR:imgui_app>/fonts/Roboto-Medium.ttf"
+)
+
 find_package(OpenGL REQUIRED)
 
 if(APPLE)

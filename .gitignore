@@ -15,6 +15,5 @@ imgui.ini
 .idea/
 *.user
 
-# Libraries (직접 설치 필요)
-libs/imgui/
+# Libraries generated/downloaded locally
 libs/fonts/
