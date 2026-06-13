@@ -27,6 +27,7 @@ int ProductionLine::stepToIndex(ProcessStep step) const
 {
     switch (step)
     {
+        
         case ProcessStep::PreparingIngredients: return 0;
         case ProcessStep::GrillPatty:           return 1;
         case ProcessStep::AddSauce:             return 2;
