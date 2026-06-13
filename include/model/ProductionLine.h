@@ -30,9 +30,7 @@ public:
     void update(float dt);
     void configureMachine(ProcessStep step, const MachineConfig& config);
     void startMachine(ProcessStep step);
-    bool isMachineDone(ProcessStep step)   const;
-    bool isMachineFailed(ProcessStep step) const;
-    bool isMachinePaused(ProcessStep step) const;
+    MachineState getMachineState(ProcessStep step) const;
 
     void pauseMachine(ProcessStep step);
     void resumeMachine(ProcessStep step);

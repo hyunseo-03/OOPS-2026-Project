@@ -31,10 +31,7 @@ public:
     void setState(MachineState newState);
     void reset();
 
-    bool  isDone()    const;
-    bool  isFailed()  const;
-    bool  isRunning() const;
-    bool  isPaused()  const;
+    MachineState getState() const;
     float getProgress()       const;
     const std::string& getName() const;
     int getLevel() const { return level; }

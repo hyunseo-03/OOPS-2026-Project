@@ -18,7 +18,8 @@ void BurgerFactoryModel::update(float dt)
 
     productionLine.update(dt);
 
-    if (productionLine.isMachineFailed(currentStep) && moneyManager.getMoney() < REPAIR_COST)
+    MachineState currentMachineState = productionLine.getMachineState(currentStep);
+    if (currentMachineState == MachineState::Failed && moneyManager.getMoney() < REPAIR_COST)
     {
         gameOver = true;
         productionTimerRunning = false;
@@ -26,7 +27,7 @@ void BurgerFactoryModel::update(float dt)
         return;
     }
 
-    if (productionLine.isMachineDone(currentStep))
+    if (currentMachineState == MachineState::Completed)
         nextStep();
 }
 
@@ -37,7 +38,7 @@ void BurgerFactoryModel::handleMalfunction()
 
 bool BurgerFactoryModel::repairMachine(ProcessStep step)
 {
-    if (!productionLine.isMachineFailed(step)) return false;
+    if (productionLine.getMachineState(step) != MachineState::Failed) return false;
     if (!moneyManager.spend(REPAIR_COST))
     {
         statusMessage = "Not enough money to repair the machine.";
@@ -58,7 +59,7 @@ bool BurgerFactoryModel::repairMachine(ProcessStep step)
 
 void BurgerFactoryModel::togglePauseMachine(ProcessStep step)
 {
-    if (productionLine.isMachinePaused(step))
+    if (productionLine.getMachineState(step) == MachineState::Paused)
         productionLine.resumeMachine(step);
     else
         productionLine.pauseMachine(step);
@@ -68,9 +69,12 @@ void BurgerFactoryModel::startProcess(ProcessStep step)
 {
     if (gameOver) return;
     if (step != currentStep) return;
-    if (productionLine.isMachineFailed(step)) return;
+    MachineState machineState = productionLine.getMachineState(step);
+    if (machineState == MachineState::Failed) return;
     Machine* machine = productionLine.getMachine(step);
-    if (machine && (machine->isRunning() || machine->isPaused() || machine->isDone())) return;
+    if (machineState == MachineState::Running ||
+        machineState == MachineState::Paused ||
+        machineState == MachineState::Completed) return;
 
     if (step == ProcessStep::PreparingIngredients)
     {
@@ -100,9 +104,11 @@ bool BurgerFactoryModel::canProceed(ProcessStep step) const
     if (gameOver) return false;
     if (step != currentStep) return false;
     if (!orderManager.hasActiveOrder()) return false;
-    if (productionLine.isMachineFailed(step)) return false;
-    const Machine* machine = productionLine.getMachine(step);
-    if (machine && (machine->isRunning() || machine->isPaused() || machine->isDone())) return false;
+    MachineState machineState = productionLine.getMachineState(step);
+    if (machineState == MachineState::Failed ||
+        machineState == MachineState::Running ||
+        machineState == MachineState::Paused ||
+        machineState == MachineState::Completed) return false;
 
     if (step == ProcessStep::PreparingIngredients)
     {
@@ -234,8 +240,7 @@ int          BurgerFactoryModel::getMoney()                const { return moneyM
 bool         BurgerFactoryModel::hasOrder()                const { return orderManager.hasOrder(); }
 const Order& BurgerFactoryModel::getCurrentOrder()         const { return orderManager.getCurrentOrder(); }
 int          BurgerFactoryModel::getIngredientAmount(IngredientType type) const { return inventoryManager.getAmount(type); }
-bool         BurgerFactoryModel::isCurrentMachineFailed()  const { return productionLine.isMachineFailed(currentStep); }
-bool         BurgerFactoryModel::isCurrentMachinePaused()  const { return productionLine.isMachinePaused(currentStep); }
+MachineState BurgerFactoryModel::getCurrentMachineState() const { return productionLine.getMachineState(currentStep); }
 bool         BurgerFactoryModel::isGameOver()              const { return gameOver; }
 const std::string& BurgerFactoryModel::getStatusMessage()  const { return statusMessage; }
 void BurgerFactoryModel::refillInventory()
@@ -288,25 +293,9 @@ bool BurgerFactoryModel::hasMachine(ProcessStep step) const
     return productionLine.getMachine(step) != nullptr;
 }
 
-bool BurgerFactoryModel::isMachineRunning(ProcessStep step) const
+MachineState BurgerFactoryModel::getMachineState(ProcessStep step) const
 {
-    const Machine* machine = productionLine.getMachine(step);
-    return machine && machine->isRunning();
-}
-
-bool BurgerFactoryModel::isMachinePaused(ProcessStep step) const
-{
-    return productionLine.isMachinePaused(step);
-}
-
-bool BurgerFactoryModel::isMachineFailed(ProcessStep step) const
-{
-    return productionLine.isMachineFailed(step);
-}
-
-bool BurgerFactoryModel::isMachineDone(ProcessStep step) const
-{
-    return productionLine.isMachineDone(step);
+    return productionLine.getMachineState(step);
 }
 
 float BurgerFactoryModel::getMachineProgress(ProcessStep step) const

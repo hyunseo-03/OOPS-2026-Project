@@ -13,7 +13,7 @@ void GrillMachine::configure(const MachineConfig& config)
 void GrillMachine::update(float dt)
 {
     checkMalfunction(dt);
-    if (!isRunning()) return;
+    if (getState() != MachineState::Running) return;
 
     progress += dt / cycleTime;
 

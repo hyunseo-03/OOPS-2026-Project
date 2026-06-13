@@ -56,22 +56,10 @@ void ProductionLine::startMachine(ProcessStep step)
     if (m) m->setState(MachineState::Running);
 }
 
-bool ProductionLine::isMachineDone(ProcessStep step) const
+MachineState ProductionLine::getMachineState(ProcessStep step) const
 {
     const Machine* m = getMachine(step);
-    return m && m->isDone();
-}
-
-bool ProductionLine::isMachineFailed(ProcessStep step) const
-{
-    const Machine* m = getMachine(step);
-    return m && m->isFailed();
-}
-
-bool ProductionLine::isMachinePaused(ProcessStep step) const
-{
-    const Machine* m = getMachine(step);
-    return m && m->isPaused();
+    return m ? m->getState() : MachineState::Idle;
 }
 
 void ProductionLine::pauseMachine(ProcessStep step)

@@ -35,15 +35,12 @@ void Machine::setState(MachineState newState)
 void Machine::finishCycle()
 {
     if (state == MachineState::Running) hasCompleted = true;  // 실제로 돌다가 멈춰야만 완주로 인정
-    state = MachineState::Idle;
+    state = MachineState::Completed;
 }
 
 void Machine::reset()  { state = MachineState::Idle; progress = 0.0f; hasCompleted = false; }
 
-bool  Machine::isDone()    const { return state != MachineState::Failed && hasCompleted && progress >= 1.0f; }
-bool  Machine::isFailed()  const { return state == MachineState::Failed; }
-bool  Machine::isRunning() const { return state == MachineState::Running; }
-bool  Machine::isPaused()  const { return state == MachineState::Paused; }
+MachineState Machine::getState() const { return state; }
 float Machine::getProgress()       const { return progress; }
 const std::string& Machine::getName() const { return name; }
 

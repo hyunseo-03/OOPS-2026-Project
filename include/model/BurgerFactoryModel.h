@@ -56,8 +56,7 @@ private:
     bool         hasOrder()                const override;
     const Order& getCurrentOrder()         const override;
     int          getIngredientAmount(IngredientType type) const override;
-    bool         isCurrentMachineFailed()  const override;
-    bool         isCurrentMachinePaused()  const override;
+    MachineState getCurrentMachineState() const override;
     bool         isGameOver()              const override;
     const std::string& getStatusMessage()  const override;
     const std::vector<Order>& getCompletedOrders() const override;
@@ -66,10 +65,7 @@ private:
     int          getRepairCost() const override;
 
     bool hasMachine(ProcessStep step) const override;
-    bool isMachineRunning(ProcessStep step) const override;
-    bool isMachinePaused(ProcessStep step) const override;
-    bool isMachineFailed(ProcessStep step) const override;
-    bool isMachineDone(ProcessStep step) const override;
+    MachineState getMachineState(ProcessStep step) const override;
     float getMachineProgress(ProcessStep step) const override;
     const std::string& getMachineName(ProcessStep step) const override;
     int getMachineLevel(ProcessStep step) const override;

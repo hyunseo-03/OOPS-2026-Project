@@ -23,7 +23,7 @@ void PackingMachine::configure(const MachineConfig& config)
 void PackingMachine::update(float dt)
 {
     checkMalfunction(dt);
-    if (!isRunning()) return;
+    if (getState() != MachineState::Running) return;
 
     progress += dt / cycleTime;
     if (progress >= 1.0f)

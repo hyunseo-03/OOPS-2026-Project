@@ -63,24 +63,28 @@ void FactoryView::render()
     };
 
     auto machineColor = [&](ProcessStep step, bool active) -> ImVec4 {
-        if (model.isMachineFailed(step)) return red;
-        if (model.isMachinePaused(step)) return yellow;
-        if (active && model.isMachineRunning(step)) return green;
+        MachineState state = model.getMachineState(step);
+        if (state == MachineState::Failed) return red;
+        if (state == MachineState::Paused) return yellow;
+        if (active && state == MachineState::Running) return green;
         if (active) return blue;
         return muted;
     };
 
     auto machineState = [&](ProcessStep step, bool active) -> const char* {
-        if (model.isMachineFailed(step)) return "Repair";
-        if (model.isMachinePaused(step)) return "Paused";
-        if (active && model.isMachineRunning(step)) return "Running";
+        MachineState state = model.getMachineState(step);
+        if (state == MachineState::Failed) return "Repair";
+        if (state == MachineState::Paused) return "Paused";
+        if (state == MachineState::Completed) return "Done";
+        if (active && state == MachineState::Running) return "Running";
         if (active) return "Waiting";
         return "Idle";
     };
 
     auto currentStatusText = [&]() -> const char* {
-        if (model.isCurrentMachineFailed()) return "Machine failure detected. Repair the current station.";
-        if (model.isCurrentMachinePaused()) return "Production is paused.";
+        MachineState currentMachineState = model.getCurrentMachineState();
+        if (currentMachineState == MachineState::Failed) return "Machine failure detected. Repair the current station.";
+        if (currentMachineState == MachineState::Paused) return "Production is paused.";
 
         switch (model.getCurrentStep())
         {
@@ -175,7 +179,8 @@ void FactoryView::render()
 
         ImGui::PushID(shortName);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, active ? ImVec4(0.095f, 0.155f, 0.145f, 1.0f) : panel2);
-        ImGui::PushStyleColor(ImGuiCol_Border, model.isMachineFailed(step) ? red : (active ? green : border));
+        MachineState state = model.getMachineState(step);
+        ImGui::PushStyleColor(ImGuiCol_Border, state == MachineState::Failed ? red : (active ? green : border));
         
         const float cardWidth = 200.0f;
         const float cardHeight = 150.0f;
@@ -217,7 +222,7 @@ void FactoryView::render()
         }
         ImGui::Spacing();
 
-        if (hasMachine && model.isMachineFailed(step))
+        if (hasMachine && state == MachineState::Failed)
         {
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.650f, 0.130f, 0.130f, 1.0f));
             if (ImGui::Button("Repair", ImVec2(-1.0f, 30.0f)))
@@ -365,16 +370,17 @@ void FactoryView::render()
     // -----------------------------------------------------
 
     ProcessStep cur = model.getCurrentStep();
+    MachineState curState = model.getMachineState(cur);
     const bool canTryStart = !model.isGameOver() &&
         model.hasOrder() &&
         model.hasMachine(cur) &&
-        !model.isMachineRunning(cur) &&
-        !model.isMachinePaused(cur) &&
-        !model.isMachineDone(cur) &&
-        !model.isMachineFailed(cur);
+        curState != MachineState::Running &&
+        curState != MachineState::Paused &&
+        curState != MachineState::Completed &&
+        curState != MachineState::Failed;
     const bool canPause = model.hasMachine(cur) &&
-        (model.isMachineRunning(cur) || model.isMachinePaused(cur)) &&
-        !model.isMachineFailed(cur);
+        (curState == MachineState::Running || curState == MachineState::Paused) &&
+        curState != MachineState::Failed;
 
     if (ImGui::BeginTable("HeaderTable", 2, ImGuiTableFlags_SizingStretchProp))
     {
@@ -387,7 +393,7 @@ void FactoryView::render()
 
         ImGui::TableSetColumnIndex(1);
         ImGui::BeginDisabled(!canPause);
-        if (ImGui::Button(model.isMachinePaused(cur) ? "Resume" : "Pause", ImVec2(74.0f, 34.0f)))
+        if (ImGui::Button(curState == MachineState::Paused ? "Resume" : "Pause", ImVec2(74.0f, 34.0f)))
             controller.onTogglePause(cur);
         ImGui::EndDisabled();
 

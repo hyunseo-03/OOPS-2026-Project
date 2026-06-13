@@ -4,5 +4,6 @@ enum class MachineState {
     Idle,
     Running,
     Paused,
-    Failed
+    Failed,
+    Completed
 };
