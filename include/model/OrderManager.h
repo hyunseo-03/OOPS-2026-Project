@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "enum/BurgerType.h"
-#include "model/Order.h"
+#include "struct/FactoryStructs.h"
 
 class OrderManager
 {

@@ -3,7 +3,7 @@
 #include <memory>
 #include <map>
 #include "model/Machine.h"
-#include "model/BurgerRecipe.h"
+#include "struct/FactoryStructs.h"
 #include "enum/ProcessStep.h"
 #include "enum/IngredientType.h"
 

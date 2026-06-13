@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "model/MachineConfig.h"
+#include "struct/FactoryStructs.h"
 #include "enum/MachineState.h"
 
 class Machine

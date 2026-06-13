@@ -4,7 +4,7 @@
 #include <vector>
 #include "enum/ProcessStep.h"
 #include "enum/IngredientType.h"
-#include "model/MachineConfig.h"
+#include "struct/FactoryStructs.h"
 #include "model/IFactoryActions.h"
 #include "model/IFactoryViewData.h"
 #include "model/InventoryManager.h"

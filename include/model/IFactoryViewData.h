@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "enum/IngredientType.h"
-#include "model/Order.h"
+#include "struct/FactoryStructs.h"
 #include "enum/ProcessStep.h"
 #include "enum/MachineState.h"
 

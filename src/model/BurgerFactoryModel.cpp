@@ -1,5 +1,5 @@
 #include "model/BurgerFactoryModel.h"
-#include "model/BurgerRecipe.h"
+#include "struct/FactoryStructs.h"
 
 BurgerFactoryModel::BurgerFactoryModel()
     : currentStep(ProcessStep::Idle), qualityCheckPassed(false),

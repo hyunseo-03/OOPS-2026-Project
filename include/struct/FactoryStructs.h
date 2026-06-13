@@ -1,20 +1,29 @@
 #pragma once
-#include <map>
-#include "enum/IngredientType.h"
-#include "enum/BurgerType.h"
 
-// ─────────────────────────────────────────────────────
-// BurgerRecipe - 버거 타입별 필요 재료 정의
-// canProceed()와 consumeIngredients() 둘 다 여기서 참조한다.
-// 레시피 변경이 필요하면 이 파일만 수정하면 된다.
-// ─────────────────────────────────────────────────────
-struct BurgerRecipe
-{
-    std::map<IngredientType, int> ingredients;  // 재료 → 필요 수량
-    int price;                                  // 판매 가격
+#include <map>
+
+#include "enum/BurgerType.h"
+#include "enum/IngredientType.h"
+
+struct Order {
+    BurgerType type = BurgerType::CLASSIC;
+    int        quantity = 1;
+    bool       isCompleted = false;
+    float      timeTaken = 0.0f;
+    float      earnedReputation = 5.0f;
+
+    Order() {}
+
+    Order(BurgerType t, int q = 1)
+        : type(t), quantity(q), isCompleted(false), timeTaken(0.0f), earnedReputation(5.0f) {}
 };
 
-// 버거 타입에 맞는 레시피 반환
+struct BurgerRecipe
+{
+    std::map<IngredientType, int> ingredients;
+    int price;
+};
+
 inline BurgerRecipe getRecipe(BurgerType type)
 {
     switch (type)
@@ -61,3 +70,9 @@ inline BurgerRecipe getRecipe(BurgerType type)
             return {};
     }
 }
+
+struct MachineConfig
+{
+    int        pattyCount = 1;
+    BurgerType burgerType = BurgerType::CLASSIC;
+};
