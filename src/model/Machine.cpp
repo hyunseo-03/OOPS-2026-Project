@@ -11,7 +11,7 @@ Machine::Machine(const std::string& name, float cycleTime, float malfunctionRate
 void Machine::checkMalfunction(float dt)
 {
     if (state != MachineState::Running) return;
-    float roll = static_cast<float>(rand()) / RAND_MAX;
+    float roll = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     if (roll < malfunctionRate * dt)
     {
         state = MachineState::Failed;

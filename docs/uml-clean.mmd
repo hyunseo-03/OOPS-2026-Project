@@ -1,0 +1,159 @@
+classDiagram
+    class FactoryView {
+      -IFactoryViewData& model
+      -FactoryController& controller
+      +FactoryView(...)
+      +render() void
+    }
+    class FactoryController {
+      -IFactoryActions& model
+      +onStartMachine(ProcessStep) void
+      +onNewOrder(BurgerType) void
+      +onRepairMachine(ProcessStep) void
+      +onUpgradeMachine(ProcessStep) bool
+    }
+    class IFactoryActions {
+      <<interface>>
+      +update(float dt) void
+      +startProcess(ProcessStep step) void
+      +addOrder(BurgerType type) void
+      +refillInventory() void
+      +repairMachine(ProcessStep step) bool
+      +togglePauseMachine(ProcessStep step) void
+      +upgradeMachine(ProcessStep step) bool
+    }
+    class IFactoryViewData {
+      <<interface>>
+      +getCurrentStep() ProcessStep
+      +getTotalBurgersProduced() int
+      +getMoney() int
+      +hasOrder() bool
+      +getCurrentOrder() Order
+      +getIngredientAmount(IngredientType type) int
+      +getCurrentMachineState() MachineState
+      +isGameOver() bool
+      +getStatusMessage() string
+      +getCompletedOrders() vector~Order~
+      +getQueuedOrders() vector~Order~
+      +getAverageReputation() float
+      +getRepairCost() int
+      +hasMachine(ProcessStep step) bool
+      +getMachineState(ProcessStep step) MachineState
+      +getMachineProgress(ProcessStep step) float
+      +getMachineName(ProcessStep step) string
+      +getMachineLevel(ProcessStep step) int
+      +getMachineMaxLevel(ProcessStep step) int
+      +getMachineUpgradeCost(ProcessStep step) int
+      +getMachineCycleTime(ProcessStep step) float
+      +getMachineMalfunctionRate(ProcessStep step) float
+    }
+    class BurgerFactoryModel {
+      -InventoryManager inventoryManager
+      -MoneyManager moneyManager
+      -OrderManager orderManager
+      -ProductionLine productionLine
+      +BurgerFactoryModel()
+    }
+    class ProductionLine {
+      -vector~unique_ptr~Machine~~ machines
+      -QualityChecker* qualityChecker
+      +ProductionLine()
+      +update(float) void
+      +getMachineState(ProcessStep) MachineState
+    }
+    class Machine {
+      <<abstract>>
+      #string name
+      #MachineState state
+      #float progress
+      #float cycleTime
+      +Machine(string,float,float)
+      +update(float) void*
+      +getState() MachineState
+    }
+    class PrepMachine
+    class GrillMachine
+    class SauceMachine
+    class AssemblyMachine
+    class QualityChecker
+    class PackingMachine
+    class InventoryManager
+    class MoneyManager
+    class OrderManager
+    class Order {
+      <<struct>>
+      +BurgerType type
+      +bool isCompleted
+      +float timeTaken
+      +float earnedReputation
+    }
+    class BurgerRecipe {
+      <<struct>>
+      +map~IngredientType,int~ ingredients
+      +int price
+    }
+    class MachineConfig {
+      <<struct>>
+      +int pattyCount
+      +BurgerType burgerType
+    }
+    class BurgerType {
+      <<enum>>
+      CLASSIC
+      CHEESE
+      DOUBLE
+    }
+    class IngredientType {
+      <<enum>>
+      BUN
+      PATTY
+      LETTUCE
+      TOMATO
+      SAUCE
+      CHEESE
+    }
+    class ProcessStep {
+      <<enum>>
+      Idle
+      PreparingIngredients
+      GrillPatty
+      AddSauce
+      AssembleBurger
+      QualityCheck
+      PackBurger
+      Done
+    }
+    class MachineState {
+      <<enum>>
+      Idle
+      Running
+      Paused
+      Failed
+      Completed
+    }
+
+    FactoryView --> FactoryController : button calls
+    FactoryView ..> IFactoryViewData : reads
+    FactoryController ..> IFactoryActions : commands
+    BurgerFactoryModel ..|> IFactoryActions
+    BurgerFactoryModel ..|> IFactoryViewData
+    BurgerFactoryModel *-- InventoryManager
+    BurgerFactoryModel *-- MoneyManager
+    BurgerFactoryModel *-- OrderManager
+    BurgerFactoryModel *-- ProductionLine
+    ProductionLine *-- Machine
+    Machine <|-- PrepMachine
+    Machine <|-- GrillMachine
+    Machine <|-- SauceMachine
+    Machine <|-- AssemblyMachine
+    Machine <|-- QualityChecker
+    Machine <|-- PackingMachine
+    OrderManager *-- Order
+    Order ..> BurgerType
+    BurgerRecipe ..> IngredientType
+    MachineConfig ..> BurgerType
+    Machine ..> MachineState
+    Machine ..> MachineConfig
+    QualityChecker ..> BurgerRecipe
+    ProductionLine ..> ProcessStep
+    BurgerFactoryModel ..> ProcessStep

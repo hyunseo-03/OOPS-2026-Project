@@ -1,0 +1,449 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3400" height="3550" viewBox="0 0 3400 3550">
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#111827" stroke-width="1.8"/></marker>
+<marker id="openArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#111827" stroke-width="1.8"/></marker>
+<marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6.5" orient="auto"><path d="M1,1 L12,6.5 L1,12 Z" fill="#ffffff" stroke="#111827" stroke-width="1.8"/></marker>
+<marker id="diamond" markerWidth="12" markerHeight="12" refX="1" refY="6" orient="auto"><path d="M1,6 L6,1 L11,6 L6,11 Z" fill="#111827" stroke="#111827" stroke-width="1.4"/></marker>
+<marker id="hollowDiamond" markerWidth="12" markerHeight="12" refX="1" refY="6" orient="auto"><path d="M1,6 L6,1 L11,6 L6,11 Z" fill="#ffffff" stroke="#111827" stroke-width="1.4"/></marker>
+</defs>
+<style>
+.bg { fill: #ffffff; }
+.package { fill: none; stroke: #cbd5e1; stroke-width: 4; }
+.box { fill: #ffffff; stroke: #233858; stroke-width: 4; }
+.head { fill: #f8fafc; stroke: #233858; stroke-width: 4; }
+.thin { stroke: #233858; stroke-width: 2; fill: none; }
+.assoc { stroke: #111827; stroke-width: 2.6; fill: none; }
+.dependency { stroke: #111827; stroke-width: 2.6; stroke-dasharray: 10 8; fill: none; }
+.composition { stroke: #111827; stroke-width: 2.6; fill: none; }
+.inherit { stroke: #111827; stroke-width: 2.6; fill: none; }
+.realization { stroke: #111827; stroke-width: 2.6; stroke-dasharray: 10 8; fill: none; }
+.aggregation { stroke: #111827; stroke-width: 2.6; fill: none; }
+.title { font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 700; fill: #0f172a; }
+.packageTitle { font-family: Arial, Helvetica, sans-serif; font-size: 42px; font-weight: 700; fill: #233858; }
+.member { font-family: Arial, Helvetica, sans-serif; font-size: 23px; fill: #1e293b; }
+.small { font-family: Arial, Helvetica, sans-serif; font-size: 22px; fill: #1e293b; }
+.stereo { font-family: Arial, Helvetica, sans-serif; font-size: 25px; font-style: italic; fill: #64748b; }
+.label { font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: 700; fill: #334155; }
+.note { font-family: Arial, Helvetica, sans-serif; font-size: 24px; fill: #475569; }
+</style>
+<rect class="bg" x="0" y="0" width="3400" height="3550"/>
+<text x="60" y="58" class="packageTitle" text-anchor="start">Burger Factory Simulation - Clean UML Class Diagram</text>
+<text x="60" y="90" class="note" text-anchor="start">MVC, has-a, is-a, dependency, structs/enums, and SOLID-oriented interfaces</text>
+<rect x="40" y="120" width="1320" height="1160" rx="14" class="package"/>
+<text x="64" y="162" class="packageTitle" text-anchor="start">1. MVC Layer</text>
+<rect x="1400" y="120" width="1960" height="900" rx="14" class="package"/>
+<text x="1424" y="162" class="packageTitle" text-anchor="start">2. Model Core and Has-a Relationships</text>
+<rect x="40" y="1340" width="1320" height="1630" rx="14" class="package"/>
+<text x="64" y="1382" class="packageTitle" text-anchor="start">3. Machine Is-a Hierarchy</text>
+<rect x="1400" y="1080" width="1940" height="780" rx="14" class="package"/>
+<text x="1424" y="1122" class="packageTitle" text-anchor="start">4. Structs, Enums, and Dependencies</text>
+<rect x="40" y="3030" width="1320" height="390" rx="14" class="package"/>
+<text x="64" y="3072" class="packageTitle" text-anchor="start">5. Relationship Legend and SOLID Notes</text>
+<g id="main.cpp">
+<rect x="90" y="200" width="270" height="250" rx="8" class="box"/>
+<rect x="90" y="200" width="270" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="90" y1="254" x2="360" y2="254" class="thin"/>
+<text x="225.0" y="238" class="title" text-anchor="middle">main.cpp</text>
+<line x1="90" y1="282" x2="360" y2="282" class="thin"/>
+<text x="112" y="312" class="member" text-anchor="start">+ main(): int</text>
+<text x="112" y="343" class="member" text-anchor="start">SDL + ImGui loop</text>
+</g>
+<g id="FactoryView">
+<rect x="430" y="190" width="360" height="300" rx="8" class="box"/>
+<rect x="430" y="190" width="360" height="54" rx="8" class="head" fill="#eff6ff"/>
+<line x1="430" y1="244" x2="790" y2="244" class="thin"/>
+<text x="610.0" y="212" class="stereo" text-anchor="middle">&lt;&lt;View&gt;&gt;</text>
+<text x="610.0" y="238" class="title" text-anchor="middle">FactoryView</text>
+<text x="452" y="282" class="member" text-anchor="start">- model: IFactoryViewData&amp;</text>
+<text x="452" y="313" class="member" text-anchor="start">- controller: FactoryController&amp;</text>
+<text x="452" y="344" class="member" text-anchor="start">- stepToString(step)</text>
+<line x1="430" y1="365" x2="790" y2="365" class="thin"/>
+<text x="452" y="395" class="member" text-anchor="start">+ FactoryView(model, controller)</text>
+<text x="452" y="426" class="member" text-anchor="start">+ render(): void</text>
+<text x="452" y="457" class="member" text-anchor="start">+ renderOrderHistory(): void</text>
+</g>
+<g id="FactoryController">
+<rect x="870" y="190" width="420" height="360" rx="8" class="box"/>
+<rect x="870" y="190" width="420" height="54" rx="8" class="head" fill="#ecfeff"/>
+<line x1="870" y1="244" x2="1290" y2="244" class="thin"/>
+<text x="1080.0" y="212" class="stereo" text-anchor="middle">&lt;&lt;Controller&gt;&gt;</text>
+<text x="1080.0" y="238" class="title" text-anchor="middle">FactoryController</text>
+<text x="892" y="282" class="member" text-anchor="start">- model: IFactoryActions&amp;</text>
+<line x1="870" y1="303" x2="1290" y2="303" class="thin"/>
+<text x="892" y="333" class="member" text-anchor="start">+ FactoryController(model)</text>
+<text x="892" y="364" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="892" y="395" class="member" text-anchor="start">+ onStartMachine(step): void</text>
+<text x="892" y="426" class="member" text-anchor="start">+ onNewOrder(type): void</text>
+<text x="892" y="457" class="member" text-anchor="start">+ onRefillInventory(): void</text>
+<text x="892" y="488" class="member" text-anchor="start">+ onRepairMachine(step): void</text>
+<text x="892" y="519" class="member" text-anchor="start">+ onTogglePause(step): void</text>
+<text x="892" y="550" class="member" text-anchor="start">+ onUpgradeMachine(step): bool</text>
+</g>
+<g id="IFactoryViewData">
+<rect x="80" y="610" width="560" height="610" rx="8" class="box"/>
+<rect x="80" y="610" width="560" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="80" y1="664" x2="640" y2="664" class="thin"/>
+<text x="360.0" y="632" class="stereo" text-anchor="middle">&lt;&lt;interface&gt;&gt;</text>
+<text x="360.0" y="658" class="title" text-anchor="middle">IFactoryViewData</text>
+<text x="102" y="702" class="member" text-anchor="start">+ getCurrentStep(): ProcessStep</text>
+<text x="102" y="733" class="member" text-anchor="start">+ getTotalBurgersProduced(): int</text>
+<text x="102" y="764" class="member" text-anchor="start">+ getMoney(): int</text>
+<text x="102" y="795" class="member" text-anchor="start">+ hasOrder(): bool</text>
+<text x="102" y="826" class="member" text-anchor="start">+ getCurrentOrder(): const Order&amp;</text>
+<text x="102" y="857" class="member" text-anchor="start">+ getIngredientAmount(type): int</text>
+<text x="102" y="888" class="member" text-anchor="start">+ getCurrentMachineState(): MachineState</text>
+<text x="102" y="919" class="member" text-anchor="start">+ isGameOver(): bool</text>
+<text x="102" y="950" class="member" text-anchor="start">+ getStatusMessage(): const string&amp;</text>
+<text x="102" y="981" class="member" text-anchor="start">+ getCompletedOrders(): const vector&lt;Order&gt;&amp;</text>
+<text x="102" y="1012" class="member" text-anchor="start">+ getQueuedOrders(): const vector&lt;Order&gt;&amp;</text>
+<text x="102" y="1043" class="member" text-anchor="start">+ getAverageReputation(): float</text>
+<text x="102" y="1074" class="member" text-anchor="start">+ getRepairCost(): int</text>
+<text x="102" y="1105" class="member" text-anchor="start">+ hasMachine(step): bool</text>
+<text x="102" y="1136" class="member" text-anchor="start">+ getMachineState(step): MachineState</text>
+<text x="102" y="1167" class="member" text-anchor="start">+ getMachineProgress(step): float</text>
+<text x="102" y="1198" class="member" text-anchor="start">+ getMachineName(step): const string&amp;</text>
+<text x="102" y="1229" class="member" text-anchor="start">+ getMachineLevel(step): int</text>
+</g>
+<g id="IFactoryActions">
+<rect x="760" y="680" width="540" height="330" rx="8" class="box"/>
+<rect x="760" y="680" width="540" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="760" y1="734" x2="1300" y2="734" class="thin"/>
+<text x="1030.0" y="702" class="stereo" text-anchor="middle">&lt;&lt;interface&gt;&gt;</text>
+<text x="1030.0" y="728" class="title" text-anchor="middle">IFactoryActions</text>
+<text x="782" y="772" class="member" text-anchor="start">+ update(dt: float): void</text>
+<text x="782" y="803" class="member" text-anchor="start">+ startProcess(step: ProcessStep): void</text>
+<text x="782" y="834" class="member" text-anchor="start">+ addOrder(type: BurgerType): void</text>
+<text x="782" y="865" class="member" text-anchor="start">+ refillInventory(): void</text>
+<text x="782" y="896" class="member" text-anchor="start">+ repairMachine(step: ProcessStep): bool</text>
+<text x="782" y="927" class="member" text-anchor="start">+ togglePauseMachine(step): void</text>
+<text x="782" y="958" class="member" text-anchor="start">+ upgradeMachine(step): bool</text>
+</g>
+<line x1="360" y1="325" x2="430" y2="325" class="dependency" marker-end="url(#arrow)"/>
+<text x="395" y="315" class="label" text-anchor="middle">creates/uses</text>
+<line x1="790" y1="340" x2="870" y2="340" class="dependency" marker-end="url(#arrow)"/>
+<text x="830" y="330" class="label" text-anchor="middle">button calls</text>
+<line x1="610" y1="490" x2="360" y2="610" class="dependency" marker-end="url(#arrow)"/>
+<text x="480" y="560" class="label" text-anchor="middle">read data</text>
+<line x1="1080" y1="550" x2="1030" y2="680" class="dependency" marker-end="url(#arrow)"/>
+<text x="1090" y="620" class="label" text-anchor="middle">commands</text>
+<g id="BurgerFactoryModel">
+<rect x="1420" y="190" width="640" height="810" rx="8" class="box"/>
+<rect x="1420" y="190" width="640" height="54" rx="8" class="head" fill="#fff7ed"/>
+<line x1="1420" y1="244" x2="2060" y2="244" class="thin"/>
+<text x="1740" y="212" class="stereo" text-anchor="middle">&lt;&lt;Model Coordinator&gt;&gt;</text>
+<text x="1740" y="238" class="title" text-anchor="middle">BurgerFactoryModel</text>
+<text x="1442" y="282" class="member" text-anchor="start">- currentStep: ProcessStep</text>
+<text x="1442" y="313" class="member" text-anchor="start">- preparedIngredients: map&lt;IngredientType,int&gt;</text>
+<text x="1442" y="344" class="member" text-anchor="start">- qualityCheckPassed: bool</text>
+<text x="1442" y="375" class="member" text-anchor="start">- productionTimerRunning: bool</text>
+<text x="1442" y="406" class="member" text-anchor="start">- gameOver: bool</text>
+<text x="1442" y="437" class="member" text-anchor="start">- statusMessage: string</text>
+<text x="1442" y="468" class="member" text-anchor="start">- inventoryManager: InventoryManager</text>
+<text x="1442" y="499" class="member" text-anchor="start">- moneyManager: MoneyManager</text>
+<text x="1442" y="530" class="member" text-anchor="start">- orderManager: OrderManager</text>
+<text x="1442" y="561" class="member" text-anchor="start">- productionLine: ProductionLine</text>
+<text x="1442" y="592" class="member" text-anchor="start">- consumeIngredients(): bool</text>
+<text x="1442" y="623" class="member" text-anchor="start">- checkQuality(): bool</text>
+<text x="1442" y="654" class="member" text-anchor="start">- handleMalfunction(): void</text>
+<text x="1442" y="685" class="member" text-anchor="start">- enterStep(step: ProcessStep, autoStart: bool,</text>
+<text x="1442" y="716" class="member" text-anchor="start">  config: MachineConfig*): void</text>
+<text x="1442" y="747" class="member" text-anchor="start">- canProceed(step: ProcessStep): bool</text>
+<text x="1442" y="778" class="member" text-anchor="start">- nextStep(): void</text>
+<line x1="1420" y1="800" x2="2060" y2="800" class="thin"/>
+<text x="1442" y="830" class="member" text-anchor="start">+ BurgerFactoryModel()</text>
+<text x="1442" y="861" class="member" text-anchor="start">+ REPAIR_COST: int = 20</text>
+<text x="1442" y="892" class="member" text-anchor="start">+ REFILL_COST: int = 100</text>
+</g>
+<g id="InventoryManager">
+<rect x="2080" y="190" width="360" height="250" rx="8" class="box"/>
+<rect x="2080" y="190" width="360" height="54" rx="8" class="head" fill="#f0fdf4"/>
+<line x1="2080" y1="244" x2="2440" y2="244" class="thin"/>
+<text x="2260.0" y="228" class="title" text-anchor="middle">InventoryManager</text>
+<text x="2102" y="282" class="member" text-anchor="start">- inventory: map&lt;IngredientType,int&gt;</text>
+<line x1="2080" y1="303" x2="2440" y2="303" class="thin"/>
+<text x="2102" y="333" class="member" text-anchor="start">+ InventoryManager()</text>
+<text x="2102" y="364" class="member" text-anchor="start">+ hasEnough(type, amount): bool</text>
+<text x="2102" y="395" class="member" text-anchor="start">+ use(type, amount): bool</text>
+<text x="2102" y="426" class="member" text-anchor="start">+ add(type, amount): void</text>
+<text x="2102" y="457" class="member" text-anchor="start">+ getAmount(type): int</text>
+<text x="2102" y="488" class="member" text-anchor="start">+ refill(): void</text>
+</g>
+<g id="MoneyManager">
+<rect x="2500" y="190" width="310" height="170" rx="8" class="box"/>
+<rect x="2500" y="190" width="310" height="54" rx="8" class="head" fill="#f0fdf4"/>
+<line x1="2500" y1="244" x2="2810" y2="244" class="thin"/>
+<text x="2655.0" y="228" class="title" text-anchor="middle">MoneyManager</text>
+<text x="2522" y="282" class="member" text-anchor="start">- money: int</text>
+<line x1="2500" y1="303" x2="2810" y2="303" class="thin"/>
+<text x="2522" y="333" class="member" text-anchor="start">+ MoneyManager()</text>
+<text x="2522" y="364" class="member" text-anchor="start">+ add(amount): void</text>
+<text x="2522" y="395" class="member" text-anchor="start">+ spend(amount): bool</text>
+<text x="2522" y="426" class="member" text-anchor="start">+ getMoney(): int</text>
+</g>
+<g id="OrderManager">
+<rect x="2080" y="510" width="430" height="350" rx="8" class="box"/>
+<rect x="2080" y="510" width="430" height="54" rx="8" class="head" fill="#f0fdf4"/>
+<line x1="2080" y1="564" x2="2510" y2="564" class="thin"/>
+<text x="2295.0" y="548" class="title" text-anchor="middle">OrderManager</text>
+<text x="2102" y="602" class="member" text-anchor="start">- currentOrder: Order</text>
+<text x="2102" y="633" class="member" text-anchor="start">- orderQueue: vector&lt;Order&gt;</text>
+<text x="2102" y="664" class="member" text-anchor="start">- completedOrders: vector&lt;Order&gt;</text>
+<text x="2102" y="695" class="member" text-anchor="start">- completedCount: int</text>
+<text x="2102" y="726" class="member" text-anchor="start">- totalReputation: float</text>
+<line x1="2080" y1="747" x2="2510" y2="747" class="thin"/>
+<text x="2102" y="777" class="member" text-anchor="start">+ OrderManager()</text>
+<text x="2102" y="808" class="member" text-anchor="start">+ addOrder(type): void</text>
+<text x="2102" y="839" class="member" text-anchor="start">+ completeOrder(): void</text>
+<text x="2102" y="870" class="member" text-anchor="start">+ hasOrder(): bool</text>
+<text x="2102" y="901" class="member" text-anchor="start">+ hasActiveOrder(): bool</text>
+<text x="2102" y="932" class="member" text-anchor="start">+ updateActiveOrderTime(dt): void</text>
+<text x="2102" y="963" class="member" text-anchor="start">+ getAverageReputation(): float</text>
+</g>
+<g id="ProductionLine">
+<rect x="2820" y="470" width="500" height="390" rx="8" class="box"/>
+<rect x="2820" y="470" width="500" height="54" rx="8" class="head" fill="#f0fdf4"/>
+<line x1="2820" y1="524" x2="3320" y2="524" class="thin"/>
+<text x="3070.0" y="492" class="stereo" text-anchor="middle">&lt;&lt;Composition Owner&gt;&gt;</text>
+<text x="3070.0" y="518" class="title" text-anchor="middle">ProductionLine</text>
+<text x="2842" y="562" class="member" text-anchor="start">- machines: vector&lt;unique_ptr&lt;Machine&gt;&gt;</text>
+<text x="2842" y="593" class="member" text-anchor="start">- qualityChecker: QualityChecker*</text>
+<text x="2842" y="624" class="member" text-anchor="start">- stepToIndex(step): int</text>
+<line x1="2820" y1="645" x2="3320" y2="645" class="thin"/>
+<text x="2842" y="675" class="member" text-anchor="start">+ ProductionLine()</text>
+<text x="2842" y="706" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="2842" y="737" class="member" text-anchor="start">+ configureMachine(step, config)</text>
+<text x="2842" y="768" class="member" text-anchor="start">+ startMachine(step): void</text>
+<text x="2842" y="799" class="member" text-anchor="start">+ getMachineState(step): MachineState</text>
+<text x="2842" y="830" class="member" text-anchor="start">+ pause/resume/repair/reset</text>
+<text x="2842" y="861" class="member" text-anchor="start">+ inspectQuality(...): bool</text>
+<text x="2842" y="892" class="member" text-anchor="start">+ getMachine(step): Machine*</text>
+</g>
+<line x1="2060" y1="310" x2="2080" y2="310" class="composition" marker-start="url(#diamond)"/>
+<text x="2040.0" y="298.0" class="label" text-anchor="middle">has-a</text>
+<line x1="2060" y1="370" x2="2500" y2="280" class="composition" marker-start="url(#diamond)"/>
+<text x="2250.0" y="313.0" class="label" text-anchor="middle">has-a</text>
+<line x1="2060" y1="530" x2="2080" y2="670" class="composition" marker-start="url(#diamond)"/>
+<text x="2040.0" y="588.0" class="label" text-anchor="middle">has-a</text>
+<line x1="2060" y1="720" x2="2820" y2="660" class="composition" marker-start="url(#diamond)"/>
+<text x="2430.0" y="678.0" class="label" text-anchor="middle">has-a</text>
+<line x1="1420" y1="650" x2="1300" y2="820" class="inherit" marker-end="url(#triangle)"/>
+<text x="1380" y="720" class="label" text-anchor="middle">inherits</text>
+<line x1="1420" y1="590" x2="640" y2="840" class="inherit" marker-end="url(#triangle)"/>
+<text x="1030" y="705" class="label" text-anchor="middle">inherits</text>
+<g id="Machine">
+<rect x="455" y="1460" width="470" height="730" rx="8" class="box"/>
+<rect x="455" y="1460" width="470" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="455" y1="1514" x2="925" y2="1514" class="thin"/>
+<text x="690.0" y="1482" class="stereo" text-anchor="middle">&lt;&lt;abstract&gt;&gt;</text>
+<text x="690.0" y="1508" class="title" text-anchor="middle">Machine</text>
+<text x="477" y="1552" class="member" text-anchor="start"># name: string</text>
+<text x="477" y="1583" class="member" text-anchor="start"># state: MachineState</text>
+<text x="477" y="1614" class="member" text-anchor="start"># hasCompleted: bool</text>
+<text x="477" y="1645" class="member" text-anchor="start"># level: int</text>
+<text x="477" y="1676" class="member" text-anchor="start"># progress: float</text>
+<text x="477" y="1707" class="member" text-anchor="start"># cycleTime: float</text>
+<text x="477" y="1738" class="member" text-anchor="start"># malfunctionRate: float</text>
+<text x="477" y="1769" class="member" text-anchor="start"># maxLevel: int = 5</text>
+<text x="477" y="1800" class="member" text-anchor="start"># upgradeCost: int = 100</text>
+<text x="477" y="1831" class="member" text-anchor="start"># baseCycleTime: float</text>
+<text x="477" y="1862" class="member" text-anchor="start"># baseMalfunctionRate: float</text>
+<line x1="455" y1="1883" x2="925" y2="1883" class="thin"/>
+<text x="477" y="1913" class="member" text-anchor="start">+ Machine(name, cycleTime, malfunctionRate)</text>
+<text x="477" y="1944" class="member" text-anchor="start">+ ~Machine()</text>
+<text x="477" y="1975" class="member" text-anchor="start">+ configure(config): void</text>
+<text x="477" y="2006" class="member" text-anchor="start">+ update(dt): void = 0</text>
+<text x="477" y="2037" class="member" text-anchor="start">+ setState(state): void</text>
+<text x="477" y="2068" class="member" text-anchor="start">+ reset(): void</text>
+<text x="477" y="2099" class="member" text-anchor="start">+ getState(): MachineState</text>
+<text x="477" y="2130" class="member" text-anchor="start">+ getProgress(): float</text>
+<text x="477" y="2161" class="member" text-anchor="start">+ upgrade(): void</text>
+</g>
+<g id="PrepMachine">
+<rect x="80" y="2250" width="285" height="185" rx="8" class="box"/>
+<rect x="80" y="2250" width="285" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="80" y1="2304" x2="365" y2="2304" class="thin"/>
+<text x="222.5" y="2288" class="title" text-anchor="middle">PrepMachine</text>
+<line x1="80" y1="2332" x2="365" y2="2332" class="thin"/>
+<text x="102" y="2362" class="member" text-anchor="start">+ PrepMachine()</text>
+<text x="102" y="2393" class="member" text-anchor="start">+ update(dt): void</text>
+</g>
+<line x1="222.5" y1="2250" x2="505" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<g id="GrillMachine">
+<rect x="390" y="2250" width="285" height="265" rx="8" class="box"/>
+<rect x="390" y="2250" width="285" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="390" y1="2304" x2="675" y2="2304" class="thin"/>
+<text x="532.5" y="2288" class="title" text-anchor="middle">GrillMachine</text>
+<text x="412" y="2342" class="member" text-anchor="start">- pattyCount: int</text>
+<text x="412" y="2373" class="member" text-anchor="start">- pattiesGrilled: int</text>
+<line x1="390" y1="2394" x2="675" y2="2394" class="thin"/>
+<text x="412" y="2424" class="member" text-anchor="start">+ GrillMachine()</text>
+<text x="412" y="2455" class="member" text-anchor="start">+ configure(config): void</text>
+<text x="412" y="2486" class="member" text-anchor="start">+ update(dt): void</text>
+</g>
+<line x1="532.5" y1="2250" x2="575" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<g id="SauceMachine">
+<rect x="700" y="2250" width="285" height="235" rx="8" class="box"/>
+<rect x="700" y="2250" width="285" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="700" y1="2304" x2="985" y2="2304" class="thin"/>
+<text x="842.5" y="2288" class="title" text-anchor="middle">SauceMachine</text>
+<text x="722" y="2342" class="member" text-anchor="start">- sauceApplied: bool</text>
+<line x1="700" y1="2363" x2="985" y2="2363" class="thin"/>
+<text x="722" y="2393" class="member" text-anchor="start">+ SauceMachine()</text>
+<text x="722" y="2424" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="722" y="2455" class="member" text-anchor="start">+ isSauceApplied(): bool</text>
+</g>
+<line x1="842.5" y1="2250" x2="645" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<g id="AssemblyMachine">
+<rect x="1010" y="2250" width="285" height="235" rx="8" class="box"/>
+<rect x="1010" y="2250" width="285" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="1010" y1="2304" x2="1295" y2="2304" class="thin"/>
+<text x="1152.5" y="2288" class="title" text-anchor="middle">AssemblyMachine</text>
+<text x="1032" y="2342" class="member" text-anchor="start">- assembled: bool</text>
+<line x1="1010" y1="2363" x2="1295" y2="2363" class="thin"/>
+<text x="1032" y="2393" class="member" text-anchor="start">+ AssemblyMachine()</text>
+<text x="1032" y="2424" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="1032" y="2455" class="member" text-anchor="start">+ isAssembled(): bool</text>
+</g>
+<line x1="1152.5" y1="2250" x2="735" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<g id="QualityChecker">
+<rect x="240" y="2570" width="315" height="190" rx="8" class="box"/>
+<rect x="240" y="2570" width="315" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="240" y1="2624" x2="555" y2="2624" class="thin"/>
+<text x="397.5" y="2608" class="title" text-anchor="middle">QualityChecker</text>
+<line x1="240" y1="2652" x2="555" y2="2652" class="thin"/>
+<text x="262" y="2682" class="member" text-anchor="start">+ QualityChecker()</text>
+<text x="262" y="2713" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="262" y="2744" class="member" text-anchor="start">+ inspect(prepared, recipe): bool</text>
+</g>
+<line x1="397.5" y1="2570" x2="815" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<g id="PackingMachine">
+<rect x="710" y="2570" width="315" height="290" rx="8" class="box"/>
+<rect x="710" y="2570" width="315" height="54" rx="8" class="head" fill="#fefce8"/>
+<line x1="710" y1="2624" x2="1025" y2="2624" class="thin"/>
+<text x="867.5" y="2608" class="title" text-anchor="middle">PackingMachine</text>
+<text x="732" y="2662" class="member" text-anchor="start">- burgerLabel: string</text>
+<text x="732" y="2693" class="member" text-anchor="start">- sealed: bool</text>
+<line x1="710" y1="2714" x2="1025" y2="2714" class="thin"/>
+<text x="732" y="2744" class="member" text-anchor="start">+ PackingMachine()</text>
+<text x="732" y="2775" class="member" text-anchor="start">+ configure(config): void</text>
+<text x="732" y="2806" class="member" text-anchor="start">+ update(dt): void</text>
+<text x="732" y="2837" class="member" text-anchor="start">+ isSealed(): bool</text>
+</g>
+<line x1="867.5" y1="2570" x2="885" y2="2190" class="inherit" marker-end="url(#triangle)"/>
+<line x1="2820" y1="860" x2="925" y2="1820" class="composition" marker-start="url(#diamond)"/>
+<text x="1850" y="1260" class="label" text-anchor="middle">has-a Machine list</text>
+<g id="Order">
+<rect x="1460" y="1160" width="360" height="210" rx="8" class="box"/>
+<rect x="1460" y="1160" width="360" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="1460" y1="1214" x2="1820" y2="1214" class="thin"/>
+<text x="1640.0" y="1182" class="stereo" text-anchor="middle">&lt;&lt;struct&gt;&gt;</text>
+<text x="1640.0" y="1208" class="title" text-anchor="middle">Order</text>
+<text x="1482" y="1252" class="member" text-anchor="start">+ type: BurgerType = CLASSIC</text>
+<text x="1482" y="1283" class="member" text-anchor="start">+ isCompleted: bool = false</text>
+<text x="1482" y="1314" class="member" text-anchor="start">+ timeTaken: float = 0.0f</text>
+<text x="1482" y="1345" class="member" text-anchor="start">+ earnedReputation: float = 5.0f</text>
+<text x="1482" y="1376" class="member" text-anchor="start">+ Order()</text>
+<text x="1482" y="1407" class="member" text-anchor="start">+ Order(t: BurgerType)</text>
+</g>
+<g id="BurgerRecipe">
+<rect x="1870" y="1160" width="380" height="150" rx="8" class="box"/>
+<rect x="1870" y="1160" width="380" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="1870" y1="1214" x2="2250" y2="1214" class="thin"/>
+<text x="2060.0" y="1182" class="stereo" text-anchor="middle">&lt;&lt;struct&gt;&gt;</text>
+<text x="2060.0" y="1208" class="title" text-anchor="middle">BurgerRecipe</text>
+<text x="1892" y="1252" class="member" text-anchor="start">+ ingredients: map&lt;IngredientType,int&gt;</text>
+<text x="1892" y="1283" class="member" text-anchor="start">+ price: int</text>
+</g>
+<g id="MachineConfig">
+<rect x="2310" y="1160" width="360" height="135" rx="8" class="box"/>
+<rect x="2310" y="1160" width="360" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="2310" y1="1214" x2="2670" y2="1214" class="thin"/>
+<text x="2490.0" y="1182" class="stereo" text-anchor="middle">&lt;&lt;struct&gt;&gt;</text>
+<text x="2490.0" y="1208" class="title" text-anchor="middle">MachineConfig</text>
+<text x="2332" y="1252" class="member" text-anchor="start">+ pattyCount: int = 1</text>
+<text x="2332" y="1283" class="member" text-anchor="start">+ burgerType: BurgerType = CLASSIC</text>
+</g>
+<g id="MachineState">
+<rect x="2780" y="1140" width="240" height="190" rx="8" class="box"/>
+<rect x="2780" y="1140" width="240" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="2780" y1="1194" x2="3020" y2="1194" class="thin"/>
+<text x="2900.0" y="1162" class="stereo" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+<text x="2900.0" y="1188" class="title" text-anchor="middle">MachineState</text>
+<text x="2802" y="1232" class="member" text-anchor="start">Idle</text>
+<text x="2802" y="1263" class="member" text-anchor="start">Running</text>
+<text x="2802" y="1294" class="member" text-anchor="start">Paused</text>
+<text x="2802" y="1325" class="member" text-anchor="start">Failed</text>
+<text x="2802" y="1356" class="member" text-anchor="start">Completed</text>
+</g>
+<g id="ProcessStep">
+<rect x="1460" y="1430" width="390" height="230" rx="8" class="box"/>
+<rect x="1460" y="1430" width="390" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="1460" y1="1484" x2="1850" y2="1484" class="thin"/>
+<text x="1655.0" y="1452" class="stereo" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+<text x="1655.0" y="1478" class="title" text-anchor="middle">ProcessStep</text>
+<text x="1482" y="1522" class="member" text-anchor="start">Idle</text>
+<text x="1482" y="1553" class="member" text-anchor="start">PreparingIngredients</text>
+<text x="1482" y="1584" class="member" text-anchor="start">GrillPatty</text>
+<text x="1482" y="1615" class="member" text-anchor="start">AddSauce</text>
+<text x="1482" y="1646" class="member" text-anchor="start">AssembleBurger</text>
+<text x="1482" y="1677" class="member" text-anchor="start">QualityCheck</text>
+<text x="1482" y="1708" class="member" text-anchor="start">PackBurger</text>
+<text x="1482" y="1739" class="member" text-anchor="start">Done</text>
+</g>
+<g id="BurgerType">
+<rect x="1910" y="1460" width="330" height="135" rx="8" class="box"/>
+<rect x="1910" y="1460" width="330" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="1910" y1="1514" x2="2240" y2="1514" class="thin"/>
+<text x="2075.0" y="1482" class="stereo" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+<text x="2075.0" y="1508" class="title" text-anchor="middle">BurgerType</text>
+<text x="1932" y="1552" class="member" text-anchor="start">CLASSIC</text>
+<text x="1932" y="1583" class="member" text-anchor="start">CHEESE</text>
+<text x="1932" y="1614" class="member" text-anchor="start">DOUBLE</text>
+</g>
+<g id="IngredientType">
+<rect x="2310" y="1450" width="420" height="190" rx="8" class="box"/>
+<rect x="2310" y="1450" width="420" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="2310" y1="1504" x2="2730" y2="1504" class="thin"/>
+<text x="2520.0" y="1472" class="stereo" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+<text x="2520.0" y="1498" class="title" text-anchor="middle">IngredientType</text>
+<text x="2332" y="1542" class="member" text-anchor="start">BUN, PATTY, LETTUCE, TOMATO</text>
+<text x="2332" y="1573" class="member" text-anchor="start">SAUCE, CHEESE</text>
+</g>
+<line x1="1640" y1="1160" x2="1640" y2="1010" class="dependency" marker-end="url(#arrow)"/>
+<text x="1580" y="1085" class="label" text-anchor="middle">uses</text>
+<line x1="2250" y1="1210" x2="2310" y2="1215" class="dependency" marker-end="url(#arrow)"/>
+<text x="2280" y="1195" class="label" text-anchor="middle">uses</text>
+<line x1="1670" y1="1430" x2="1720" y2="840" class="dependency" marker-end="url(#arrow)"/>
+<line x1="2450" y1="1160" x2="2650" y2="860" class="dependency" marker-end="url(#arrow)"/>
+<line x1="2900" y1="1140" x2="2880" y2="860" class="dependency" marker-end="url(#arrow)"/>
+<line x1="2070" y1="1310" x2="2070" y2="1460" class="dependency" marker-end="url(#arrow)"/>
+<line x1="2050" y1="1160" x2="2450" y2="1640" class="dependency" marker-end="url(#arrow)"/>
+<g id="RelationshipLegend">
+<rect x="90" y="3030" width="520" height="300" rx="8" class="box"/>
+<rect x="90" y="3030" width="520" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="90" y1="3084" x2="610" y2="3084" class="thin"/>
+<text x="350.0" y="3068" class="title" text-anchor="middle">Relationship Legend</text>
+<line x1="120" y1="3130" x2="205" y2="3130" class="inherit" marker-end="url(#triangle)"/>
+<text x="230" y="3138" class="member" text-anchor="start">inheritance / is-a</text>
+<line x1="120" y1="3172" x2="205" y2="3172" class="composition" marker-start="url(#diamond)"/>
+<text x="230" y="3180" class="member" text-anchor="start">composition / has-a</text>
+<line x1="120" y1="3214" x2="205" y2="3214" class="dependency" marker-end="url(#arrow)"/>
+<text x="230" y="3222" class="member" text-anchor="start">dependency / uses</text>
+<line x1="90" y1="3252" x2="610" y2="3252" class="thin"/>
+<text x="120" y="3290" class="member" text-anchor="start">+ public</text>
+<text x="280" y="3290" class="member" text-anchor="start">- private</text>
+<text x="440" y="3290" class="member" text-anchor="start"># protected</text>
+</g>
+<g id="SOLIDNotes">
+<rect x="700" y="3030" width="610" height="250" rx="8" class="box"/>
+<rect x="700" y="3030" width="610" height="54" rx="8" class="head" fill="#f8fafc"/>
+<line x1="700" y1="3084" x2="1310" y2="3084" class="thin"/>
+<text x="990" y="3068" class="title" text-anchor="middle">SOLID Notes</text>
+<text x="722" y="3122" class="member" text-anchor="start">SRP: managers split inventory, money, orders</text>
+<text x="722" y="3153" class="member" text-anchor="start">OCP: add machines by extending Machine</text>
+<text x="722" y="3184" class="member" text-anchor="start">LSP: derived machines work as Machine</text>
+<text x="722" y="3215" class="member" text-anchor="start">ISP: View reads IFactoryViewData only</text>
+<text x="722" y="3246" class="member" text-anchor="start">Controller commands IFactoryActions only</text>
+<text x="722" y="3277" class="member" text-anchor="start">DIP: View and Controller depend on interfaces</text>
+</g>
+</svg>

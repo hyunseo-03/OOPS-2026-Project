@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>Burger Factory Project Presentation Notes</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm; }
+    body {
+      font-family: "Apple SD Gothic Neo", "AppleGothic", "Noto Sans CJK KR", sans-serif;
+      background: #ffffff;
+      color: #1f2933;
+      line-height: 1.55;
+      font-size: 11.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    html { background: #ffffff; }
+    h1 {
+      font-size: 22pt;
+      margin: 0 0 8px 0;
+      color: #102a43;
+    }
+    h2 {
+      font-size: 16pt;
+      margin: 24px 0 8px 0;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #9fb3c8;
+      color: #243b53;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 12.5pt;
+      margin: 14px 0 4px 0;
+      color: #334e68;
+    }
+    p { margin: 5px 0 8px 0; }
+    ul, ol { margin-top: 5px; padding-left: 22px; }
+    li { margin: 3px 0; }
+    code {
+      font-family: Menlo, Consolas, monospace;
+      font-size: 9.5pt;
+      background: #f0f4f8;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    pre {
+      font-family: Menlo, Consolas, monospace;
+      font-size: 9pt;
+      line-height: 1.35;
+      background: #f0f4f8;
+      border: 1px solid #d9e2ec;
+      padding: 8px 10px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+    .box {
+      border: 1px solid #bcccdc;
+      background: #f8fbff;
+      border-radius: 7px;
+      padding: 9px 11px;
+      margin: 8px 0 12px 0;
+      page-break-inside: avoid;
+    }
+    .flow {
+      font-family: Menlo, Consolas, monospace;
+      font-size: 9.5pt;
+      background: #ffffff;
+      border-left: 4px solid #486581;
+      padding: 8px 10px;
+      margin: 8px 0 12px 0;
+      page-break-inside: avoid;
+    }
+    .small { font-size: 10pt; color: #52606d; }
+    .page-break { page-break-before: always; }
+  </style>
+</head>
+<body>
+  <h1>Burger Factory Project 발표 설명 노트</h1>
+  <p class="small">주제: MVC 구조, 주문 흐름, 기계 흐름, struct/enum 관계, 추가 기능, SOLID 원칙 설명</p>
+
+  <h2>1. 전체 MVC 구조</h2>
+  <p>
+    이 프로젝트는 MVC 구조로 나누어져 있다. <b>Model</b>은 실제 데이터와 생산 로직을 담당하고,
+    <b>View</b>는 ImGui 화면 출력과 버튼 표시만 담당하며, <b>Controller</b>는 View에서 발생한 사용자 입력을 Model 명령으로 전달한다.
+  </p>
+  <div class="flow">main.cpp
+→ BurgerFactoryModel 생성
+→ FactoryController 생성
+→ FactoryView 생성
+→ 매 프레임 controller.update(dt)
+→ view.render()</div>
+  <h3>객체 관계</h3>
+  <ul>
+    <li><code>main.cpp</code>는 <code>BurgerFactoryModel</code>, <code>FactoryController</code>, <code>FactoryView</code>를 생성하고 사용한다. 그래서 dependency 관계이다.</li>
+    <li><code>FactoryView</code>는 <code>IFactoryViewData&amp;</code>와 <code>FactoryController&amp;</code>를 참조로 받는다. 직접 소유하지 않으므로 composition이 아니라 dependency이다.</li>
+    <li><code>FactoryController</code>는 <code>IFactoryActions&amp;</code>에 의존한다. Model 전체를 알지 않고 명령 인터페이스만 안다.</li>
+    <li><code>BurgerFactoryModel</code>은 <code>IFactoryActions</code>, <code>IFactoryViewData</code>를 public inheritance로 상속한다.</li>
+  </ul>
+  <div class="box">
+    발표 문장: “View는 UI만 담당하고, Controller는 버튼 입력을 Model 명령으로 전달합니다. Model은 주문, 재고, 돈, 공정 상태, 기계 상태 같은 실제 로직을 관리합니다.”
+  </div>
+
+  <h2>2. 주문 넣기 흐름</h2>
+  <p>
+    사용자가 버거 주문 버튼을 누르면 View가 직접 주문 데이터를 수정하지 않고 Controller를 호출한다.
+    Controller는 <code>IFactoryActions</code> 인터페이스를 통해 Model의 <code>addOrder()</code>를 호출한다.
+  </p>
+  <div class="flow">FactoryView 버튼
+→ FactoryController::onNewOrder(type)
+→ IFactoryActions::addOrder(type)
+→ BurgerFactoryModel::addOrder(type)
+→ OrderManager::addOrder(type)
+→ 필요하면 enterStep(PreparingIngredients)</div>
+  <h3>실제 코드 흐름</h3>
+  <pre>if (ImGui::Button("Classic $100", ...))
+    controller.onNewOrder(BurgerType::CLASSIC);</pre>
+  <pre>void FactoryController::onNewOrder(BurgerType type)
+{
+    model.addOrder(type);
+}</pre>
+  <pre>void BurgerFactoryModel::addOrder(BurgerType type)
+{
+    if (gameOver) return;
+    orderManager.addOrder(type);
+    statusMessage = "";
+    if (currentStep == ProcessStep::Idle)
+        enterStep(ProcessStep::PreparingIngredients);
+}</pre>
+  <p>
+    <code>BurgerFactoryModel</code>은 <code>OrderManager</code>를 멤버 변수로 직접 가지고 있으므로 composition 관계이다.
+    실제 주문 저장은 <code>OrderManager::addOrder()</code>가 담당한다.
+  </p>
+
+  <h2>3. Start 버튼 이후 기계 흐름</h2>
+  <p>
+    주문이 들어간 뒤 Start 버튼을 누르면 현재 공정 단계가 Controller로 전달되고,
+    Model은 현재 단계와 기계 상태를 검사한 다음 실제 기계를 시작한다.
+  </p>
+  <div class="flow">FactoryView Start 버튼
+→ FactoryController::onStartMachine(cur)
+→ BurgerFactoryModel::startProcess(step)
+→ consumeIngredients()
+→ ProductionLine::startMachine(step)
+→ Machine::setState(Running)</div>
+  <h3>재료 소비</h3>
+  <p>
+    <code>consumeIngredients()</code>는 <code>BurgerFactoryModel</code>의 private 함수이다.
+    현재 주문의 버거 타입을 <code>OrderManager</code>에서 가져오고, <code>getRecipe()</code>로 레시피를 확인한 뒤,
+    <code>InventoryManager</code>로 재료가 충분한지 검사하고 실제 재고를 차감한다.
+  </p>
+  <pre>bool BurgerFactoryModel::consumeIngredients()
+{
+    BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
+    for (const auto& [ingredient, amount] : recipe.ingredients)
+        if (!inventoryManager.hasEnough(ingredient, amount)) return false;
+
+    preparedIngredients.clear();
+    for (const auto& [ingredient, amount] : recipe.ingredients)
+    {
+        inventoryManager.use(ingredient, amount);
+        preparedIngredients[ingredient] = amount;
+    }
+    return true;
+}</pre>
+  <p>
+    기계가 시작되면 <code>productionTimerRunning</code>이 true가 되고, 이후 매 프레임 생산 시간이 증가한다.
+  </p>
+
+  <h2>4. Machine 상속과 다형성</h2>
+  <p>
+    <code>Machine</code>은 추상 부모 클래스이고, 실제 기계들은 <code>Machine</code>을 상속한다.
+  </p>
+  <div class="flow">PrepMachine ─▷ Machine
+GrillMachine ─▷ Machine
+SauceMachine ─▷ Machine
+AssemblyMachine ─▷ Machine
+QualityChecker ─▷ Machine
+PackingMachine ─▷ Machine</div>
+  <p>
+    <code>ProductionLine</code>은 <code>std::vector&lt;std::unique_ptr&lt;Machine&gt;&gt;</code>으로 기계들을 소유한다.
+    따라서 <code>ProductionLine ◆ Machine</code>은 composition 관계이다.
+  </p>
+  <pre>void ProductionLine::update(float dt)
+{
+    for (auto& m : machines) m->update(dt);
+}</pre>
+  <p>
+    여기서 <code>m</code>은 <code>Machine</code> 타입이지만 실제 객체가 <code>GrillMachine</code>이면
+    <code>GrillMachine::update()</code>가 실행된다. 이것이 다형성이다.
+  </p>
+  <div class="box">
+    발표 문장: “ProductionLine은 Machine 포인터 목록만 가지고 있지만, 실제로는 각 자식 기계의 update가 실행됩니다. 그래서 새 기계를 추가할 때 Machine을 상속하고 update만 구현하면 됩니다.”
+  </div>
+
+  <h2>5. struct / enum 관계</h2>
+  <p>
+    struct와 enum은 데이터를 명확하게 표현하기 위해 사용된다. 이들은 대부분 독립 객체를 소유하는 관계가 아니라 타입을 사용하는 dependency 관계이다.
+  </p>
+  <ul>
+    <li><code>Order</code>는 <code>BurgerType</code>을 사용한다. 어떤 버거 주문인지 저장한다.</li>
+    <li><code>BurgerRecipe</code>는 <code>map&lt;IngredientType, int&gt;</code>를 가진다. 필요한 재료와 수량을 저장한다.</li>
+    <li><code>MachineConfig</code>는 <code>BurgerType</code>과 <code>pattyCount</code>를 가진다. 기계 설정값 전달에 사용된다.</li>
+    <li><code>ProcessStep</code>은 현재 공정 단계를 표현한다.</li>
+    <li><code>MachineState</code>는 기계 상태를 표현한다.</li>
+  </ul>
+  <div class="flow">ProcessStep:
+Idle → PreparingIngredients → GrillPatty → AddSauce → AssembleBurger → QualityCheck → PackBurger
+
+MachineState:
+Idle, Running, Paused, Failed, Completed</div>
+  <p>
+    여러 bool 변수 대신 enum 하나로 상태를 관리하면 Running, Paused, Failed가 동시에 true가 되는 문제를 막을 수 있다.
+  </p>
+
+  <h2>6. QualityChecker와 Packing 완료 처리</h2>
+  <p>
+    품질 검사는 <code>QualityChecker</code>가 담당한다. 품질 검사 단계가 끝나면
+    <code>BurgerFactoryModel::nextStep()</code>에서 <code>checkQuality()</code>를 호출한다.
+  </p>
+  <pre>bool BurgerFactoryModel::checkQuality() const
+{
+    BurgerRecipe recipe = getRecipe(orderManager.getCurrentOrder().type);
+    return productionLine.inspectQuality(preparedIngredients, recipe);
+}</pre>
+  <p>
+    <code>ProductionLine</code>은 자신이 가지고 있는 <code>QualityChecker</code>에게 실제 검사를 맡긴다.
+    준비된 재료와 레시피가 정확히 일치하면 통과한다.
+  </p>
+  <p>
+    포장 기계가 완료되면 <code>PackingMachine</code>은 자기 상태를 Completed로 바꿀 뿐,
+    돈 추가나 주문 완료 처리는 하지 않는다. 이 정리는 <code>BurgerFactoryModel::nextStep()</code>의
+    <code>PackBurger</code> case에서 처리한다.
+  </p>
+  <pre>case ProcessStep::PackBurger:
+{
+    BurgerRecipe r = getRecipe(orderManager.getCurrentOrder().type);
+    moneyManager.add(r.price);
+    orderManager.completeOrder();
+    productionTimerRunning = false;
+    preparedIngredients.clear();
+    qualityCheckPassed = false;
+    if (orderManager.hasActiveOrder())
+        enterStep(ProcessStep::PreparingIngredients);
+    else
+        enterStep(ProcessStep::Idle);
+}</pre>
+
+  <h2>7. upgrade, refill, repair 추가 기능</h2>
+  <h3>Upgrade</h3>
+  <p>
+    기계 업그레이드는 cycle time을 줄이고 malfunction rate를 낮춰서 더 빠르고 안정적인 생산을 가능하게 한다.
+    View의 upgrade 버튼은 Controller를 통해 <code>BurgerFactoryModel::upgradeMachine()</code>을 호출한다.
+  </p>
+  <h3>Refill</h3>
+  <p>
+    재고가 부족하면 <code>InventoryManager</code>가 재고를 보충한다. 비용은 <code>REFILL_COST</code>로 관리된다.
+    재고 관리 책임은 Model Coordinator가 아니라 <code>InventoryManager</code>에 있다.
+  </p>
+  <h3>Repair</h3>
+  <p>
+    각 Machine은 update 중 <code>checkMalfunction()</code>을 호출한다.
+    고장이 발생하면 <code>MachineState::Failed</code>가 되고, Repair 버튼을 통해 수리할 수 있다.
+  </p>
+  <div class="flow">Machine::checkMalfunction()
+→ MachineState::Failed
+→ View Repair button
+→ Controller::onRepairMachine()
+→ BurgerFactoryModel::repairMachine()
+→ ProductionLine::repairMachine()
+→ Machine::reset()</div>
+
+  <h2>8. SOLID 원칙 연결</h2>
+  <h3>S - Single Responsibility Principle</h3>
+  <p>
+    재고는 <code>InventoryManager</code>, 돈은 <code>MoneyManager</code>, 주문은 <code>OrderManager</code>,
+    기계 목록과 기계 실행은 <code>ProductionLine</code>이 담당한다. 그래서 모든 기능이 하나의 클래스에 몰리지 않도록 분리했다.
+  </p>
+  <h3>O - Open/Closed Principle</h3>
+  <p>
+    새로운 기계를 추가하려면 <code>Machine</code>을 상속하고 <code>update()</code>를 구현하면 된다.
+    기존 기계 코드를 크게 수정하지 않고 확장할 수 있다.
+  </p>
+  <h3>L - Liskov Substitution Principle</h3>
+  <p>
+    <code>ProductionLine</code>은 <code>Machine</code> 포인터로 모든 기계를 다룬다.
+    자식 기계들은 부모 <code>Machine</code>처럼 사용할 수 있으므로 LSP에 맞는다.
+  </p>
+  <h3>I - Interface Segregation Principle</h3>
+  <p>
+    View는 <code>IFactoryViewData</code>를 통해 조회 함수만 알고,
+    Controller는 <code>IFactoryActions</code>를 통해 명령 함수만 안다.
+    그래서 클라이언트가 사용하지 않는 함수에 의존하지 않는다.
+  </p>
+  <h3>D - Dependency Inversion Principle</h3>
+  <p>
+    View와 Controller는 concrete class인 <code>BurgerFactoryModel</code>에 직접 의존하지 않고,
+    인터페이스에 의존한다. 이 구조는 Model 내부 구현이 바뀌어도 View와 Controller의 영향을 줄여준다.
+  </p>
+</body>
+</html>
